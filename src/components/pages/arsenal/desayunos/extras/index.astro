@@ -1,0 +1,157 @@
+---
+import { DecorativeLine } from "@/components/pages/shared";
+import { Image } from "@/components/ui";
+
+interface Product {
+  id: number;
+  title: string;
+  description: string;
+  price: string;
+  image: string;
+  alt: string;
+}
+
+const products: Product[] = [
+  {
+    id: 1,
+    title: "Pan / tostada + palta",
+    description: "La cremosidad del aguacate en cada bocado",
+    price: "S/ 3.00",
+    image: "/images/arsenal/desayunos/extras/1.png",
+    alt: "Pan tostado con palta",
+  },
+  {
+    id: 2,
+    title: "Pan / tostada + jamonada",
+    description: "El sabor tradicional de la jamonada casera",
+    price: "S/ 2.50",
+    image: "/images/arsenal/desayunos/extras/2.png",
+    alt: "Pan tostado con jamonada",
+  },
+  {
+    id: 3,
+    title: "Pan / tostada + mermelada",
+    description: "Dulzura natural para endulzar tu mañana",
+    price: "S/ 2.00",
+    image: "/images/arsenal/desayunos/extras/3.png",
+    alt: "Pan tostado con mermelada",
+  },
+  {
+    id: 4,
+    title: "Pan / tostada + mantequilla",
+    description: "La clásica combinación que nunca falla",
+    price: "S/ 2.00",
+    image: "/images/arsenal/desayunos/extras/4.png",
+    alt: "Pan tostado con mantequilla",
+  },
+  {
+    id: 5,
+    title: "Yogurt personal (vaso)",
+    description: "Yogur natural en presentación individual",
+    price: "S/ 3.00",
+    image: "/images/arsenal/desayunos/extras/5.png",
+    alt: "Yogur personal en vaso",
+  },
+  {
+    id: 6,
+    title: "Yogurt griego + granola (vaso)",
+    description: "La combinación perfecta de proteína y fibra",
+    price: "S/ 4.50",
+    image: "/images/arsenal/desayunos/extras/6.png",
+    alt: "Yogur griego con granola",
+  },
+];
+
+const productRows = [];
+for (let i = 0; i < products.length; i += 2) {
+  productRows.push({
+    left: products[i],
+    right: products[i + 1] || null,
+  });
+}
+---
+
+<section class="py-24 px-4 bg-gray-50">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16">
+      <p
+        class="text-[#82674E] text-sm sm:text-base tracking-[0.3em] uppercase mb-3"
+      >
+        Acompañamientos
+      </p>
+      <h2
+        class="text-4xl sm:text-5xl font-bold font-secondary uppercase text-stone-950 mb-16"
+      >
+        Complementos Perfectos
+        <DecorativeLine />
+      </h2>
+      <div>
+        <div class="space-y-16 lg:space-y-24">
+          {
+            productRows.map((row, index) => (
+              <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12 items-center">
+                <div class="lg:col-span-1 order-1 lg:order-1">
+                  <div class="relative overflow-hidden  aspect-square">
+                    <Image
+                      client:only="react"
+                      src={row.left.image}
+                      alt={row.left.alt}
+                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                </div>
+
+                <div class="lg:col-span-1 order-2 lg:order-2 text-center lg:text-left lg:px-4">
+                  <h3 class="text-xl md:text-2xl font-semibold uppercase tracking-wide text-stone-900 mb-4 leading-tight">
+                    {row.left.title}
+                  </h3>
+
+                  <p class="text-stone-600 text-sm md:text-base leading-relaxed mb-6">
+                    {row.left.description}
+                  </p>
+
+                  <p class="text-2xl font-bold text-[#82674E] tracking-wide">
+                    {row.left.price}
+                  </p>
+                </div>
+
+                {row.right && (
+                  <div class="lg:col-span-1 order-4 lg:order-3 text-center lg:text-right lg:px-4">
+                    <h3 class="text-xl md:text-2xl font-semibold uppercase tracking-wide text-stone-900 mb-4 leading-tight">
+                      {row.right.title}
+                    </h3>
+
+                    <p class="text-stone-600 text-sm md:text-base leading-relaxed mb-6">
+                      {row.right.description}
+                    </p>
+
+                    <p class="text-2xl font-bold text-[#82674E] tracking-wide">
+                      {row.right.price}
+                    </p>
+                  </div>
+                )}
+
+                {row.right && (
+                  <div class="lg:col-span-1 order-3 lg:order-4">
+                    <div class="relative overflow-hidden  aspect-square">
+                      <Image
+                        client:only="react"
+                        src={row.right.image}
+                        alt={row.right.alt}
+                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

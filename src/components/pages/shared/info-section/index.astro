@@ -1,0 +1,87 @@
+---
+const {
+  title,
+  description,
+  button1,
+  button2,
+  tag,
+  image,
+  button1Href,
+  button2Href,
+} = Astro.props;
+import { Image } from "@/components/ui";
+// Generar IDs únicos para los elementos relacionados
+const sectionId = `info-section-${Math.random().toString(36).substr(2, 9)}`;
+const titleId = `${sectionId}-title`;
+const descriptionId = `${sectionId}-description`;
+---
+
+<section
+  class="max-w-7xl mx-auto px-4 py-24"
+  aria-labelledby={titleId}
+  aria-describedby={descriptionId}
+>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+    <div class="relative aspect-[4/5] overflow-hidden">
+      <Image
+        client:only="react"
+        src={image}
+        alt={`Imagen ilustrativa para la sección: ${title}`}
+        className="w-full h-full object-cover"
+        loading="lazy"
+      />
+    </div>
+
+    <div class="space-y-6">
+      <p
+        class="lg:text-lg text-sm tracking-widest font-medium uppercase mb-4 text-stone-600"
+        aria-hidden="true"
+      >
+        {tag}
+      </p>
+      <h2
+        id={titleId}
+        class="text-3xl sm:text-5xl md:text-6xl text-stone-900 font-bold font-secondary uppercase leading-20"
+      >
+        {title}
+      </h2>
+      <p
+        id={descriptionId}
+        class="text-stone-600 mt-6 text-sm sm:text-base tracking-wider sm:leading-8 leading-6"
+      >
+        {description}
+      </p>
+
+      <div
+        class="flex gap-4 items-center mt-14 flex-wrap"
+        role="group"
+        aria-label="Acciones disponibles"
+      >
+        {
+          button1 && (
+            <a
+              href={button1Href}
+              class="rounded-full bg-stone-500 hover:bg-stone-400 lg:px-12 sm:px-10 px-6 py-3 sm:py-4 text-xs sm:text-sm font-semibold text-stone-50 shadow-xs tracking-wider transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-400"
+              role="button"
+              aria-label={`${button1} - Acción principal`}
+            >
+              {button1}
+            </a>
+          )
+        }
+        {
+          button2 && (
+            <a
+              href={button2Href}
+              class="rounded-full bg-stone-800 hover:bg-stone-600 lg:px-12 sm:px-10 px-6 py-3 sm:py-4 text-xs sm:text-sm font-semibold text-stone-50 shadow-xs tracking-wider transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-400"
+              role="button"
+              aria-label={`${button2} - Acción secundaria`}
+            >
+              {button2}
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>

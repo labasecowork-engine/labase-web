@@ -1,0 +1,140 @@
+---
+import { Image } from "@/components/ui";
+
+const videos = [
+  {
+    title: "Publicación en Facebook",
+    embedUrl:
+      "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fpermalink.php%3Fstory_fbid%3Dpfbid02spiZErPnwmdTx1seQt1hCKjvDMD1DYbrHEXLivykgiWc6Ek2fNgVEAb3hC4QHr4Pl%26id%3D100094472230413&show_text=true&width=500",
+    link: "https://www.facebook.com/permalink.php?story_fbid=pfbid02spiZErPnwmdTx1seQt1hCKjvDMD1DYbrHEXLivykgiWc6Ek2fNgVEAb3hC4QHr4Pl&id=100094472230413",
+    video: true,
+  },
+
+  {
+    title: "Publicación en Facebook",
+    embedUrl:
+      "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fpermalink.php%3Fstory_fbid%3Dpfbid0dD8zmAo5JSzeEsCq9h8oadB3VwMvYNkjyGe6BVBGQaFR52FmCHMgHFt39HdoPWhQl%26id%3D100094472230413&show_text=true&width=500",
+    link: "https://www.facebook.com/permalink.php?story_fbid=pfbid0dD8zmAo5JSzeEsCq9h8oadB3VwMvYNkjyGe6BVBGQaFR52FmCHMgHFt39HdoPWhQl&id=100094472230413",
+    video: true,
+  },
+  {
+    title: "Publicación en Facebook",
+    embedUrl:
+      "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fpermalink.php%3Fstory_fbid%3Dpfbid0m83FJnC4JwMbvjZhjnSaB8BfRRhEgGBFGx4GdUS65mAmaZpgUHzmGrBeoGV61TXql%26id%3D100094472230413&show_text=true&width=500",
+    link: "https://www.facebook.com/permalink.php?story_fbid=pfbid0m83FJnC4JwMbvjZhjnSaB8BfRRhEgGBFGx4GdUS65mAmaZpgUHzmGrBeoGV61TXql&id=100094472230413",
+    video: true,
+  },
+  {
+    title: "Tipen Facebook",
+    embedUrl:
+      "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fpermalink.php%3Fstory_fbid%3Dpfbid02z2ZhaeFBvPyB3xVueyVDBNK5Nx2EVkzJ4zioswmC1RLMNd9LHD9CZ3PiiZfcRzogl%26id%3D100094472230413&show_text=true&width=500",
+    link: "https://www.facebook.com/permalink.php?story_fbid=pfbid02z2ZhaeFBvPyB3xVueyVDBNK5Nx2EVkzJ4zioswmC1RLMNd9LHD9CZ3PiiZfcRzogl&id=100094472230413",
+    video: true,
+  },
+
+  {
+    title: "Como llegar ala Base Cowork",
+    embedUrl: "https://www.tiktok.com/embed/v2/7430958213031283973",
+    link: "https://www.tiktok.com/@labasecowork234/video/7430958213031283973",
+    video: true,
+  },
+  {
+    title: "Origen de la Base Cowork",
+    embedUrl: "https://www.tiktok.com/embed/v2/7403110066850729221",
+    link: "https://www.tiktok.com/@labasecowork234/video/7403110066850729221",
+    video: true,
+  },
+];
+---
+
+<section
+  class="bg-stone-50 py-24"
+  role="region"
+  aria-labelledby="latest-videos-title"
+>
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="text-center mb-12 sm:mb-24">
+      <p
+        class="text-stone-600 text-center text-sm sm:text-lg tracking-[0.35em] uppercase mb-4"
+        aria-hidden="true"
+      >
+        LO ÚLTIMO EN NUESTRAS REDES
+      </p>
+      <h2
+        id="latest-videos-title"
+        class="text-stone-950 text-center text-3xl sm:text-5xl font-bold font-secondary uppercase"
+      >
+        Mira lo que está pasando en nuestra comunidad
+      </h2>
+      <p
+        class="text-stone-600 mt-6 text-center text-sm sm:text-base tracking-wider max-w-5xl mx-auto"
+        aria-label="Descripción de la sección de contenido multimedia"
+      >
+        Mantente al día con las ideas, eventos y novedades del coworking. Desde
+        consejos útiles y tendencias del trabajo flexible, hasta entrevistas con
+        miembros y recorridos por nuestros espacios. ¡Nuestros últimos videos
+        tienen todo lo que necesitas para inspirarte y conectar!
+      </p>
+    </div>
+
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2"
+      role="list"
+      aria-label="Galería de contenido multimedia"
+    >
+      {
+        videos.map((video) => (
+          <a
+            href={video.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="relative group w-full h-96 text-left focus:outline-none focus:ring-2 focus:ring-blue-500 overflow-hidden"
+            role="listitem"
+            aria-label={`${video.title} - Click para ver ${video.video ? "video" : "imagen"}`}
+          >
+            <div class="aspect-video relative overflow-hidden w-full h-full">
+              {video.video ? (
+                <iframe
+                  src={video.embedUrl}
+                  title={video.title}
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                  class="w-full h-full object-cover pointer-events-none"
+                />
+              ) : (
+                <Image
+                  client:only="react"
+                  src={video.embedUrl}
+                  alt={`Miniatura de ${video.title}`}
+                  loading="lazy"
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              )}
+              <div
+                class="absolute inset-0 bg-black/40 flex items-center justify-center"
+                aria-hidden="true"
+              >
+                {video.video && (
+                  <div
+                    class="w-12 h-12 rounded-full bg-black/30 flex items-center justify-center"
+                    role="presentation"
+                  >
+                    <svg
+                      class="w-6 h-6 text-white"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                )}
+              </div>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>

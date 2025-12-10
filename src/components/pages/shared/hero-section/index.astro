@@ -1,0 +1,72 @@
+---
+import { Image } from "@/components/ui";
+
+const { title, tag, button, image, description, buttonLink } = Astro.props;
+---
+
+<section
+  class="relative isolate overflow-hidden pt-14 h-[800px] flex items-center justify-center"
+  role="region"
+  aria-labelledby="hero-title"
+>
+  <div class="absolute inset-0 z-10 size-full bg-black/80" aria-hidden="true">
+  </div>
+  <div class="absolute inset-0 -z-10 size-full object-cover">
+    <Image
+      client:only="react"
+      src={image}
+      alt={`Imagen de fondo para ${title}`}
+      loading="lazy"
+      className="absolute inset-0 -z-10 size-full object-cover"
+      aria-hidden="true"
+    />
+  </div>
+
+  <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-20">
+    <div class="mx-auto max-w-9xl py-32 sm:py-48 lg:py-72">
+      <div class="text-center" role="contentinfo">
+        <p
+          class="text-stone-100 lg:text-lg text-sm tracking-widest font-medium uppercase mb-4"
+          aria-label={`Categoría: ${tag}`}
+        >
+          {tag}
+        </p>
+        <h1
+          id="hero-title"
+          class="text-3xl font-secondary lg:leading-20 font-semibold text-balance text-stone-100 sm:text-5xl md:text-7xl uppercase"
+        >
+          {title}
+        </h1>
+        {
+          description !== undefined && (
+            <p
+              class="text-stone-100/70 lg:text-lg text-sm font-medium mb-4 mx-auto max-w-3xl mt-6"
+              aria-label={description}
+            >
+              {description}
+            </p>
+          )
+        }
+        {
+          button !== undefined && (
+            <div
+              class="mt-12 flex items-center justify-center gap-x-6"
+              role="group"
+              aria-label="Acciones principales"
+            >
+              <a
+                href={buttonLink}
+                class="rounded-full bg-transparent border border-stone-200 lg:px-12 px-10 py-3 lg:py-4 text-sm font-semibold text-stone-200 shadow-xs hover:bg-stone-200 hover:text-stone-950 tracking-wider transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-400"
+                role="button"
+                aria-label={button}
+                tabindex="0"
+              >
+                {button}
+              </a>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>

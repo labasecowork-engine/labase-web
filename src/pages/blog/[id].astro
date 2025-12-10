@@ -1,0 +1,303 @@
+---
+/**
+ * Página de detalle de un blog individual
+ * Muestra el contenido completo del blog, metadatos y navegación
+ */
+
+import Layout from "@/layouts/core/index.astro";
+import { ArrowLeft, Edit, Calendar, User } from "lucide-react";
+import apiClient from "@/services";
+
+// Obtener el ID del blog de la URL
+const { id } = Astro.params;
+
+// Validar ID
+if (!id) {
+  return Astro.redirect("/404");
+}
+
+// Obtener datos del artículo de la API
+let article = null;
+let articleContent = "";
+let apiError = null;
+
+try {
+  // Llamada a la API para obtener el artículo específico
+  const response = await apiClient.get(`/articles/${id}`);
+
+  if (response.data && response.data.data) {
+    article = response.data.data;
+
+    // Obtener el contenido HTML desde la URL
+    if (article.content) {
+      try {
+        const contentResponse = await fetch(article.content);
+        if (contentResponse.ok) {
+          articleContent = await contentResponse.text();
+        } else {
+          console.error(
+            "Error al cargar el contenido HTML:",
+            contentResponse.status,
+          );
+        }
+      } catch (contentError) {
+        console.error("Error al obtener el contenido:", contentError);
+      }
+    }
+  } else {
+    return Astro.redirect("/404");
+  }
+} catch (error) {
+  console.error("Error al obtener el artículo:", error);
+  apiError = error instanceof Error ? error.message : "Error desconocido";
+  return Astro.redirect("/404");
+}
+
+// Formatear la fecha en español
+const formattedDate = article?.publication_timestamp
+  ? new Date(article.publication_timestamp).toLocaleDateString("es-ES", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
+  : "Fecha no disponible";
+
+// Generar IDs únicos para elementos relacionados
+const articleId = `blog-article-${id}`;
+const titleId = `${articleId}-title`;
+const headerImageId = `${articleId}-header-image`;
+const contentId = `${articleId}-content`;
+
+// Datos del autor
+const authorName = article?.author
+  ? `${article.author.first_name} ${article.author.last_name}`
+  : "Autor desconocido";
+---
+
+<Layout
+  title={article?.title || "Artículo - LaBase"}
+  description={article?.resume || "Artículo del blog de LaBase"}
+>
+  <main>
+    <section
+      class="relative h-[800px] flex flex-col justify-center items-center"
+      role="banner"
+      aria-labelledby={titleId}
+    >
+      <div
+        id={headerImageId}
+        class="bg-cover bg-center bg-no-repeat w-full h-full absolute z-0 bg-fixed"
+        style={`background-image: url('${article?.banner || "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&q=80"}')`}
+        role="img"
+        aria-label="Imagen destacada del artículo"
+      >
+      </div>
+      <div
+        class="absolute top-0 left-0 w-full h-full bg-black opacity-70 z-10"
+        aria-hidden="true"
+      >
+      </div>
+
+      <div
+        class="max-w-5xl w-full px-8 mx-auto relative z-20 py-64"
+        role="region"
+        aria-label="Metadatos del artículo"
+      >
+        <div
+          class="flex items-center gap-6 mb-8 justify-center flex-wrap"
+          role="contentinfo"
+          aria-label="Información del autor y fecha"
+        >
+          <div class="flex items-center gap-2 text-white">
+            <User className="w-4 h-4" aria-hidden="true" />
+            <span>
+              <span class="sr-only">Autor:</span>
+              {authorName}
+            </span>
+          </div>
+          <div class="flex items-center gap-2 text-white">
+            <Calendar className="w-4 h-4" aria-hidden="true" />
+            <span>
+              <span class="sr-only">Fecha de publicación:</span>
+              {formattedDate}
+            </span>
+          </div>
+          {
+            article?.article_category && (
+              <div class="flex items-center gap-2 text-white">
+                <span class="bg-white/20 px-2 py-1 rounded text-sm">
+                  {article.article_category.name}
+                </span>
+              </div>
+            )
+          }
+          {
+            article?.reading_time && (
+              <div class="flex items-center gap-2 text-white">
+                <span class="text-sm">
+                  {article.reading_time} min de lectura
+                </span>
+              </div>
+            )
+          }
+        </div>
+        <h1
+          id={titleId}
+          class="font-medium text-5xl text-center font-secondary text-white leading-16"
+        >
+          {article?.title || "Artículo"}
+        </h1>
+      </div>
+    </section>
+
+    <article
+      class="max-w-4xl mx-auto px-8 w-full pt-24 blog-content"
+      id={contentId}
+      aria-labelledby={titleId}
+    >
+      {
+        article?.resume && (
+          <div class="bg-stone-100 px-10 py-6  mb-8 border-l-4 border-stone-900">
+            <h2
+              class=" uppercase font-medium text-stone-900 mb-3"
+              style="font-size: 1.5rem !important;"
+            >
+              Resumen
+            </h2>
+            <p class="text-stone-700 leading-relaxed italic">
+              {article.resume}
+            </p>
+          </div>
+        )
+      }
+
+      <div class="blog-content" set:html={articleContent} />
+    </article>
+
+    <nav
+      class="flex justify-between items-center mt-8 pt-6 border-t border-stone-200 mx-auto max-w-4xl pb-24 px-8"
+      aria-label="Navegación del blog"
+    >
+      <a
+        href="/blog"
+        class="inline-flex items-center gap-2 text-stone-600 hover:text-stone-900 transition-colors no-underline"
+        aria-label="Volver a la lista de artículos"
+      >
+        <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+        <span>Volver a los artículos</span>
+      </a>
+    </nav>
+  </main>
+</Layout>
+
+<style is:global>
+  .blog-content h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    color: #1c1917;
+    font-family: "Playfair Display", serif;
+  }
+
+  .blog-content h2 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: #1c1917;
+    font-family: "Playfair Display", serif;
+  }
+
+  .blog-content h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #1c1917;
+    font-family: "Playfair Display", serif;
+  }
+
+  .blog-content p {
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+    color: #44403c;
+  }
+
+  .blog-content ul,
+  .blog-content ol {
+    margin-left: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .blog-content ul {
+    list-style-type: disc;
+  }
+
+  .blog-content ol {
+    list-style-type: decimal;
+  }
+
+  .blog-content a {
+    color: hsl(var(--primary));
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .blog-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.75rem;
+    margin: 2rem 0;
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    loading: lazy;
+  }
+
+  .blog-content blockquote {
+    border-left: 4px solid hsl(var(--primary));
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    background-color: hsl(var(--muted));
+    border-radius: 0.5rem;
+    font-style: italic;
+  }
+
+  .blog-content pre {
+    background-color: hsl(var(--muted));
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    font-size: 0.9em;
+  }
+
+  .blog-content code {
+    font-family: monospace;
+    background-color: hsl(var(--muted));
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+    font-size: 0.9em;
+  }
+
+  .blog-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+  }
+
+  .blog-content table th,
+  .blog-content table td {
+    padding: 0.5rem;
+  }
+
+  .blog-content table th {
+    background-color: #44403c;
+    color: white;
+  }
+
+  .blog-content table td {
+    border: 1px solid #44403c;
+  }
+</style>

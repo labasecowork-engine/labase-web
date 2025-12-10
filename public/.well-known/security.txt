@@ -1,0 +1,7 @@
+# security.txt para labase.pe
+# Versión según RFC 9116
+
+Contact: mailto:labase.developers@gmail.com
+Policy: https://labase.pe/politicas
+Preferred-Languages: es
+Expires: 2026-12-31T23:59:59Z

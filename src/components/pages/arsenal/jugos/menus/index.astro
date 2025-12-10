@@ -1,0 +1,255 @@
+---
+import { DecorativeLine } from "@/components/pages/shared";
+import { Image } from "@/components/ui";
+interface Jugo {
+  id: number;
+  title: string;
+  description: string;
+  price: string;
+  image: string;
+  alt: string;
+  category: string;
+}
+
+const jugos: Jugo[] = [
+  // Jugos Clásicos
+  {
+    id: 1,
+    title: "Papaya / Piña / Plátano",
+    description: "Jugos naturales de frutas frescas",
+    price: "S/ 6.50",
+    image: "/images/arsenal/jugos/1.png",
+    alt: "Jugos de papaya, piña y plátano",
+    category: "Clásicos",
+  },
+
+  {
+    id: 2,
+    title: "Fresa",
+    description: "Jugo natural de fresa fresca",
+    price: "S/ 8.50",
+    image: "/images/arsenal/jugos/2.png",
+    alt: "Jugo de fresa",
+    category: "Clásicos",
+  },
+  {
+    id: 3,
+    title: "Naranja",
+    description: "Jugo natural de naranja recién exprimida",
+    price: "S/ 7.00",
+    image: "/images/arsenal/jugos/3.png",
+    alt: "Jugo de naranja",
+    category: "Clásicos",
+  },
+  {
+    id: 4,
+    title: "Plátano + leche",
+    description: "Batido de plátano con leche fresca",
+    price: "S/ 8.00",
+    image: "/images/arsenal/jugos/4.png",
+    alt: "Batido de plátano con leche",
+    category: "Clásicos",
+  },
+  {
+    id: 5,
+    title: "Fresa + leche",
+    description: "Batido de fresa con leche fresca",
+    price: "S/ 10.00",
+    image: "/images/arsenal/jugos/5.png",
+    alt: "Batido de fresa con leche",
+    category: "Clásicos",
+  },
+  {
+    id: 6,
+    title: "Papaya + leche",
+    description: "Batido de papaya con leche fresca",
+    price: "S/ 8.00",
+    image: "/images/arsenal/jugos/6.png",
+    alt: "Batido de papaya con leche",
+    category: "Clásicos",
+  },
+  // Jugos Energéticos
+  {
+    id: 7,
+    title: "Digestivo",
+    description: "Apio, pepino, perejil, manzana verde",
+    price: "S/ 6.00",
+    image: "/images/arsenal/jugos/1.png",
+    alt: "Jugo digestivo verde",
+    category: "Energéticos",
+  },
+  {
+    id: 8,
+    title: "Amanecer",
+    description: "Arándanos, mora, espinaca",
+    price: "S/ 10.00",
+    image: "/images/arsenal/jugos/2.png",
+    alt: "Jugo energético amanecer",
+    category: "Energéticos",
+  },
+  {
+    id: 9,
+    title: "Fantástico",
+    description: "Banana, nueces, linaza, leche, coco",
+    price: "S/ 10.00",
+    image: "/images/arsenal/jugos/3.png",
+    alt: "Jugo energético fantástico",
+    category: "Energéticos",
+  },
+  {
+    id: 10,
+    title: "Belleza",
+    description: "Zanahoria, sábila, pepino, menta",
+    price: "S/ 8.00",
+    image: "/images/arsenal/jugos/4.png",
+    alt: "Jugo energético belleza",
+    category: "Energéticos",
+  },
+];
+
+const jugosClasicos = jugos.filter((jugo) => jugo.category === "Clásicos");
+const jugosEnergeticos = jugos.filter(
+  (jugo) => jugo.category === "Energéticos",
+);
+---
+
+<section
+  class="max-w-7xl mx-auto px-8 py-12 sm:py-32"
+  aria-labelledby="menu-title"
+  aria-label="Menú de jugos naturales"
+  role="region"
+>
+  <div class="text-center mb-24 max-w-5xl mx-auto">
+    <p
+      class="text-stone-600 text-center text-sm sm:text-lg tracking-[0.35em] uppercase mb-4"
+      aria-hidden="true"
+      role="presentation"
+    >
+      nuestro menú
+    </p>
+    <h2
+      id="menu-title"
+      aria-label="Jugos Naturales y Energéticos"
+      class="text-stone-950 text-center text-3xl sm:text-5xl font-bold font-secondary uppercase"
+    >
+      Jugos Naturales y Energéticos
+    </h2>
+    <p
+      aria-label="Descripción de nuestros jugos"
+      class="text-stone-600 mt-6 text-center text-sm sm:text-base tracking-wider"
+    >
+      Cada jugo está preparado al momento con frutas frescas cuidadosamente
+      seleccionadas. Nuestras recetas están diseñadas para brindarte la mejor
+      experiencia en sabor y nutrición.
+    </p>
+    <DecorativeLine />
+  </div>
+
+  <div
+    class="grid grid-cols-1 md:grid-cols-3 w-full"
+    role="list"
+    aria-label="Lista de jugos clásicos"
+  >
+    {
+      jugosClasicos.map((jugo, index) => (
+        <div
+          class={`border-0 text-center p-8 border-stone-200 
+          ${index % 3 !== 2 ? "md:border-r" : ""}  
+          ${index < jugosClasicos.length - 3 ? "md:border-b" : ""}`}
+          role="listitem"
+        >
+          <div class="relative mb-6">
+            <Image
+              client:only="react"
+              src={jugo.image}
+              alt={jugo.alt}
+              className="size-32 sm:size-40 mx-auto object-contain transition-transform duration-300 hover:scale-105"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <p class="text-2xl sm:text-3xl font-bold text-[#82674E] mb-4 tracking-wide">
+            {jugo.price}
+          </p>
+          <h3
+            class="text-xl sm:text-2xl font-medium font-secondary uppercase mb-4 tracking-wide text-stone-950"
+            aria-label={`Jugo: ${jugo.title}`}
+            role="heading"
+            aria-level="3"
+          >
+            {jugo.title}
+          </h3>
+          <p
+            class="text-stone-600 text-sm sm:text-base tracking-wider"
+            aria-label={`Descripción: ${jugo.description}`}
+            role="paragraph"
+          >
+            {jugo.description}
+          </p>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="text-center my-24 max-w-5xl mx-auto">
+    <p
+      class="text-stone-600 text-center text-sm sm:text-lg tracking-[0.35em] uppercase mb-4"
+      aria-hidden="true"
+      role="presentation"
+    >
+      energía natural
+    </p>
+    <h3
+      class="text-stone-950 text-center text-2xl sm:text-4xl font-bold font-secondary uppercase mb-6"
+    >
+      Jugos Energéticos
+    </h3>
+    <DecorativeLine />
+  </div>
+
+  <div
+    class="grid grid-cols-1 md:grid-cols-2 w-full"
+    role="list"
+    aria-label="Lista de jugos energéticos"
+  >
+    {
+      jugosEnergeticos.map((jugo, index) => (
+        <div
+          class={`border-0 text-center p-8 border-stone-200 
+          ${index % 2 !== 1 ? "md:border-r" : ""}  
+          ${index < jugosEnergeticos.length - 2 ? "md:border-b" : ""}`}
+          role="listitem"
+        >
+          <div class="relative mb-6">
+            <Image
+              client:only="react"
+              src={jugo.image}
+              alt={jugo.alt}
+              className="size-32 sm:size-40 mx-auto object-contain transition-transform duration-300 hover:scale-105"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <p class="text-2xl sm:text-3xl font-bold text-[#82674E] mb-4 tracking-wide">
+            {jugo.price}
+          </p>
+          <h3
+            class="text-xl sm:text-2xl font-medium font-secondary uppercase mb-4 tracking-wide text-stone-950"
+            aria-label={`Jugo energético: ${jugo.title}`}
+            role="heading"
+            aria-level="3"
+          >
+            {jugo.title}
+          </h3>
+          <p
+            class="text-stone-600 text-sm sm:text-base tracking-wider max-w-sm mx-auto"
+            aria-label={`Descripción: ${jugo.description}`}
+            role="paragraph"
+          >
+            {jugo.description}
+          </p>
+        </div>
+      ))
+    }
+  </div>
+</section>

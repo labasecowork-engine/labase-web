@@ -1,0 +1,117 @@
+---
+import "@fontsource-variable/playfair-display";
+import "@/styles/global.css";
+import { Header, Footer } from "@/components/pages/shared";
+import Chatbot from "../../components/shared/chatbot/index.astro";
+import WhatsappButton from "../../components/shared/whatsapp_button/index.astro";
+import UpButton from "../../components/shared/up_button/index.astro";
+
+const {
+  title = "",
+  description = "",
+  keywords = "",
+  canonical = Astro.url.pathname,
+  type = "",
+  robots = "",
+  headerTransparent = true,
+  structuredData,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="robots" content={robots} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="/og_image.jpg" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content={type} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="/og_image.jpg" />
+
+    <link rel="canonical" href={canonical} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    {structuredData && <script type="application/ld+json">{JSON.stringify(structuredData)}</script>}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+
+    <meta name="generator" content={Astro.generator} />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5QYD0YYLF8"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-5QYD0YYLF8');
+    </script>
+  </head>
+  <body class="bg-stone-50">
+    <a href="#main-content" class="sr-only focus:not-sr-only">Saltar al contenido principal</a>
+    
+    <Header client:load isTransparent={headerTransparent} />
+    
+    <main id="main-content" role="main" tabindex="-1">
+      <slot />
+    </main>
+    
+    <Footer role="contentinfo" aria-label="Site footer" />
+    <WhatsappButton />
+    <UpButton />
+    <Chatbot role="complementary" aria-label="Chat assistance" />
+  </body>
+</html>
+
+<style>
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .sr-only.focus\:not-sr-only:focus {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: auto;
+    height: auto;
+    padding: 1rem;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    background-color: white;
+    z-index: 9999;
+    text-decoration: none;
+    color: black;
+  }
+</style>

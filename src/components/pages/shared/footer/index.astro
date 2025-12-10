@@ -1,0 +1,228 @@
+---
+import { contact, routes, social } from "@/config";
+---
+
+<footer
+  class="bg-stone-900 text-stone-100 py-20"
+  role="contentinfo"
+  aria-label="Pie de página principal"
+>
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-36">
+      <div class="space-y-6" role="region" aria-label="Información de contacto">
+        <div>
+          <img
+            class="lg:h-20 lg:w-60 w-48 h-14 object-cover"
+            src="/logo.png"
+            alt="Logo de La Base Cowork"
+            loading="lazy"
+          />
+        </div>
+
+        <div class="mt-16">
+          <p class="text-sm md:text-base font-medium tracking-wider">
+            <span aria-label="Teléfono principal">{contact.phone}</span>
+          </p>
+          <p class="text-sm md:text-base font-medium tracking-wider">
+            <span aria-label="Teléfono principal">{contact.phone2}</span>
+          </p>
+          <div
+            class="mt-8 space-y-1"
+            role="region"
+            aria-label="Dirección física"
+          >
+            <p class="text-sm md:text-base">{contact.address1}</p>
+            <p class="text-sm md:text-base">{contact.address2}</p>
+          </div>
+          <div
+            class="mt-8 space-y-1"
+            role="region"
+            aria-label="Correos electrónicos"
+          >
+            <p class="text-sm md:text-base">{contact.email}</p>
+            <p class="text-sm md:text-base">{contact.email2}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Middle Column - Navigation Links -->
+      <nav class="space-y-8" role="navigation" aria-label="Menú principal">
+        <div class="space-y-3">
+          <a
+            href={routes.home}
+            class="block hover:text-stone-400 transition-all duration-300 font-medium tracking-wider text-sm uppercase"
+            aria-label="Ir a la página de inicio">INICIO</a
+          >
+          <a
+            href={routes.spaces}
+            class="block hover:text-stone-400 transition-all duration-300 font-medium tracking-wider text-sm uppercase"
+            aria-label="Ver nuestros espacios disponibles">ESPACIOS</a
+          >
+          <a
+            href={routes.about}
+            class="block hover:text-stone-400 transition-all duration-300 font-medium tracking-wider text-sm uppercase"
+            aria-label="Conoce más sobre nosotros">NOSOTROS</a
+          >
+          <a
+            href={routes.testimonial}
+            class="block hover:text-stone-400 transition-all duration-300 font-medium tracking-wider text-sm uppercase"
+            aria-label="Conoce más sobre nosotros">TESTIMONIOS</a
+          >
+          <a
+            href={routes.contact}
+            class="block hover:text-stone-400 transition-all duration-300 font-medium tracking-wider text-sm uppercase"
+            aria-label="Contáctanos">CONTACTO</a
+          >
+        </div>
+      </nav>
+
+      <!-- Right Column - Social Media -->
+      <div class="space-y-4" role="region" aria-label="Redes sociales">
+        <a
+          href={social.facebook.url}
+          target="_blank"
+          class="flex items-center space-x-3 hover:text-stone-400 group transition-all duration-300"
+          aria-label="Síguenos en Facebook"
+        >
+          <span
+            class="size-10 rounded-full bg-stone-800 border border-stone-700 group-hover:bg-stone-600 group-hover:border-stone-600 transition-all duration-300 flex items-center justify-center"
+            role="img"
+            aria-hidden="true"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 320 512"
+              class="text-stone-100 size-4 fill-current"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M80 299.3V512H196V299.3h86.5l18-97.8H196V166.9c0-51.7 20.3-71.5 72.7-71.5c16.3 0 29.4 .4 37 1.2V7.9C291.4 4 256.4 0 236.2 0C129.3 0 80 50.5 80 159.4v42.1H14v97.8H80z"
+              ></path>
+            </svg>
+          </span>
+          <span>@{social.facebook.username}</span>
+        </a>
+        <a
+          href={social.instagram.url}
+          target="_blank"
+          class="flex items-center space-x-3 hover:text-stone-400 group transition-all duration-300"
+          aria-label="Síguenos en Instagram"
+        >
+          <span
+            class="size-10 rounded-full bg-stone-800 border border-stone-700 group-hover:bg-stone-600 group-hover:border-stone-600 transition-all duration-300 flex items-center justify-center"
+            role="img"
+            aria-hidden="true"
+          >
+            <svg
+              class="text-stone-100 size-4 fill-current"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 448 512"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"
+              ></path></svg
+            >
+          </span>
+          <span>@{social.instagram.username}</span>
+        </a>
+        <a
+          target="_blank"
+          href={social.linkedin.url}
+          class="flex items-center space-x-3 hover:text-stone-400 group transition-all duration-300"
+          aria-label="Síguenos en LinkedIn"
+        >
+          <span
+            class="size-10 rounded-full bg-stone-800 border border-stone-700 group-hover:bg-stone-600 group-hover:border-stone-600 transition-all duration-300 flex items-center justify-center"
+            role="img"
+            aria-hidden="true"
+          >
+            <svg
+              class="text-stone-100 size-4 fill-current"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 640 640"
+            >
+              <path
+                d="M512 96L127.9 96C110.3 96 96 110.5 96 128.3L96 511.7C96 529.5 110.3 544 127.9 544L512 544C529.6 544 544 529.5 544 511.7L544 128.3C544 110.5 529.6 96 512 96zM231.4 480L165 480L165 266.2L231.5 266.2L231.5 480L231.4 480zM198.2 160C219.5 160 236.7 177.2 236.7 198.5C236.7 219.8 219.5 237 198.2 237C176.9 237 159.7 219.8 159.7 198.5C159.7 177.2 176.9 160 198.2 160zM480.3 480L413.9 480L413.9 376C413.9 351.2 413.4 319.3 379.4 319.3C344.8 319.3 339.5 346.3 339.5 374.2L339.5 480L273.1 480L273.1 266.2L336.8 266.2L336.8 295.4L337.7 295.4C346.6 278.6 368.3 260.9 400.6 260.9C467.8 260.9 480.3 305.2 480.3 362.8L480.3 480z"
+              ></path>
+            </svg>
+          </span>
+          <span>@{social.linkedin.username}</span>
+        </a>
+        <a
+          href={social.tiktok.url}
+          class="flex items-center space-x-3 hover:text-stone-300 group transition-all duration-300"
+          target="_blank"
+          aria-label="Síguenos en TikTok"
+        >
+          <span
+            class="size-10 rounded-full bg-stone-800 border border-stone-700 group-hover:bg-stone-600 group-hover:border-stone-600 transition-all duration-300 flex items-center justify-center"
+            role="img"
+            aria-hidden="true"
+          >
+            <svg
+              class="text-stone-100 size-4 fill-current"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 448 512"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M448 209.9a210.1 210.1 0 0 1 -122.8-39.3V349.4A162.6 162.6 0 1 1 185 188.3V278.2a74.6 74.6 0 1 0 52.2 71.2V0l88 0a121.2 121.2 0 0 0 1.9 22.2h0A122.2 122.2 0 0 0 381 102.4a121.4 121.4 0 0 0 67 20.1z"
+              ></path>
+            </svg>
+          </span>
+          <span>@{social.tiktok.username}</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="border-t border-stone-700 mb-8" role="separator"></div>
+
+    <div
+      class="text-sm text-stone-400 mb-6"
+      role="region"
+      aria-label="Información de accesibilidad"
+    >
+      <p class="mb-4">
+        Nos comprometemos a ofrecer un sitio web accesible. Si tiene
+        dificultades para acceder al contenido, ver un archivo en el sitio web o
+        detecta algún problema de accesibilidad, contáctenos al
+        <a
+          href={`tel:${contact.phone}`}
+          aria-label="Llamar al número de teléfono de soporte de accesibilidad"
+          >{contact.phone}</a
+        >
+        para especificar la naturaleza del problema y la tecnología de asistencia
+        que utiliza. Nos esforzamos por ofrecerle el contenido que necesita en el
+        formato que necesita.
+      </p>
+      <p class="mb-4">
+        Toda la información se considera fiable, pero no está garantizada y debe
+        revisarse y verificarse de forma independiente.
+      </p>
+    </div>
+
+    <div
+      class="text-xs text-stone-500"
+      role="contentinfo"
+      aria-label="Información legal y enlaces de pie de página"
+    >
+      <p>
+        Copyright © 2025 Labase Cowork |
+        <a
+          href={routes.policy}
+          class="hover:text-stone-300"
+          aria-label="Ver política de privacidad">Politica de privacidad</a
+        >.
+        <a
+          href={routes.terms}
+          class="hover:text-stone-300"
+          aria-label="Ver política de privacidad">Terminos y condiciones</a
+        >.
+      </p>
+    </div>
+  </div>
+</footer>

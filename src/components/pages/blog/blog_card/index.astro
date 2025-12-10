@@ -1,0 +1,99 @@
+---
+import { Calendar, User } from "lucide-react";
+import { Image } from "@/components/ui";
+
+interface Props {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  author: {
+    name: string;
+    date: string;
+  };
+}
+
+const { id, title, description, image, author } = Astro.props;
+
+// Asegurarse de que la descripción no se muestre como HTML
+let cleanDescription = "";
+if (description) {
+  // Función simple para eliminar etiquetas HTML
+  cleanDescription = description.replace(/<[^>]*>/g, "");
+}
+
+// Generar IDs únicos para los elementos relacionados
+const articleId = `blog-article-${Math.random().toString(36).substr(2, 9)}`;
+const titleId = `${articleId}-title`;
+const descriptionId = `${articleId}-description`;
+---
+
+<article
+  class="bg-white overflow-hidden flex flex-col h-full shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+  role="article"
+  aria-labelledby={titleId}
+  aria-describedby={descriptionId}
+  onclick={`window.location.href='/blog/${id}'`}
+>
+  <div class="relative">
+    <Image
+      client:only="react"
+      src={image}
+      alt={`Imagen destacada para el artículo: ${title}`}
+      className="w-full h-48 sm:h-56 md:h-68 object-cover brightness-90 inset-0"
+      client:only="react"
+      loading="lazy"
+    />
+  </div>
+  <div class="p-4 sm:p-5 md:p-6 flex-grow flex flex-col">
+    <span
+      class="text-stone-500 uppercase text-xs sm:text-sm font-medium tracking-widest"
+      aria-hidden="true"
+    >
+      Articulo
+    </span>
+    <h3
+      id={titleId}
+      class="text-base sm:text-lg font-bold text-stone-900 line-clamp-2 mt-2 text-left"
+    >
+      {title}
+    </h3>
+
+    <!-- Author and date info -->
+    <div
+      class="flex items-center gap-4 my-3"
+      role="contentinfo"
+      aria-label="Información del autor y fecha de publicación"
+    >
+      <div class="flex items-center gap-1 text-stone-500 text-xs sm:text-sm">
+        <User className="w-3 h-3" aria-hidden="true" />
+        <span>
+          <span class="sr-only">Autor:</span>
+          {author.name}
+        </span>
+      </div>
+      <div class="flex items-center gap-1 text-stone-500 text-xs sm:text-sm">
+        <Calendar className="w-3 h-3" aria-hidden="true" />
+        <span>
+          <span class="sr-only">Fecha de publicación:</span>
+          {author.date}
+        </span>
+      </div>
+    </div>
+
+    <p
+      id={descriptionId}
+      class="text-xs sm:text-base tracking-wider text-stone-600 mb-3 sm:mb-4 flex-grow line-clamp-3 text-left"
+    >
+      {cleanDescription}
+    </p>
+
+    <a
+      href={`/blog/${id}`}
+      class="block mt-4 uppercase font-semibold text-stone-900 tracking-wide border-b border-stone-400 w-fit hover:text-stone-500 transition-all text-sm sm:text-base"
+      aria-label={`Leer más sobre ${title}`}
+    >
+      <span aria-hidden="true">LEER MÁS</span>
+    </a>
+  </div>
+</article>

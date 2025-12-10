@@ -1,0 +1,36 @@
+---
+import CasosExitoSection from "./index.tsx";
+
+const cases = [
+  {
+    id: 1,
+    imageUrl:
+      "https://images.pexels.com/photos/4427953/pexels-photo-4427953.jpeg",
+    logoUrl: "https://www.arxatec.net/assets/logo.png",
+    companyName: "Arxatec",
+    tagline: "Plataforma definitiva para conectar clientes y abogados",
+    description:
+      "Arxatec revolucionó el mercado legal conectando abogados y clientes de manera eficiente. Con el apoyo de La Base Cowork, desarrollaron su MVP, validaron el mercado y consiguieron su primera ronda de inversión. Hoy cuentan con más de 500 abogados registrados y han facilitado más de 1,000 consultas legales.",
+    isVideo: true,
+    caption: "",
+  },
+  {
+    id: 2,
+    imageUrl:
+      "https://images.pexels.com/photos/4427619/pexels-photo-4427619.jpeg",
+    logoUrl: "https://aguirre-web-site.vercel.app/assets/logo-98wOLgIh.png",
+    companyName: "Grupo Aguirre",
+    tagline: "Soluciones legales y empresariales",
+    description:
+      "Trabajando bajo los más altos estándares de calidad, ética y especialización. Nuestro enfoque está completamente orientado a comprender en profundidad las necesidades particulares de cada cliente, adaptando nuestras estrategias y servicios para ofrecer respuestas efectivas, oportunas y personalizadas.",
+    isVideo: false,
+  },
+];
+---
+
+<CasosExitoSection
+  client:load
+  title="Casos de éxito"
+  subtitle="Clientes que crecen"
+  cases={cases}
+/>

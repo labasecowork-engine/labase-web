@@ -1,0 +1,131 @@
+---
+import { routes } from "@/config";
+
+const benefits = [
+  {
+    icon: "/images/icons/map.svg",
+    title: "UBICACIÓN ESTRATÉGICA",
+    description:
+      "Nuestros espacios están situados en zonas céntricas y de fácil acceso, perfectos para reuniones con clientes o para moverte rápidamente por la ciudad.",
+  },
+  {
+    icon: "/images/icons/productivity.svg",
+    title: "AMBIENTE PRODUCTIVO",
+    description:
+      "Diseñado para inspirarte: luz natural, espacios cómodos y silenciosos, y zonas comunes para colaborar y conectar con otros profesionales.",
+  },
+  {
+    icon: "/images/icons/services.svg",
+    title: "SERVICIOS INCLUIDOS",
+    description:
+      "Internet rápido, café ilimitado, impresoras, salas de reuniones y más, todo incluido para que te enfoques solo en tu trabajo.",
+  },
+  {
+    icon: "/images/icons/community.svg",
+    title: "COMUNIDAD Y NETWORKING",
+    description:
+      "Forma parte de una comunidad activa de freelancers, startups y empresas. Asiste a eventos, charlas y oportunidades de networking exclusivas.",
+  },
+  {
+    icon: "/images/icons/plan.svg",
+    title: "PLANES FLEXIBLES",
+    description:
+      "Desde escritorios compartidos hasta oficinas privadas, elige el plan que se adapte a tu estilo de trabajo y presupuesto, sin contratos complicados.",
+  },
+  {
+    icon: "/images/icons/security.svg",
+    title: "SEGURIDAD Y ACCESO 24/7",
+    description:
+      "Tu espacio está siempre disponible cuando lo necesitas. Acceso seguro 24/7 para que trabajes a tu ritmo, incluso en horarios poco convencionales.",
+  },
+];
+---
+
+<section
+  class="max-w-7xl mx-auto px-8 py-12 sm:py-32"
+  aria-labelledby="benefits-title"
+  aria-label="Beneficios del espacio de coworking"
+  role="region"
+>
+  <div class="text-center mb-24 max-w-5xl mx-auto">
+    <p
+      class="text-stone-600 text-center text-sm sm:text-lg tracking-[0.35em] uppercase mb-4"
+      aria-hidden="true"
+      role="presentation"
+    >
+      beneficios
+    </p>
+    <h2
+      id="benefits-title"
+      aria-label="Un impulso para tu éxito"
+      class="text-stone-950 text-center text-3xl sm:text-5xl font-bold font-secondary uppercase"
+    >
+      Un impulso para tu éxito
+    </h2>
+    <p
+      aria-label="Descripción de los beneficios del espacio de coworking"
+      class="text-stone-600 mt-6 text-center text-sm sm:text-base tracking-wider"
+    >
+      Hemos diseñado cada rincón para que trabajes con comodidad, te inspires y
+      logres más. Aquí no solo tienes un escritorio, sino un entorno pensado
+      para potenciar tu productividad sin sacrificar bienestar.
+    </p>
+  </div>
+
+  <div
+    class="grid grid-cols-1 md:grid-cols-3 w-full"
+    role="list"
+    aria-label="Lista de beneficios"
+  >
+    {
+      benefits.map((benefit, index) => (
+        <div
+          class={`border-0 text-center p-8 border-stone-200 
+          ${index % 3 !== 2 ? "md:border-r" : ""}  
+          ${index < benefits.length - 3 ? "md:border-b" : ""}`}
+          role="listitem"
+        >
+          <img
+            src={benefit.icon}
+            class="size-10 sm:size-12 mb-6 mx-auto"
+            alt={`Ícono de ${benefit.title.toLowerCase()}`}
+            loading="lazy"
+            aria-hidden="true"
+          />
+          <h3
+            class="text-xl sm:text-2xl font-medium font-secondary uppercase mb-4 tracking-wide text-stone-950"
+            aria-label={`Beneficio: ${benefit.title}`}
+            role="heading"
+            aria-level="3"
+          >
+            {benefit.title}
+          </h3>
+          <p
+            class="text-stone-600 text-sm sm:text-base tracking-wider"
+            aria-label={`Descripción del beneficio: ${benefit.description}`}
+            role="paragraph"
+          >
+            {benefit.description}
+          </p>
+        </div>
+      ))
+    }
+  </div>
+
+  <p
+    class="mx-auto text-center text-sm sm:text-base text-stone-900 max-w-md mt-10"
+    aria-label="No dejes que alguien más ocupe el espacio ideal para tu negocio"
+  >
+    No dejes que alguien más ocupe el espacio ideal para tu negocio.
+    <a
+      href={routes.contact}
+      class="underline"
+      role="button"
+      aria-label="Contactar para encontrar tu espacio de coworking"
+    >
+      Contáctanos
+    </a>
+    {" "}
+    hoy y encuentra el coworking perfecto para ti.
+  </p>
+</section>

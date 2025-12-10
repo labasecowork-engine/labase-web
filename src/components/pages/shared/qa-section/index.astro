@@ -1,0 +1,228 @@
+---
+import { Image } from "@/components/ui";
+
+interface FAQ {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  faqs: FAQ[];
+  description: string;
+  image?: string
+}
+
+const { faqs, description, image } = Astro.props;
+---
+
+<div role="region" aria-label="Sección de preguntas frecuentes">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-24 sm:py-32 lg:px-8 lg:py-40">
+    <div class="mx-auto max-w-7xl">
+      <div class={`max-w-7xl mx-auto w-full`}>
+        <p
+          class={`text-stone-600 text-left text-sm sm:text-lg tracking-[0.35em] uppercase mb-4`}
+          aria-hidden="true"
+        >
+          Preguntas frecuentes
+        </p>
+        <h2
+          class={`text-stone-950 text-left text-3xl sm:text-5xl font-bold font-secondary uppercase`}
+          id="faq-heading"
+        >
+          Resolvemos todas tus dudas
+        </h2>
+        <p
+          class={`text-stone-600 max-w-3xl mt-6 text-left text-sm sm:text-base tracking-wider`}
+        >
+          {description}
+        </p>
+      </div>
+      <div class="w-full grid grid-cols-1 md:grid-cols-2 mt-12 sm:mt-24 gap-8">
+        <dl class="w-full" role="presentation" aria-labelledby="faq-heading">
+          {
+            faqs.map((faq: FAQ, index: number) => (
+              <div
+                class="bg-stone-100 mb-4"
+                role="group"
+                aria-labelledby={`faq-question-${index}`}
+              >
+                <dt>
+                  <button
+                    class="group flex w-full items-start justify-between text-left text-stone-900 px-4 py-7"
+                    aria-expanded="false"
+                    aria-controls={`faq-answer-${index}`}
+                    data-faq-button={index}
+                    id={`faq-question-${index}`}
+                  >
+                    <span class="text-base font-semibold font-secondary">
+                      {faq.question}
+                    </span>
+                    <span class="ml-6 flex h-7 items-center" aria-hidden="true">
+                      <svg
+                        class="size-6 block group-data-open:hidden"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1"
+                        stroke="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M12 4.5v15m7.5-7.5h-15"
+                        />
+                      </svg>
+                      <svg
+                        class="size-6 hidden group-data-open:block"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1"
+                        stroke="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M19.5 12h-15"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                </dt>
+                <dd
+                  class="faq-panel overflow-hidden"
+                  data-faq-panel={index}
+                  id={`faq-answer-${index}`}
+                  role="region"
+                  aria-labelledby={`faq-question-${index}`}
+                >
+                  <div class="px-4 pb-4">
+                    <p class="text-sm sm:text-base/7 text-stone-600">
+                      {faq.answer}
+                    </p>
+                  </div>
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+        <Image
+          client:only="react"
+          src={image ?? "/images/emprendimiento/5.jpg"}
+          alt="Personas colaborando en una reunión de trabajo"
+          className="w-full object-cover h-[600px] sm:h-full brightness-50"
+          loading="lazy"
+          decoding="async"
+          role="img"
+          aria-hidden="true"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  class FAQAccordion {
+    private buttons: NodeListOf<HTMLButtonElement>;
+    private panels: NodeListOf<HTMLElement>;
+
+    constructor() {
+      this.buttons = document.querySelectorAll("[data-faq-button]");
+      this.panels = document.querySelectorAll("[data-faq-panel]");
+      this.init();
+    }
+
+    private init() {
+      // Inicializar todos los paneles como cerrados
+      this.panels.forEach((panel) => {
+        panel.style.maxHeight = "0";
+        panel.style.opacity = "0";
+      });
+
+      this.buttons.forEach((button, index) => {
+        // Agregar manejo de teclado
+        button.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            this.togglePanel(button);
+          }
+        });
+        button.addEventListener("click", () => this.togglePanel(button));
+      });
+
+      // Agregar navegación con flechas
+      this.setupKeyboardNavigation();
+    }
+
+    private setupKeyboardNavigation() {
+      this.buttons.forEach((button, index) => {
+        button.addEventListener("keydown", (e) => {
+          let targetIndex;
+
+          switch (e.key) {
+            case "ArrowDown":
+              e.preventDefault();
+              targetIndex = index === this.buttons.length - 1 ? 0 : index + 1;
+              break;
+            case "ArrowUp":
+              e.preventDefault();
+              targetIndex = index === 0 ? this.buttons.length - 1 : index - 1;
+              break;
+            case "Home":
+              e.preventDefault();
+              targetIndex = 0;
+              break;
+            case "End":
+              e.preventDefault();
+              targetIndex = this.buttons.length - 1;
+              break;
+            default:
+              return;
+          }
+
+          this.buttons[targetIndex].focus();
+        });
+      });
+    }
+
+    private togglePanel(button: HTMLButtonElement) {
+      const index = button.getAttribute("data-faq-button");
+      const panel = document.querySelector(
+        `[data-faq-panel="${index}"]`,
+      ) as HTMLElement;
+
+      if (!panel) return;
+
+      const isExpanded = button.getAttribute("aria-expanded") === "true";
+
+      // Toggle button state
+      button.setAttribute("aria-expanded", String(!isExpanded));
+      button.classList.toggle("group-data-open");
+
+      // Toggle panel con animación
+      if (isExpanded) {
+        panel.style.maxHeight = "0";
+        panel.style.opacity = "0";
+      } else {
+        const content = panel.firstElementChild as HTMLElement;
+        panel.style.maxHeight = `${content.scrollHeight}px`;
+        panel.style.opacity = "1";
+      }
+    }
+  }
+
+  // Initialize the accordion when the DOM is loaded
+  document.addEventListener("DOMContentLoaded", () => {
+    new FAQAccordion();
+  });
+</script>
+
+<style>
+  .faq-panel {
+    max-height: 0;
+    opacity: 0;
+    transition:
+      max-height 0.5s ease-in-out,
+      opacity 0.4s ease-in-out;
+  }
+</style>

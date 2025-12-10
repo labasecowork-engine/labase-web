@@ -1,0 +1,16 @@
+---
+import Chatbot from "./index.tsx";
+
+const props = {
+  title: "Roxy por aquí 👋 \n¿Buscas un espacio o tienes dudas?",
+  name: "Coordinadora Roxy",
+  you: "Tú",
+  questions: {
+    question1: "¿Tienen internet?",
+    question2: "¿Puedo reservar por día?",
+    question3: "¿Puedo llevar invitados?",
+  },
+};
+---
+
+<Chatbot props={props} client:only="react" />

@@ -1,0 +1,40 @@
+---
+import NavigationButtons from "../../shared/button-arrow/button.tsx";
+
+const pretitle = "VOCES DE CLIENTES";
+const title = "¡TUS VECINOS NOS AMAN!";
+const buttonText = "RESEÑAS DE GOOGLE";
+const buttonLink = Astro.props.buttonLink;
+---
+
+<section class="py-12 md:py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-8">
+    <div
+      class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 md:gap-8"
+    >
+      <div class="w-full md:w-auto">
+        <p class="text-stone-600 text-lg tracking-[0.35em] uppercase mb-4">
+          {pretitle}
+        </p>
+        <h2
+          class="text-4xl md:text-5xl font-bold font-secondary text-stone-950 uppercase mb-8"
+        >
+          {title}
+        </h2>
+        <div class="mt-auto">
+          <NavigationButtons onPrevious={() => {}} onNext={() => {}} />
+        </div>
+      </div>
+
+      <div class="w-full md:w-auto mt-4 md:mt-0 flex-shrink-0">
+        <a
+          target="_blank"
+          href={buttonLink}
+          class="rounded-full text-xs bg-transparent border border-stone-500 px-6 sm:px-10 py-4 sm:text-sm font-semibold text-stone-800 shadow-xs hover:bg-stone-500 hover:text-white tracking-wider transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-400 w-full sm:w-fit text-center uppercase"
+        >
+          {buttonText}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

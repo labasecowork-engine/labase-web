@@ -1,0 +1,81 @@
+---
+const team = [
+  {
+    name: "RAFAEL AGUIRRE",
+    role: "ABOGADO & CEO BASE COWORK",
+    image: "/images/mentores/rafael_aguirre.webp",
+  },
+  {
+    name: "Fabrizio Villavicencio",
+    role: "MASTER FINANCE & DOCENTE EN FINANZAS",
+    image: "/images/mentores/fabrizio_villavicencio.webp",
+  },
+  {
+    name: "Anderson Echevarria",
+    role: "MARKETING DIGITAL & CEO SEBAM  ",
+    image: "/images/mentores/anderson_echevarria.webp",
+  },
+];
+---
+
+<section class="py-24" aria-labelledby="team-section-title" role="region">
+  <div class="max-w-5xl mx-auto px-8 mb-24">
+    <p
+      class="text-stone-600 text-center text-sm sm:text-lg tracking-[0.35em] uppercase mb-4"
+      aria-hidden="true"
+    >
+      EL EQUIPO CON EL QUE PUEDE CONFIAR
+    </p>
+    <h2
+      id="team-section-title"
+      class="text-stone-950 text-center text-3xl sm:text-5xl font-bold font-secondary uppercase"
+    >
+      CONOZCA AL EQUIPO
+    </h2>
+    <p
+      class="text-stone-600 mt-6 text-center text-sm sm:text-base tracking-wider"
+      aria-label="Descripción del equipo"
+    >
+      Contamos con expertos en diferentes áreas listos para optimizar tu
+      crecimiento profesional o hacer realidad tu idea de emprendimiento.
+      Explora nuestros mentores y conecta con los mejores en su campo.
+    </p>
+  </div>
+
+  <div
+    class="grid grid-cols-1 md:grid-cols-3 gap-8 mx-auto max-w-7xl px-4 sm:px-0"
+    role="list"
+    aria-label="Lista de miembros del equipo"
+  >
+    {
+      team.map((member) => (
+        <div
+          class="text-center"
+          role="listitem"
+          aria-label={`Perfil de ${member.name}`}
+        >
+          <div class="aspect-[3/4] mb-4 overflow-hidden">
+            <img
+              src={member.image}
+              alt={`Fotografía de ${member.name}, ${member.role}`}
+              class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+              loading="lazy"
+            />
+          </div>
+          <h3
+            class="text-xl sm:text-2xl font-medium font-secondary uppercase mb-1 tracking-wide"
+            aria-level="3"
+          >
+            {member.name}
+          </h3>
+          <p
+            class="text-sm sm:text-base text-stone-600 tracking-wider"
+            aria-label={`Rol: ${member.role}`}
+          >
+            {member.role}
+          </p>
+        </div>
+      ))
+    }
+  </div>
+</section>

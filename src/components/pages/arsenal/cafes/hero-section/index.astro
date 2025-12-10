@@ -1,0 +1,354 @@
+---
+import NavigationButtons from "@/components/pages/shared/button-arrow/button";
+import { Image } from "@/components/ui";
+
+interface Props {
+  currentSlide?: number;
+  totalSlides?: number;
+}
+
+const coffeeImages = [
+  "/images/arsenal/cafes/1.webp",
+  "/images/arsenal/cafes/2.webp",
+  "/images/arsenal/cafes/3.webp",
+  "/images/arsenal/cafes/4.webp",
+];
+---
+
+<section class="relative h-screen w-full overflow-hidden">
+  <Image
+    client:only="react"
+    src="/images/arsenal/cafes/hero.webp"
+    className="absolute top-0 left-0 w-full h-full object-cover"
+    loading="lazy"
+    decoding="async"
+  />
+  <div class="absolute inset-0 bg-black/50"></div>
+  <div
+    class="relative z-10 flex flex-col items-center justify-center h-full px-6 text-center"
+  >
+    <div class="mb-8">
+      <p class="text-stone-100 text-sm font-light tracking-[0.3em] uppercase">
+        Nuestra Selección
+      </p>
+    </div>
+    <h1
+      class="text-white text-4xl md:text-6xl lg:text-7xl font-secondary mb-16 max-w-4xl leading-tight"
+    >
+      Disfruta el mejor café
+    </h1>
+
+    <!-- slider de imagenes -->
+    <div class="relative mb-20 group">
+      <div
+        class="slider-container relative w-72 h-72 md:w-96 md:h-96 lg:w-[28rem] lg:h-[25rem]"
+      >
+        <div
+          class="slider-image-container relative w-full h-full rounded-2xl overflow-hidden shadow-2xl"
+        >
+          {
+            coffeeImages.map((image, index) => (
+              <div
+                class={`slider-item absolute inset-0 w-full h-full transition-opacity duration-500 ease-in-out ${
+                  index === 0 ? "opacity-100 visible" : "opacity-0 invisible"
+                }`}
+                data-slide-image={index}
+              >
+                <div class="slider-content-wrap w-full h-full flex items-center justify-center p-4">
+                  <div class="slider-content-align-center w-full h-full flex items-center justify-center">
+                    <div class="slider-image-wrapper w-full h-full flex items-center justify-center">
+                      <Image
+                        client:only="react"
+                        src={`/images/arsenal/cafes/${index + 1}.webp`}
+                        alt={`Coffee ${index + 1}`}
+                        className="slider-image w-auto h-auto max-w-full max-h-full object-contain"
+                        loading={index === 0 ? "eager" : "lazy"}
+                        decoding="async"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+
+        <div
+          class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/5 via-transparent to-transparent pointer-events-none"
+        >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- controles del slider -->
+  <div class="absolute bottom-10 left-0 right-0 z-20">
+    <div class="container mx-auto px-6">
+      <div class="flex items-center justify-between max-w-lg mx-auto gap-8">
+        <div class="flex-none">
+          <NavigationButtons
+            client:load
+            className="arrows-white"
+            onPrevious={() => {}}
+            onNext={() => {}}
+          />
+        </div>
+
+        <!-- contador y barra de progreso -->
+        <div class="flex-grow flex items-center justify-end gap-4">
+          <div
+            class="text-stone-100 font-light text-xl tracking-wider min-w-[4rem]"
+            data-slide-counter
+          >
+            01/04
+          </div>
+          <div class="flex-1 max-w-48">
+            <div
+              class="h-0.5 bg-white/20 relative rounded-full overflow-hidden"
+            >
+              <div
+                class="h-full bg-white transition-all duration-[5000ms] ease-linear rounded-full"
+                style="width: 25%;"
+                data-progress-bar
+              >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    class CoffeeSlider {
+      private currentSlide: number = 0;
+      private totalSlides: number = 4;
+      private autoplayInterval: number | null = null;
+      private slideInterval: number = 5000;
+
+      private imageWrappers: NodeListOf<HTMLElement>;
+      private counter: HTMLElement | null;
+      private progressBar: HTMLElement | null;
+      private prevBtn: HTMLElement | null;
+      private nextBtn: HTMLElement | null;
+
+      constructor() {
+        this.imageWrappers = document.querySelectorAll("[data-slide-image]");
+        this.counter = document.querySelector("[data-slide-counter]");
+        this.progressBar = document.querySelector("[data-progress-bar]");
+        this.prevBtn = document.querySelector(".prev-button");
+        this.nextBtn = document.querySelector(".next-button");
+        this.init();
+      }
+
+      private init(): void {
+        this.setupEventListeners();
+        this.preloadImages();
+        this.updateSlider();
+        this.startAutoplay();
+      }
+
+      private setupEventListeners(): void {
+        this.prevBtn?.addEventListener("click", () => this.previousSlide(true));
+        this.nextBtn?.addEventListener("click", () => this.nextSlide(true));
+
+        document.addEventListener("keydown", (e: KeyboardEvent) => {
+          if (e.key === "ArrowLeft") this.previousSlide(true);
+          if (e.key === "ArrowRight") this.nextSlide(true);
+        });
+
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden) {
+            this.pauseAutoplay();
+          } else {
+            this.resumeAutoplay();
+          }
+        });
+      }
+
+      private preloadImages(): void {
+        const imageUrls: string[] = [
+          "/images/arsenal/cafes/1.webp",
+          "/images/arsenal/cafes/2.webp",
+          "/images/arsenal/cafes/3.webp",
+          "/images/arsenal/cafes/4.webp",
+        ];
+        imageUrls.forEach((url) => {
+          const img = new Image();
+          img.src = url;
+        });
+      }
+
+      private handleResize(): void {}
+
+      private startAutoplay(): void {
+        this.animateProgressBar();
+        this.autoplayInterval = window.setInterval(() => {
+          this.nextSlide(false);
+        }, this.slideInterval);
+      }
+
+      private pauseAutoplay(): void {
+        if (this.autoplayInterval) {
+          clearInterval(this.autoplayInterval);
+          this.autoplayInterval = null;
+        }
+      }
+
+      private resumeAutoplay(): void {
+        if (!this.autoplayInterval) {
+          this.startAutoplay();
+        }
+      }
+
+      private resetAutoplay(): void {
+        this.pauseAutoplay();
+        this.startAutoplay();
+      }
+
+      private nextSlide(manual: boolean = false): void {
+        this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
+        this.updateSlider();
+        if (manual) this.resetAutoplay();
+      }
+
+      private previousSlide(manual: boolean = false): void {
+        this.currentSlide =
+          (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
+        this.updateSlider();
+        if (manual) this.resetAutoplay();
+      }
+
+      private animateProgressBar(): void {
+        if (!this.progressBar) return;
+        this.progressBar.style.transition = "none";
+        this.progressBar.style.width = "0%";
+        void this.progressBar.offsetWidth;
+        this.progressBar.style.transition = `width ${this.slideInterval}ms linear`;
+        this.progressBar.style.width = "100%";
+      }
+
+      private updateSlider(): void {
+        this.imageWrappers.forEach((wrapper, i) => {
+          if (i === this.currentSlide) {
+            wrapper.classList.remove("opacity-0", "invisible");
+            wrapper.classList.add("opacity-100", "visible");
+          } else {
+            wrapper.classList.remove("opacity-100", "visible");
+            wrapper.classList.add("opacity-0", "invisible");
+          }
+        });
+
+        if (this.counter) {
+          const current = String(this.currentSlide + 1).padStart(2, "0");
+          const total = String(this.totalSlides).padStart(2, "0");
+          this.counter.textContent = `${current}/${total}`;
+        }
+
+        this.animateProgressBar();
+      }
+    }
+
+    const slider = new CoffeeSlider();
+
+    let resizeTimeout: number;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = window.setTimeout(() => {
+        (slider as any).handleResize();
+      }, 250);
+    });
+  });
+</script>
+
+<style is:global>
+  /* Estilos para los arrows */
+  .arrows-white .nav-button {
+    border-color: white;
+    color: white;
+  }
+  .arrows-white .nav-button .arrow-line {
+    background-color: white;
+  }
+  .arrows-white .nav-button .arrow-head {
+    color: white;
+  }
+  .arrows-white .nav-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  .arrows-white .nav-button:hover .arrow-line,
+  .arrows-white .prev-button:hover .prev-line,
+  .arrows-white .next-button:hover .next-line {
+    background-color: white;
+  }
+  .arrows-white .nav-button:hover .arrow-head,
+  .arrows-white .prev-button:hover .prev-head,
+  .arrows-white .next-button:hover .next-head {
+    color: white;
+  }
+
+  /* Estilos para el área del slider */
+  .slider-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slider-image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .slider-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition:
+      opacity 0.5s ease-in-out,
+      visibility 0.5s ease-in-out;
+  }
+
+  .slider-content-wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slider-content-align-center {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slider-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .slider-image {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+  }
+  .slider-image {
+    filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.15));
+    border-radius: 8px;
+  }
+</style>

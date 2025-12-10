@@ -1,0 +1,64 @@
+---
+import { routes } from "@/config";
+---
+
+<section
+  class="relative isolate overflow-hidden pt-14 h-screen flex items-center justify-center"
+  role="region"
+  aria-labelledby="hero-heading"
+>
+  <div class="absolute inset-0 z-10 size-full bg-black/80" aria-hidden="true">
+  </div>
+  <video
+    id="background-video"
+    autoplay=""
+    muted=""
+    loop=""
+    preload="auto"
+    aria-label="Video de presentación de LaBaseCowork"
+    class="absolute inset-0 -z-10 size-full object-cover"
+    role="presentation"
+    aria-hidden="true"
+  >
+    <source src="/videos/videobase.mp4" type="video/mp4" />
+    <p>
+      Tu navegador no soporta videos HTML5. Aquí hay un <a
+        href="/videos/videobase.mp4">enlace al video</a
+      >.
+    </p>
+  </video>
+
+  <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-20" role="main">
+    <div class="mx-auto max-w-9xl py-32 sm:py-48 lg:py-72">
+      <div class="text-center">
+        <p
+          class="text-stone-100 lg:text-lg text-sm tracking-widest font-medium uppercase mb-4"
+        >
+          DESCUBRE EL ESPACIO IDEAL PARA TU NEGOCIO
+        </p>
+        <h1
+          id="hero-heading"
+          class="text-3xl font-secondary lg:leading-20 font-semibold text-balance text-stone-100 sm:text-5xl md:text-7xl uppercase"
+        >
+          EL ESPACIO PERFECTO PARA TUS GRANDES IDEAS
+        </h1>
+
+        <div
+          class="mt-12 flex items-center justify-center gap-x-6"
+          role="group"
+          aria-label="Acciones principales"
+        >
+          <a
+            href={routes.suscribe}
+            class="rounded-full bg-transparent border border-stone-200 lg:px-12 sm:px-10 px-6 py-3 lg:py-4 text-xs sm:text-sm font-semibold text-stone-200 shadow-xs hover:bg-stone-200 hover:text-stone-950 tracking-wider transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-400"
+            role="button"
+            aria-label="Comenzar ahora"
+            tabindex="0"
+          >
+            UNIRME A LA BASE
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

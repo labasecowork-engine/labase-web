@@ -1,0 +1,40 @@
+---
+const {
+  tag,
+  title,
+  description,
+  align = "center",
+  className = "",
+} = Astro.props;
+
+const titleId = `title-${Math.random().toString(36).substr(2, 9)}`;
+const descriptionId = `desc-${Math.random().toString(36).substr(2, 9)}`;
+---
+
+<section
+  class={`py-12 md:py-24 ${className}`}
+  role="region"
+  aria-labelledby={titleId}
+  aria-describedby={descriptionId}
+>
+  <div class={`max-w-7xl mx-auto w-full px-4 sm:px-8`}>
+    <p
+      class={`text-stone-600 ${align === "center" ? "text-center" : "text-left"} text-sm  sm:text-lg tracking-[0.35em] uppercase mb-4`}
+      role="complementary"
+    >
+      {tag}
+    </p>
+    <h2
+      id={titleId}
+      class={`text-stone-950 ${align === "center" ? "text-center" : "text-left"} text-3xl sm:text-5xl font-bold font-secondary uppercase`}
+    >
+      {title}
+    </h2>
+    <p
+      id={descriptionId}
+      class={`text-stone-600 max-w-5xl mt-6 ${align === "center" ? "text-center mx-auto" : "text-left"} text-sm sm:text-base tracking-wider`}
+    >
+      {description}
+    </p>
+  </div>
+</section>

@@ -1,0 +1,351 @@
+---
+const testimonials = [
+  {
+    text: "Desde que comencé a trabajar en este coworking, mi productividad ha aumentado increíblemente. No solo es un espacio bien diseñado, con iluminación perfecta y mobiliario ergonómico, sino que el ambiente colaborativo realmente marca la diferencia. Siempre hay alguien dispuesto a compartir ideas o darte una perspectiva fresca sobre un problema.",
+    author: "Alejandro Ramírez",
+    source: "Google Reviews",
+  },
+  {
+    text: "Después de probar varios espacios de coworking en la ciudad, finalmente encontré uno que se siente como una verdadera comunidad. Las instalaciones son impecables, el internet es rapidísimo (fundamental para mi trabajo en tecnología), y el café de especialidad que ofrecen es un plus increíble. ",
+    author: "Mariana López",
+    source: "Opiniones en Facebook",
+  },
+  {
+    text: "Trabajar como freelance puede volverse solitario, así que encontrar este coworking ha sido una bendición. El espacio está diseñado para la concentración, con áreas tranquilas y cabinas para videollamadas donde puedo atender a mis clientes sin interrupciones. ",
+    author: "Javier Méndez",
+    source: "Comentarios en Yelp",
+  },
+];
+
+import { Image } from "@/components/ui";
+const { image, opacity, video } = Astro.props;
+---
+
+<section aria-label="Testimonios de clientes" role="region">
+  <div
+    class="mx-auto h-auto sm:h-screen p-4 py-24 md:p-20 relative overflow-hidden flex items-center justify-center flex-col"
+  >
+    {
+      image === undefined ? (
+        <div class="absolute inset-0">
+          <video
+            preload="auto"
+            loop
+            autoplay
+            muted
+            playsinline
+            class="w-full h-full object-cover"
+          >
+            <source src={video} type="video/mp4" />
+          </video>
+          {opacity === undefined ? (
+            <div class="absolute inset-0 bg-black/80" aria-hidden="true" />
+          ) : (
+            <div
+              class="absolute inset-0 bg-black"
+              style={`opacity: ${opacity} ;`}
+              aria-hidden="true"
+            />
+          )}
+        </div>
+      ) : (
+        <div class="absolute inset-0" aria-hidden="true">
+          <Image
+            client:only="react"
+            src={image}
+            className="w-full h-full object-cover"
+            alt="Fondo decorativo de la sección de testimonios"
+            loading="lazy"
+          />
+          {opacity === undefined ? (
+            <div class="absolute inset-0 bg-black/80" aria-hidden="true" />
+          ) : (
+            <div
+              class="absolute inset-0 bg-black"
+              style={`opacity: ${opacity} ;`}
+              aria-hidden="true"
+            />
+          )}
+        </div>
+      )
+    }
+
+    <div class="relative max-w-7xl mx-auto px-4 w-full">
+      <div class="text-center mb-12">
+        <p
+          class="text-stone-100 text-center text-sm sm:text-lg tracking-[0.35em] uppercase mb-4"
+          aria-hidden="true"
+        >
+          ESCUCHA A NUESTROS
+        </p>
+        <h2
+          class="text-stone-50 text-center text-3xl sm:text-5xl font-bold font-secondary uppercase"
+          id="testimonios-titulo"
+        >
+          CLIENTES FELICES
+        </h2>
+      </div>
+
+      <div
+        class="testimonial-carousel relative"
+        id="testimonialCarousel"
+        role="region"
+        aria-roledescription="carrusel"
+        aria-labelledby="testimonios-titulo"
+      >
+        <div class="testimonial-track" role="presentation">
+          {
+            testimonials.map((testimonial, index) => (
+              <div
+                class="testimonial-slide"
+                data-index={index}
+                data-active={index === 0 ? "true" : "false"}
+                role="group"
+                aria-roledescription="diapositiva"
+                aria-label={`Testimonio ${index + 1} de ${testimonials.length}`}
+              >
+                <div class="max-w-4xl mx-auto">
+                  <div
+                    class="flex justify-center gap-1 sm:gap-2"
+                    role="img"
+                    aria-label={`Calificación de 5 estrellas por ${testimonial.author}`}
+                  >
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        class="w-5 h-5 text-[#BBAA6B]"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        data-key={i}
+                        aria-hidden="true"
+                      >
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <blockquote>
+                    <p class="text-stone-50 italic my-10 text-center text-base sm:text-xl leading-6 sm:leading-8 tracking-normal sm:tracking-wider">
+                      "{testimonial.text}"
+                    </p>
+                    <footer class="text-center mt-12">
+                      <cite class="text-stone-100 text-sm font-semibold not-italic">
+                        {testimonial.author}
+                      </cite>
+                      <p class="text-stone-200 text-xs">{testimonial.source}</p>
+                    </footer>
+                  </blockquote>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+
+        <div
+          class="flex justify-center gap-2 mt-12"
+          role="tablist"
+          aria-label="Controles de navegación del carrusel"
+        >
+          {
+            testimonials.map((_, index) => (
+              <button
+                class="indicator-container h-[2px] w-16 bg-white/20 overflow-hidden cursor-pointer"
+                data-index={index}
+                role="tab"
+                aria-selected={index === 0 ? "true" : "false"}
+                aria-label={`Ver testimonio ${index + 1}`}
+                aria-controls={`testimonio-${index + 1}`}
+              >
+                <div
+                  class="indicator-progress h-full bg-white transform-none"
+                  aria-hidden="true"
+                />
+              </button>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  let currentSlide = 0;
+  let autoplayInterval;
+  let startX;
+  let isDragging = false;
+
+  const carousel = document.getElementById("testimonialCarousel");
+  const slides = document.querySelectorAll(".testimonial-slide");
+  const indicators = document.querySelectorAll(".indicator-container");
+  const progressBars = document.querySelectorAll(".indicator-progress");
+  const slideCount = slides.length;
+  const slideInterval = 5000;
+
+  function updateAriaAttributes(index) {
+    slides.forEach((slide, i) => {
+      slide.setAttribute("aria-hidden", i === index ? "false" : "true");
+    });
+
+    indicators.forEach((indicator, i) => {
+      indicator.setAttribute("aria-selected", i === index ? "true" : "false");
+    });
+  }
+
+  function goToSlide(index, resetInterval = true) {
+    progressBars.forEach((bar) => {
+      bar.style.animation = "none";
+      void bar.offsetWidth;
+    });
+
+    slides.forEach((slide, i) => {
+      slide.setAttribute("data-active", i === index ? "true" : "false");
+      slide.style.opacity = i === index ? "1" : "0";
+      slide.style.visibility = i === index ? "visible" : "hidden";
+    });
+
+    updateAriaAttributes(index);
+
+    progressBars.forEach((bar, i) => {
+      if (i === index) {
+        bar.style.animation = "progress 5s linear";
+      } else if (i < index) {
+        bar.style.transform = "scaleX(1)";
+      } else {
+        bar.style.transform = "scaleX(0)";
+      }
+    });
+
+    currentSlide = index;
+
+    if (resetInterval) {
+      clearInterval(autoplayInterval);
+      startAutoplay();
+    }
+  }
+
+  function nextSlide() {
+    goToSlide((currentSlide + 1) % slideCount);
+  }
+
+  function previousSlide() {
+    goToSlide((currentSlide - 1 + slideCount) % slideCount);
+  }
+
+  function startAutoplay() {
+    autoplayInterval = setInterval(nextSlide, slideInterval);
+  }
+
+  indicators.forEach((indicator, index) => {
+    indicator.addEventListener("click", () => goToSlide(index));
+    indicator.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        goToSlide(index);
+      }
+    });
+  });
+
+  carousel.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    startX = e.pageX;
+  });
+
+  carousel.addEventListener("touchstart", (e) => {
+    isDragging = true;
+    startX = e.touches[0].pageX;
+  });
+
+  function handleDragEnd(endX) {
+    if (!isDragging) return;
+
+    const diff = startX - endX;
+    const threshold = 50;
+
+    if (Math.abs(diff) > threshold) {
+      diff > 0 ? nextSlide() : previousSlide();
+    }
+
+    isDragging = false;
+  }
+
+  carousel.addEventListener("mouseup", (e) => handleDragEnd(e.pageX));
+  carousel.addEventListener("touchend", (e) =>
+    handleDragEnd(e.changedTouches[0].pageX),
+  );
+  carousel.addEventListener("mouseleave", () => (isDragging = false));
+
+  // Añadir soporte para teclado
+  carousel.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") {
+      previousSlide();
+    } else if (e.key === "ArrowRight") {
+      nextSlide();
+    }
+  });
+
+  goToSlide(0, false);
+  startAutoplay();
+</script>
+
+<style>
+  .testimonial-carousel {
+    position: relative;
+    overflow: hidden;
+    touch-action: pan-y pinch-zoom;
+  }
+
+  .testimonial-track {
+    position: relative;
+    user-select: none;
+  }
+
+  .testimonial-slide {
+    position: relative;
+    width: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out;
+    height: 0;
+    min-height: 0;
+  }
+
+  .testimonial-slide[data-active="true"] {
+    opacity: 1;
+    visibility: visible;
+    height: auto;
+    min-height: 100%;
+  }
+
+  @keyframes progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  .indicator-progress {
+    transform-origin: left;
+    transform: scaleX(0);
+    transition: transform 0.3s ease-out;
+  }
+
+  .indicator-container {
+    border: none;
+    padding: 0;
+  }
+
+  .indicator-container:hover .indicator-progress {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+
+  /* Añadir estilos para el foco del teclado */
+  .indicator-container:focus {
+    outline: 2px solid #bbaa6b;
+    outline-offset: 2px;
+  }
+
+  .indicator-container:focus:not(:focus-visible) {
+    outline: none;
+  }
+</style>

@@ -1,0 +1,43 @@
+---
+import { CoreLayout } from "@/layouts";
+import { HeroSection, CtaSection, VideoCta } from "@/components/pages/shared";
+import {
+  TestimonialCarousel,
+  GoogleReview,
+} from "@/components/pages/testimonios";
+import { testimoniosMeta } from "@/config/meta";
+import { contact } from "@/config";
+---
+
+<CoreLayout
+  title={testimoniosMeta.title}
+  description={testimoniosMeta.description}
+  keywords={testimoniosMeta.keywords}
+  canonical={testimoniosMeta.canonical}
+  type={testimoniosMeta.type}
+  robots={testimoniosMeta.robots}
+  structuredData={testimoniosMeta.structuredData}
+>
+  <HeroSection
+    title="Testimonios"
+    tag="Lo que dicen nuestros clientes"
+    image="/images/espacios/phone_booth/2.webp"
+  />
+  <TestimonialCarousel client:only="react" />
+
+  <VideoCta
+    title="Conoce La Base desde dentro"
+    subtitle="Mira el video y únete a la misión"
+    description="¿Te imaginas trabajar en un espacio que no solo inspira, sino que también potencia tu misión? En La Base, cada rincón tiene un propósito táctico: desde el Hangar hasta los Bunkers, todo está diseñado para maximizar tu enfoque, creatividad y colaboración. No es solo un cowork, es una zona de operaciones para los que quieren conquistar sus objetivos con precisión. Mira el video y conoce el ecosistema donde las ideas se transforman en ofensivas estratégicas."
+    imageSrc="/images/espacios/base_operativa/2.webp"
+    imageAlt="Vista de los espacios de La Base Cowork"
+    buttonText="Reproduce la experiencia"
+  />
+
+  <GoogleReview buttonLink={contact.google} />
+  <CtaSection
+    title="¿Listo para unirte a la comunidad?"
+    description="Descubre cómo La Base puede ser el trampolín para tu éxito. Únete a nosotros y transforma tu forma de trabajar."
+    image="/images/espacios/bunkers/6.webp"
+  />
+</CoreLayout>

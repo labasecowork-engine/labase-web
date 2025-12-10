@@ -1,0 +1,47 @@
+---
+import TestimonialsSection from "./index.tsx";
+const testimonials = [
+  {
+    id: 1,
+    name: "Carlos Mendoza",
+    source: "Fundador de TechFlow",
+    text: '"La Base Cowork transformó completamente mi startup. Su programa de incubación nos ayudó a validar nuestro MVP y conseguir nuestra primera ronda de inversión. El ecosistema de mentores es invaluable."',
+    rating: 5,
+  },
+  {
+    id: 2,
+    name: "Ana Rodríguez",
+    source: "CEO de EcoSolutions",
+    text: '"Gracias al programa de pre-incubación, pudimos estructurar nuestro modelo de negocio correctamente. Los mentores nos guiaron en cada paso y hoy tenemos una empresa sostenible y en crecimiento."',
+    rating: 5,
+  },
+  {
+    id: 3,
+    name: "Miguel Torres",
+    source: "Fundador de DataViz",
+    text: '"La fase de aceleración nos permitió escalar de 5 a 25 empleados en solo 8 meses. El equipo de La Base nos conectó con inversores estratégicos y nos ayudó a optimizar nuestros procesos."',
+    rating: 5,
+  },
+  {
+    id: 4,
+    name: "Laura Fernández",
+    source: "Directora de InnovApp",
+    text: '"El espacio de trabajo colaborativo y la red de contactos que ofrece La Base son fundamentales para el crecimiento de cualquier emprendimiento. Recomiendo totalmente sus servicios."',
+    rating: 5,
+  },
+  {
+    id: 5,
+    name: "Roberto Silva",
+    source: "Fundador de GreenTech",
+    text: '"Desde la idea hasta el mercado, La Base nos acompañó en todo el proceso. Su metodología de 3 fases es efectiva y nos permitió construir una empresa sólida desde cero."',
+    rating: 5,
+  },
+];
+---
+
+<TestimonialsSection
+  client:load
+  title="HEAR WHAT PEOPLE ARE"
+  subtitle="SAYING ABOUT US"
+  testimonials={testimonials}
+/>

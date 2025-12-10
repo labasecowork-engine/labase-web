@@ -1,0 +1,116 @@
+---
+import { Image } from "@/components/ui";
+const desayunosNutritivos = [
+  {
+    name: "Desayuno Americano",
+    description: "Tostada + palta + jamón + café pasado + jugo",
+    longDescription:
+      "Un desayuno completo al estilo americano que combina la cremosidad del aguacate con el sabor ahumado del jamón. Acompañado de una tostada crujiente, café pasado tradicional y jugo natural para energizar tu mañana.",
+    price: "10.00",
+    image: "/images/arsenal/desayunos/desayunos/1.png",
+  },
+  {
+    name: "Pancakes Banana",
+    description: "Plátano + leche + huevo + panqueque de trigo + miel + frita",
+    longDescription:
+      "Deliciosos pancakes caseros preparados con plátano maduro y trigo integral. Endulzados naturalmente con miel y servidos con mantequilla derretida. Una opción dulce y nutritiva para los amantes del desayuno americano.",
+    price: "8.00",
+    image: "/images/arsenal/desayunos/desayunos/2.png",
+  },
+  {
+    name: "Desayuno El Arsenal",
+    description: "Tostada + huevo frito + fruta picada + café pasado + jugo",
+    longDescription:
+      "Nuestro desayuno signature que combina lo mejor de la tradición peruana con toques internacionales. Huevo frito perfecto sobre tostada, fruta fresca de temporada, café pasado artesanal y jugo natural. Una experiencia gastronómica completa.",
+    price: "12.00",
+    image: "/images/arsenal/desayunos/desayunos/3.png",
+  },
+];
+
+const extrasDesayuno = [
+  {
+    name: "Pan / tostada + palta",
+    price: "3.00",
+  },
+  {
+    name: "Pan / tostada + jamonada",
+    price: "2.50",
+  },
+  {
+    name: "Pan / tostada + mermelada",
+    price: "2.00",
+  },
+  {
+    name: "Pan / tostada + mantequilla",
+    price: "2.00",
+  },
+  {
+    name: "Yogurt personal (vaso)",
+    price: "3.00",
+  },
+  {
+    name: "Yogurt griego + granola (vaso)",
+    price: "4.50",
+  },
+];
+---
+
+<section class="py-24 text-stone-800 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Sección de Desayunos Grandes -->
+
+    <div class="space-y-24">
+      {
+        desayunosNutritivos.map((item, index) => (
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-12 items-center">
+            <div class:list={["px-12", index % 2 === 1 ? "lg:order-last" : ""]}>
+              <Image
+                client:only="react"
+                src={item.image}
+                alt={item.name}
+                className="w-full h-auto object-contain rounded-lg"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div class="space-y-8">
+              <div class="flex items-center gap-4">
+                <Image
+                  client:only="react"
+                  src="/images/arsenal/desayunos/desayuno.svg"
+                  alt="Icono de desayuno"
+                  className="w-14 h-14"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <h3 class="text-4xl font-secondary text-[#82674E]">
+                  {item.name}
+                </h3>
+              </div>
+
+              <div class="space-y-6">
+                <div class="menu-item">
+                  <h4 class="text-lg font-semibold uppercase tracking-wide text-stone-900">
+                    {item.name}
+                  </h4>
+                  <p class=" text-base text-stone-800 mt-1">
+                    {item.description}
+                  </p>
+                  <p class="text-sm text-stone-500 mt-3 leading-relaxed">
+                    {item.longDescription}
+                  </p>
+
+                  <div class="border-t-2 border-b-2 border-dashed border-amber-600/30 mt-4 py-2 text-center">
+                    <p class="text-base text-[#82674E] font-medium">
+                      S/ {item.price}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

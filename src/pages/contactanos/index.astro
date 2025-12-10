@@ -1,0 +1,29 @@
+---
+import { CoreLayout } from "@/layouts";
+import { HeroSection, TitleSection } from "@/components/pages/shared";
+import { ContactFormSection, MapSection } from "@/components/pages/contactanos";
+import { contactanosMeta } from "@/config/meta";
+---
+
+<CoreLayout
+  title={contactanosMeta.title}
+  description={contactanosMeta.description}
+  keywords={contactanosMeta.keywords}
+  canonical={contactanosMeta.canonical}
+  type={contactanosMeta.type}
+  robots={contactanosMeta.robots}
+  structuredData={contactanosMeta.structuredData}
+>
+  <HeroSection
+    title="Contáctanos"
+    tag="Hablemos de tu proyecto"
+    image="/images/espacios/sala_de_recepcion/6.webp"
+  />
+  <ContactFormSection />
+  <TitleSection
+    tag="Encuéntranos"
+    title="Encuentra nuestras ubicaciones"
+    description="Descubre dónde estamos y visita nuestros espacios diseñados para impulsar tu productividad. Conoce nuestras sedes, sus beneficios y cómo acceder a ellas fácilmente."
+  />
+  <MapSection />
+</CoreLayout>

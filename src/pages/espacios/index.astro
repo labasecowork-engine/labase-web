@@ -1,0 +1,62 @@
+---
+import { CoreLayout } from "@/layouts";
+import {
+  HeroSection,
+  CtaSection,
+  InfoSection,
+  TitleSection,
+  BenefitsSection,
+  SpacesSection,
+  VideoCta,
+  TestimonialsSection,
+} from "@/components/pages/shared";
+import { SpacesSection as SpacesPriceSection } from "@/components/pages/espacios";
+import { espaciosMeta } from "@/config/meta";
+import { routes } from "@/config";
+---
+
+<CoreLayout
+  title={espaciosMeta.title}
+  description={espaciosMeta.description}
+  keywords={espaciosMeta.keywords}
+  canonical={espaciosMeta.canonical}
+  type={espaciosMeta.type}
+  robots={espaciosMeta.robots}
+  structuredData={espaciosMeta.structuredData}
+>
+  <HeroSection
+    tag="Espacios"
+    title="Nuestros espacios"
+    image="/images/espacios/el_hangar/19.webp"
+  />
+  <TitleSection
+    tag="Tu base está lista"
+    title="El entorno que potencia tus días"
+    description="Cada ambiente de La Base ha sido pensado para acompañarte en todo tipo de jornada: desde una sesión de enfoque total hasta un café con otro emprendedor que puede cambiar tu rumbo. Comodidad, energía y diseño en un solo lugar."
+    align="left"
+  />
+  <SpacesSection client:load />
+  <SpacesPriceSection />
+  <InfoSection
+    tag="Un espacio, muchas formas de usarlo"
+    title="Diseñado para fluir contigo"
+    description="¿Vienes a cerrar un trato, lanzar tu startup o simplemente tener un día productivo sin interrupciones? Nuestros espacios están pensados para adaptarse a tu ritmo. Aquí puedes encontrar concentración, colaboración y comodidad en el mismo lugar."
+    button1="TESTIMONIOS"
+    button1Href={routes.testimonial}
+    image="/images/espacios/base_de_mando/12.webp"
+  />
+  <BenefitsSection />
+  <VideoCta
+    title="Conoce La Base desde dentro"
+    subtitle="Mira el video y únete a la misión"
+    description="¿Te imaginas trabajar en un espacio que no solo inspira, sino que también potencia tu misión? En La Base, cada rincón tiene un propósito táctico: desde el Hangar hasta los Bunkers, todo está diseñado para maximizar tu enfoque, creatividad y colaboración. No es solo un cowork, es una zona de operaciones para los que quieren conquistar sus objetivos con precisión. Mira el video y conoce el ecosistema donde las ideas se transforman en ofensivas estratégicas."
+    imageSrc="/images/espacios/unidades/2.webp"
+    imageAlt="Vista de los espacios de La Base Cowork"
+    buttonText="Reproduce la experiencia"
+  />
+  <TestimonialsSection image="/images/espacios/arsenal/7.webp" />
+  <CtaSection
+    image="/images/espacios/base_de_mando/15.webp"
+    description="¿Listo para dejar de trabajar solo y empezar a construir algo épico? Ven y conoce La Base: el lugar donde las ideas se convierten en empresas y los lunes dejan de doler."
+  />
+</CoreLayout>

@@ -1,0 +1,397 @@
+---
+import BlogCard from "../blog_card/index.astro";
+import apiClient from "@/services";
+
+interface Props {
+  currentPage?: number;
+  searchQuery?: string;
+}
+
+const { currentPage = 1, searchQuery = "" } = Astro.props;
+
+// Llamada a la API
+let apiResponse = null;
+let apiError = null;
+let posts = [];
+let pagination = null;
+console.log("aslkñfjdsalkfjdsaldfjskl ");
+try {
+  // Construir la URL con parámetros
+  const params = new URLSearchParams({
+    limit: "9",
+    page: currentPage.toString(),
+  });
+
+  // Agregar parámetro de búsqueda solo si existe
+  if (searchQuery.trim()) {
+    params.append("search", searchQuery.trim());
+  }
+
+  const response = await apiClient.get(`/articles?${params.toString()}`);
+  apiResponse = response.data;
+  console.log("API Response:", apiResponse.data.articles);
+
+  // Extraer artículos y paginación de la respuesta
+  if (apiResponse && apiResponse.data && apiResponse.data.articles) {
+    posts = apiResponse.data.articles.map((article: any) => ({
+      id: article.id,
+      title: article.title,
+      description: article.resume,
+      image: article.banner,
+      author: {
+        name: `${article.author.first_name} ${article.author.last_name}`,
+        date: article.publication_timestamp
+          ? new Date(article.publication_timestamp).toLocaleDateString(
+              "es-ES",
+              {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              },
+            )
+          : "Fecha no disponible",
+      },
+      category: article.article_category.name,
+      reading_time: article.reading_time,
+      content_url: article.content,
+    }));
+    pagination = apiResponse.data.pagination;
+  }
+} catch (error) {
+  console.error("Error al llamar a la API:", error);
+  apiError =
+    error instanceof Error
+      ? error.message
+      : "Error desconocido al conectar con la API";
+}
+
+// Función para generar enlaces de paginación
+function generatePaginationLinks(
+  currentPage: number,
+  totalPages: number,
+  searchQuery: string = "",
+) {
+  const links: Array<{
+    type: string;
+    page: number;
+    label: string;
+    current?: boolean;
+    disabled: boolean;
+  }> = [];
+
+  // Página anterior
+  if (currentPage > 1) {
+    links.push({
+      type: "prev",
+      page: currentPage - 1,
+      label: "Anterior",
+      disabled: false,
+    });
+  }
+
+  // Páginas numeradas
+  const startPage = Math.max(1, currentPage - 2);
+  const endPage = Math.min(totalPages, currentPage + 2);
+
+  for (let i = startPage; i <= endPage; i++) {
+    links.push({
+      type: "page",
+      page: i,
+      label: i.toString(),
+      current: i === currentPage,
+      disabled: false,
+    });
+  }
+
+  // Página siguiente
+  if (currentPage < totalPages) {
+    links.push({
+      type: "next",
+      page: currentPage + 1,
+      label: "Siguiente",
+      disabled: false,
+    });
+  }
+
+  return links;
+}
+
+// Función para generar URL de paginación
+function generatePageUrl(page: number, searchQuery: string = ""): string {
+  const params = new URLSearchParams();
+  if (page > 1) params.append("page", page.toString());
+  if (searchQuery.trim()) params.append("search", searchQuery.trim());
+
+  const queryString = params.toString();
+  return queryString ? `/blog?${queryString}` : "/blog";
+}
+---
+
+<section
+  class="py-24 px-4 max-w-7xl mx-auto grid gap-2"
+  aria-label="Blog y búsqueda de artículos"
+>
+  <div class="mb-12 w-full">
+    <form
+      method="GET"
+      action="/blog"
+      role="search"
+      aria-label="Buscar artículos"
+      class="flex flex-col sm:flex-row items-center gap-4 flex-wrap sm:flex-nowrap"
+    >
+      <div class="relative flex-grow w-full">
+        <label for="search-input" class="sr-only">Buscar artículos</label>
+        <input
+          type="search"
+          id="search-input"
+          name="search"
+          value={searchQuery}
+          placeholder="Buscar..."
+          class="px-4 py-2 text-sm sm:text-base text-stone-500 ring-1 ring-stone-200 focus:ring-stone-900 outline-none w-full bg-stone-100 placeholder:text-stone-400"
+          aria-describedby="search-desc"
+        />
+      </div>
+      <button
+        type="submit"
+        class="text-stone-50 bg-stone-900 px-4 sm:px-8 py-2 text-center cursor-pointer h-full ring-stone-900 ring text-sm sm:text-base w-full sm:w-auto"
+        aria-label="Realizar búsqueda"
+      >
+        Buscar
+      </button>
+    </form>
+    <div
+      role="navigation"
+      aria-label="Términos de búsqueda populares"
+      class="mt-6 w-full"
+    >
+      <p
+        class="text-stone-500 text-sm sm:text-base flex items-center gap-1 flex-wrap"
+      >
+        <span class="text-stone-800 mr-2 font-bold">Busquedas top:</span>
+        <a href="/blog?search=huancayo" class="underline">huancayo</a>,
+        <a href="/blog?search=emprendimiento" class="underline"
+          >emprendimiento</a
+        >,
+        <a href="/blog?search=estudio" class="underline">estudio</a>,
+        <a href="/blog?search=abogados" class="underline">abogados</a>,
+        <a href="/blog?search=arxatec" class="underline">arxatec</a>,
+        <a href="/blog?search=practicas" class="underline">practicas</a>,
+        <a href="/blog?search=webinar" class="underline">webinar</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Mostrar error de API si existe -->
+  {
+    apiError && (
+      <div class="bg-red-900/10 p-4 mb-6">
+        <h3 class="text-lg font-semibold text-red-800 mb-2">
+          Error al cargar artículos
+        </h3>
+        <p class="text-red-700">{apiError}</p>
+      </div>
+    )
+  }
+
+  <!-- Mostrar información de búsqueda -->
+  {
+    searchQuery.trim() && (
+      <div class="bg-green-900/10 p-4 mb-6">
+        <p class="text-green-800">
+          <span class="font-semibold">Buscando:</span> "{searchQuery}"
+          {pagination && (
+            <span class="ml-2 text-sm">
+              ({pagination.total} resultados encontrados)
+            </span>
+          )}
+        </p>
+        <a
+          href="/blog"
+          class="text-green-700 hover:text-green-800 underline text-sm mt-2 inline-block"
+        >
+          Limpiar búsqueda
+        </a>
+      </div>
+    )
+  }
+
+  <div
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2"
+    role="feed"
+    aria-label="Lista de artículos del blog"
+  >
+    {
+      posts.length > 0 ? (
+        posts.map((post: any) => <BlogCard {...post} />)
+      ) : (
+        <div
+          class="col-span-3 text-center py-12 bg-stone-200"
+          role="status"
+          aria-live="polite"
+        >
+          <p class="text-lg text-stone-600">
+            {apiError
+              ? "No se pudieron cargar los artículos."
+              : "No hay artículos disponibles en este momento, o no se encontraron resultados."}
+          </p>
+        </div>
+      )
+    }
+  </div>
+
+  <!-- Paginación solo se muestra si hay datos de paginación -->
+  {
+    pagination && pagination.total_pages > 1 && (
+      <nav class="mt-6" role="navigation" aria-label="Paginación de artículos">
+        <div class="flex items-center justify-between py-3">
+          {/* Paginación móvil */}
+          <div class="flex flex-1 justify-between sm:hidden">
+            {pagination.has_prev_page ? (
+              <a
+                href={generatePageUrl(pagination.page - 1, searchQuery)}
+                class="relative inline-flex items-center border border-stone-300 bg-white px-4 py-2 text-sm font-medium text-stone-700 hover:bg-stone-50"
+                aria-label="Ir a página anterior"
+              >
+                Anterior
+              </a>
+            ) : (
+              <span class="relative inline-flex items-center border border-stone-300 bg-stone-50 px-4 py-2 text-sm font-medium text-stone-400 cursor-not-allowed">
+                Anterior
+              </span>
+            )}
+
+            {pagination.has_next_page ? (
+              <a
+                href={generatePageUrl(pagination.page + 1, searchQuery)}
+                class="relative ml-3 inline-flex items-center border border-stone-300 bg-white px-4 py-2 text-sm font-medium text-stone-700 hover:bg-stone-50"
+                aria-label="Ir a página siguiente"
+              >
+                Siguiente
+              </a>
+            ) : (
+              <span class="relative ml-3 inline-flex items-center border border-stone-300 bg-stone-50 px-4 py-2 text-sm font-medium text-stone-400 cursor-not-allowed">
+                Siguiente
+              </span>
+            )}
+          </div>
+
+          {/* Paginación desktop */}
+          <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-center">
+            <div>
+              <nav
+                class="isolate inline-flex -space-x-px shadow-xs"
+                aria-label="Paginación"
+              >
+                {/* Botón anterior */}
+                {pagination.has_prev_page ? (
+                  <a
+                    href={generatePageUrl(pagination.page - 1, searchQuery)}
+                    class="relative inline-flex items-center px-2 py-2 text-stone-400 ring-1 ring-stone-300 ring-inset hover:bg-stone-50 focus:z-20 focus:outline-offset-0"
+                    aria-label="Ir a página anterior"
+                  >
+                    <span class="sr-only">Anterior</span>
+                    <svg
+                      class="size-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </a>
+                ) : (
+                  <span class="relative inline-flex items-center px-2 py-2 text-stone-300 ring-1 ring-stone-300 ring-inset cursor-not-allowed">
+                    <span class="sr-only">Anterior</span>
+                    <svg
+                      class="size-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </span>
+                )}
+
+                {/* Páginas numeradas */}
+                {generatePaginationLinks(
+                  pagination.page,
+                  pagination.total_pages,
+                  searchQuery,
+                ).map((link) => {
+                  if (link.type === "page") {
+                    return link.current ? (
+                      <span
+                        aria-current="page"
+                        aria-label={`Página ${link.page}, página actual`}
+                        class="relative z-10 inline-flex items-center bg-stone-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-600"
+                      >
+                        {link.label}
+                      </span>
+                    ) : (
+                      <a
+                        href={generatePageUrl(link.page, searchQuery)}
+                        aria-label={`Ir a página ${link.page}`}
+                        class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-stone-900 ring-1 ring-stone-300 ring-inset hover:bg-stone-50 focus:z-20 focus:outline-offset-0"
+                      >
+                        {link.label}
+                      </a>
+                    );
+                  }
+                  return null;
+                })}
+
+                {/* Botón siguiente */}
+                {pagination.has_next_page ? (
+                  <a
+                    href={generatePageUrl(pagination.page + 1, searchQuery)}
+                    class="relative inline-flex items-center px-2 py-2 text-stone-400 ring-1 ring-stone-300 ring-inset hover:bg-stone-50 focus:z-20 focus:outline-offset-0"
+                    aria-label="Ir a página siguiente"
+                  >
+                    <span class="sr-only">Siguiente</span>
+                    <svg
+                      class="size-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </a>
+                ) : (
+                  <span class="relative inline-flex items-center px-2 py-2 text-stone-300 ring-1 ring-stone-300 ring-inset cursor-not-allowed">
+                    <span class="sr-only">Siguiente</span>
+                    <svg
+                      class="size-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </span>
+                )}
+              </nav>
+            </div>
+          </div>
+        </div>
+      </nav>
+    )
+  }
+</section>

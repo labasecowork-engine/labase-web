@@ -1,0 +1,72 @@
+---
+import { CoreLayout } from "@/layouts";
+import { notFoundMeta } from "@/config/meta";
+import { Image } from "@/components/ui";
+---
+
+<CoreLayout
+  title={notFoundMeta.title}
+  description={notFoundMeta.description}
+  keywords={notFoundMeta.keywords}
+  canonical={notFoundMeta.canonical}
+  image={notFoundMeta.image}
+  type={notFoundMeta.type}
+  robots={notFoundMeta.robots}
+  structuredData={notFoundMeta.structuredData}
+  headerTransparent={notFoundMeta.headerTransparent}
+>
+  <main>
+    <section
+      class="grid place-items-center md:grid-cols-2 grid-rows-[100vh] overflow-hidden"
+      role="region"
+      aria-label="Página no encontrada"
+    >
+      <div class="w-full h-full px-8 py-24 flex items-center justify-center">
+        <div class="pt-24">
+          <p
+            class="text-base font-semibold text-[#82674E]"
+            aria-label="Código de error"
+          >
+            404
+          </p>
+          <h1
+            class="mt-4 text-3xl sm:text-4xl tracking-tight text-balance text-stone-900 md:text-6xl font-bold font-secondary uppercase"
+            id="error-title"
+          >
+            ¡Opps! Página <br />no encontrada
+          </h1>
+          <p
+            class="mt-6 text-sm sm:text-base font-medium text-pretty text-stone-500 md:text-xl/8"
+            aria-describedby="error-title"
+          >
+            Lo sentimos, no encontramos la página que tus buscabas.
+          </p>
+          <div
+            class="mt-10 flex items-center gap-x-6"
+            role="navigation"
+            aria-label="Navegación de error"
+          >
+            <a
+              href="/"
+              class="bg-[#82674E] rounded-full w-fit text-stone-100 py-3 sm:py-4 px-8 sm:px-10 transition-colors duration-200 text-xs sm:text-sm tracking-widest font-medium uppercase"
+              role="button"
+              aria-label="Volver a la página principal"
+            >
+              Volver al inicio
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="w-full h-full relative hidden md:block" aria-hidden="true">
+        <Image
+          client:only="react"
+          src="/images/espacios/sala_de_recepcion/6.webp"
+          alt="Imagen decorativa de la página de error 404"
+          className="object-cover w-full h-full"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+    </section>
+  </main>
+</CoreLayout>

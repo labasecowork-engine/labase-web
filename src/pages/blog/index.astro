@@ -1,0 +1,29 @@
+---
+import { CoreLayout } from "@/layouts";
+import { HeroSection, CtaSection } from "@/components/pages/shared";
+import { RecentPost } from "@/components/pages/blog";
+import { blogMeta } from "@/config/meta";
+
+// Obtener parámetros de la URL
+const url = new URL(Astro.request.url);
+const currentPage = parseInt(url.searchParams.get("page") || "1", 10);
+const searchQuery = url.searchParams.get("search") || "";
+---
+
+<CoreLayout
+  title={blogMeta.title}
+  description={blogMeta.description}
+  keywords={blogMeta.keywords}
+  canonical={blogMeta.canonical}
+  type={blogMeta.type}
+  robots={blogMeta.robots}
+  structuredData={blogMeta.structuredData}
+>
+  <HeroSection
+    title="HECHA UN VISTAZO A NUESTRO BLOG"
+    tag="BLOG"
+    image="/images/espacios/base_operativa/11.webp"
+  />
+  <RecentPost currentPage={currentPage} searchQuery={searchQuery} />
+  <CtaSection image="/images/espacios/base_operativa/14.webp" />
+</CoreLayout>

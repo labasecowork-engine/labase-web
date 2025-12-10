@@ -1,0 +1,143 @@
+---
+import { routes } from "@/config";
+
+const { image } = Astro.props;
+---
+
+<section
+  class="bg-stone-800 text-white py-16 md:py-24 px-6 md:px-12 lg:px-24 relative"
+  aria-label="Estadísticas y logros"
+  role="region"
+>
+  {
+    image !== undefined && (
+      <div class="absolute inset-0 z-10" aria-hidden="true">
+        <div
+          style={`background-image: url("${image}");`}
+          class="bg-parallax"
+          role="img"
+          aria-label="Imagen de fondo decorativa"
+        />
+        <div class="absolute inset-0 bg-black/95" aria-hidden="true" />
+      </div>
+    )
+  }
+  <div
+    class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 relative z-20"
+  >
+    {/* Left Column */}
+    <div class="space-y-8" role="contentinfo">
+      <div>
+        <div class="flex items-center gap-4">
+          <h2
+            class="text-5xl md:text-7xl lg:text-8xl font-light font-secondary"
+            id="main-heading"
+          >
+            MÁS
+          </h2>
+
+          <div class="w-full max-w-md flex items-center flex-col gap-2">
+            <p
+              class="text-sm md:text-base tracking-widest uppercase text-right block w-full"
+              aria-labelledby="main-heading"
+            >
+              HORAS DE PRODUCTIVIDAD IMPULSADAS
+            </p>
+            <div class="h-[1px] w-full bg-stone-700" aria-hidden="true"></div>
+          </div>
+        </div>
+        <h1
+          class="text-5xl md:text-7xl lg:text-8xl font-light tracking-tighter font-secondary uppercase"
+          aria-label="Más de 200 ideas generadas"
+        >
+          <span class="text-[#c9b36b] text-5xl sm:text-9xl" aria-hidden="true">
+            <span class="text-4xl sm:text-8xl">+</span>200</span
+          > ideas
+        </h1>
+        <div class="mt-2 pt-4 flex items-center w-full gap-4">
+          <div class="h-[1px] w-full bg-stone-700 flex" aria-hidden="true">
+          </div>
+          <p class="text-sm md:text-base tracking-widest uppercase w-full flex">
+            CRECE, CONECTA, IMPACTA
+          </p>
+        </div>
+      </div>
+
+      <div class="pt-8">
+        <a
+          href={routes.spaces}
+          class="rounded-full bg-transparent border border-stone-200 lg:px-12 sm:px-10 px-6 py-3 lg:py-4 text-xs sm:text-sm font-semibold text-stone-200 shadow-xs hover:bg-stone-200 hover:text-stone-950 tracking-wider transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-400 w-full"
+          role="button"
+          aria-label="Ver nuestros espacios disponibles"
+          >VER NUESTROS ESPACIOS</a
+        >
+      </div>
+    </div>
+
+    {/* Right Column */}
+    <div
+      class="md:space-y-12 divide-y divide-stone-600"
+      role="list"
+      aria-label="Estadísticas destacadas"
+    >
+      <div class="pb-8" role="listitem">
+        <h2
+          class="text-3xl sm:text-5xl md:text-6xl font-light font-secondary pt-10 md:pt-0"
+          aria-label="Más de 300 emprendedores"
+        >
+          300<span class="text-3xl sm:text-5xl font-bold" aria-hidden="true"
+            >+</span
+          > Emprendedores
+        </h2>
+        <div class="mt-2 pt-2 w-full max-w-xs">
+          <p class="text-sm sm:text-base tracking-widest uppercase">
+            LANZARON SUS PROYECTOS AQUÍ
+          </p>
+        </div>
+      </div>
+
+      <div class="pb-8 flex flex-col justify-end" role="listitem">
+        <h2
+          class="text-3xl sm:text-5xl md:text-6xl font-light font-secondary pt-10 md:pt-0"
+          aria-label="Más de 40 sinergias"
+        >
+          40<span class="text-3xl sm:text-5xl font-bold" aria-hidden="true"
+            >+</span
+          > Sinergias
+        </h2>
+        <div class="mt-2 pt-2 w-full">
+          <p class="text-sm sm:text-base tracking-widest uppercase">
+            Colaboraciones estratégicas creadas
+          </p>
+        </div>
+      </div>
+
+      <div role="listitem">
+        <h2
+          class="text-3xl sm:text-5xl md:text-6xl font-light font-secondary pt-10 md:pt-0"
+          aria-label="97 por ciento de los miembros"
+        >
+          97% Miembros
+        </h2>
+        <div class="mt-2 pt-2 w-full">
+          <p class="text-sm sm:text-base tracking-widest uppercase">
+            RECOMIENDAN NUESTROS ESPACIOS
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .bg-parallax {
+    width: 100%;
+    height: 100%;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+</style>

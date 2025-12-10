@@ -1,0 +1,229 @@
+---
+// src/components/PostresSection.astro
+import { DecorativeLine } from "@/components/pages/shared";
+import { Image } from "@/components/ui";
+
+interface Postre {
+  id: number;
+  title: string;
+  description: string;
+  price: string;
+  image: string;
+  alt: string;
+}
+
+const postres: Postre[] = [
+  {
+    id: 1,
+    title: "Sándwich doble",
+    description: "Queso y jamón en pan fresco",
+    price: "S/ 3.50",
+    image: "/images/arsenal/postres/1.png",
+    alt: "Sándwich doble de queso y jamón",
+  },
+  {
+    id: 2,
+    title: "Sándwich triple",
+    description: "Pollo, jamón y queso en pan fresco",
+    price: "S/ 5.00",
+    image: "/images/arsenal/postres/2.png",
+    alt: "Sándwich triple de pollo, jamón y queso",
+  },
+  {
+    id: 3,
+    title: "Pan pequeño de queso",
+    description: "Pan artesanal con queso derretido",
+    price: "S/ 4.00",
+    image: "/images/arsenal/postres/3.png",
+    alt: "Pan pequeño de queso",
+  },
+  {
+    id: 4,
+    title: "Empanada",
+    description: "Empanada casera con relleno tradicional",
+    price: "S/ 4.00",
+    image: "/images/arsenal/postres/4.png",
+    alt: "Empanada casera",
+  },
+  {
+    id: 5,
+    title: "Waffles",
+    description: "Clásico / Fresa / Chocolate",
+    price: "S/ 8-10",
+    image: "/images/arsenal/postres/5.png",
+    alt: "Waffles con diferentes sabores",
+  },
+  {
+    id: 6,
+    title: "Crepas",
+    description: "Clásica / Fresa / Chocolate",
+    price: "S/ 8-10",
+    image: "/images/arsenal/postres/6.png",
+    alt: "Crepas con diferentes sabores",
+  },
+  {
+    id: 7,
+    title: "Pie de piña / Alfajor",
+    description: "Postres tradicionales peruanos",
+    price: "S/ 2.00",
+    image: "/images/arsenal/postres/1.png",
+    alt: "Pie de piña y alfajor",
+  },
+  {
+    id: 8,
+    title: "2 bolas de helado",
+    description: "Variedad de sabores disponibles",
+    price: "S/ 5.00",
+    image: "/images/arsenal/postres/2.png",
+    alt: "Helado en diferentes sabores",
+  },
+  {
+    id: 9,
+    title: "Mousse de arándanos",
+    description: "Leche, yogurt griego, chía, arándanos",
+    price: "S/ 8.00",
+    image: "/images/arsenal/postres/3.png",
+    alt: "Mousse de arándanos saludable",
+  },
+];
+---
+
+<section
+  class="max-w-7xl mx-auto px-8 py-12 sm:py-32"
+  aria-labelledby="menu-postres"
+  aria-label="Menú de postres y snacks"
+  role="region"
+>
+  <div class="text-center mb-24 max-w-5xl mx-auto">
+    <p
+      class="text-stone-600 text-center text-sm sm:text-lg tracking-[0.35em] uppercase mb-4"
+      aria-hidden="true"
+      role="presentation"
+    >
+      nuestro menú
+    </p>
+    <h2
+      id="menu-postres"
+      aria-label="Postres y Snacks Artesanales"
+      class="text-stone-950 text-center text-3xl sm:text-5xl font-bold font-secondary uppercase"
+    >
+      Postres y Sandwiches
+    </h2>
+    <p
+      aria-label="Descripción de nuestros postres"
+      class="text-stone-600 mt-6 text-center text-sm sm:text-base tracking-wider"
+    >
+      Deléitate con nuestra selección de postres artesanales y sandwiches,
+      preparados diariamente con ingredientes frescos y mucho amor para endulzar
+      tu día.
+    </p>
+    <DecorativeLine />
+  </div>
+
+  <div
+    class="grid grid-cols-1 md:grid-cols-3 w-full"
+    role="list"
+    aria-label="Lista de snacks y sandwiches"
+  >
+    {
+      postres.slice(0, 6).map((postre, index) => (
+        <div
+          class={`border-0 text-center p-8 border-stone-200 
+          ${index % 3 !== 2 ? "md:border-r" : ""}  
+          ${index < 3 ? "md:border-b" : ""}`}
+          role="listitem"
+        >
+          <div class="relative mb-6">
+            <Image
+              client:only="react"
+              src={postre.image}
+              alt={postre.alt}
+              className="size-32 sm:size-40 mx-auto object-contain transition-transform duration-300 hover:scale-105"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <p class="text-2xl sm:text-3xl font-bold text-[#82674E] mb-4 tracking-wide">
+            {postre.price}
+          </p>
+          <h4
+            class="text-xl sm:text-2xl font-medium font-secondary uppercase mb-4 tracking-wide text-stone-950"
+            aria-label={`Postre: ${postre.title}`}
+            role="heading"
+            aria-level="4"
+          >
+            {postre.title}
+          </h4>
+          <p
+            class="text-stone-600 text-sm sm:text-base tracking-wider"
+            aria-label={`Descripción: ${postre.description}`}
+            role="paragraph"
+          >
+            {postre.description}
+          </p>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="text-center my-24">
+    <p
+      class="text-stone-600 text-center text-sm sm:text-lg tracking-[0.35em] uppercase mb-4"
+      aria-hidden="true"
+      role="presentation"
+    >
+      dulces tentaciones
+    </p>
+    <h3
+      class="text-stone-950 text-center text-2xl sm:text-4xl font-bold font-secondary uppercase mb-6"
+    >
+      Postres Especiales
+    </h3>
+    <DecorativeLine />
+  </div>
+
+  <div
+    class="grid grid-cols-1 md:grid-cols-3 w-full"
+    role="list"
+    aria-label="Lista de postres especiales"
+  >
+    {
+      postres.slice(6).map((postre, index) => (
+        <div
+          class={`border-0 text-center p-8 border-stone-200 
+          ${index % 3 !== 2 ? "md:border-r" : ""}`}
+          role="listitem"
+        >
+          <div class="relative mb-6">
+            <Image
+              client:only="react"
+              src={postre.image}
+              alt={postre.alt}
+              className="size-32 sm:size-40 mx-auto object-contain transition-transform duration-300 hover:scale-105"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <p class="text-2xl sm:text-3xl font-bold text-[#82674E] mb-4 tracking-wide">
+            {postre.price}
+          </p>
+          <h4
+            class="text-xl sm:text-2xl font-medium font-secondary uppercase mb-4 tracking-wide text-stone-950"
+            aria-label={`Postre: ${postre.title}`}
+            role="heading"
+            aria-level="4"
+          >
+            {postre.title}
+          </h4>
+          <p
+            class="text-stone-600 text-sm sm:text-base tracking-wider"
+            aria-label={`Descripción: ${postre.description}`}
+            role="paragraph"
+          >
+            {postre.description}
+          </p>
+        </div>
+      ))
+    }
+  </div>
+</section>
