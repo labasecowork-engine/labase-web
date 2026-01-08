@@ -6,6 +6,7 @@ import styled from "@emotion/styled";
 import "swiper/css";
 import "swiper/css/pagination";
 import { routes } from "@/config";
+import { VideoModal } from "@/components/ui";
 
 const StyledSwiperWrapper = styled.div`
   .swiper-container {
@@ -316,6 +317,8 @@ export default function SpacesSection() {
   const [isFlashing, setIsFlashing] = useState<boolean>(false);
   const [index, setIndex] = useState<number>(0);
   const [realIndex, setRealIndex] = useState<number>(0);
+  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState<boolean>(false);
   const swiperRef = useRef<SwiperType | null>(null);
 
   // Generamos IDs únicos para las relaciones ARIA
@@ -330,6 +333,7 @@ export default function SpacesSection() {
       subcontent: "HANGAR",
       button: "DESATA TU CREATIVIDAD",
       alt: "Vista del espacio El Hangar, área creativa de La Base",
+      videoSrc: "/videos/espacios/hangar.mov",
     },
     {
       id: 2,
@@ -338,6 +342,7 @@ export default function SpacesSection() {
       subcontent: "DE MANDO",
       button: "TRABAJA CON TU EQUIPO",
       alt: "Vista de la Base de Mando, espacio colaborativo para equipos",
+      videoSrc: "/videos/espacios/base_de_mando.mov",
     },
     {
       id: 3,
@@ -346,6 +351,7 @@ export default function SpacesSection() {
       subcontent: "OPERATIVA",
       button: "OPTIMIZA TU PRODUCTIVIDAD",
       alt: "Vista de la Base Operativa, espacio para optimizar la productividad",
+      videoSrc: "/videos/espacios/base_operativa.mov",
     },
     {
       id: 4,
@@ -354,6 +360,7 @@ export default function SpacesSection() {
       subcontent: "BUNKERS",
       button: "RESERVA TU ESPACIO PRIVADO",
       alt: "Vista de los bunkers, espacio privado para reservas",
+      videoSrc: "/videos/espacios/bunker.mov",
     },
     {
       id: 5,
@@ -362,6 +369,7 @@ export default function SpacesSection() {
       subcontent: "BRIGADA",
       button: "ÚNETE A LA COMUNIDAD",
       alt: "Vista de la Brigada, espacio para unirse a la comunidad",
+      videoSrc: "/videos/espacios/brigada.mov",
     },
     {
       id: 6,
@@ -370,6 +378,7 @@ export default function SpacesSection() {
       subcontent: "",
       button: "ENTRA Y DESCUBRE MÁS",
       alt: "Vista de las recepciones, espacio para entrar y descubrir más",
+      videoSrc: "/videos/espacios/recepciones.mov",
     },
     {
       id: 8,
@@ -378,6 +387,7 @@ export default function SpacesSection() {
       subcontent: "",
       button: "ENCUENTRA TU ESPACIO",
       alt: "Vista de las unidades, espacio para encontrar tu espacio",
+      videoSrc: "/videos/espacios/unidades.mov",
     },
     {
       id: 8,
@@ -386,6 +396,7 @@ export default function SpacesSection() {
       subcontent: "ARSENAL",
       button: "ACCEDER A RECURSOS",
       alt: "Vista del Arsenal, espacio para acceder a recursos",
+      videoSrc: "/videos/espacios/arsenal.mov",
     },
     {
       id: 9,
@@ -394,6 +405,7 @@ export default function SpacesSection() {
       subcontent: "PHONEBOOTS",
       button: "RESERVA YA",
       alt: "Vista de los Phoneboots, espacio para reservar ya",
+      videoSrc: "/videos/espacios/phonebooth.mov",
     },
     {
       id: 9,
@@ -402,6 +414,7 @@ export default function SpacesSection() {
       subcontent: "",
       button: "HAZ TU RESERVA",
       alt: "Vista de las reservas, espacio para hacer tu reserva",
+      videoSrc: "/videos/espacios/reserva.mov",
     },
   ];
 
@@ -413,6 +426,16 @@ export default function SpacesSection() {
     setIsFlashing(true);
     setRealIndex(swiper.realIndex);
     setTimeout(() => setIsFlashing(false), 1200);
+  };
+
+  const handleVideoClick = (videoSrc: string) => {
+    setSelectedVideo(videoSrc);
+    setIsVideoModalOpen(true);
+  };
+
+  const handleCloseVideoModal = () => {
+    setIsVideoModalOpen(false);
+    setSelectedVideo(null);
   };
   return (
     <StyledSwiperWrapper>
@@ -551,14 +574,14 @@ export default function SpacesSection() {
                     {slide.subcontent}
                   </h3>
                   <div className="slide-button-action w-full mt-14">
-                    <a
-                      href={routes.contact}
-                      className="rounded-full bg-transparent border border-stone-200 lg:px-12 px-6 py-3 lg:py-4 text-xs sm:text-sm font-semibold text-stone-200 shadow-xs hover:bg-stone-200 hover:text-stone-950 tracking-wider transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-400"
-                      role="button"
+                    <button
+                      onClick={() => handleVideoClick(slide.videoSrc)}
+                      className="rounded-full w-fit bg-transparent border border-stone-200 lg:px-12 px-6 py-3 lg:py-4 text-xs sm:text-sm font-semibold text-stone-200 shadow-xs hover:bg-stone-200 hover:text-stone-950 tracking-wider transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-400 "
+                      type="button"
                       aria-label={slide.button}
                     >
                       {slide.button}
-                    </a>
+                    </button>
                   </div>
                 </div>
               </SwiperSlide>
@@ -566,6 +589,17 @@ export default function SpacesSection() {
           </Swiper>
         </div>
       </section>
+      {selectedVideo && (
+        <VideoModal
+          videoSrc={selectedVideo}
+          buttonText=""
+          buttonClassName="hidden"
+          isOpen={isVideoModalOpen}
+          onClose={handleCloseVideoModal}
+        >
+          <div style={{ display: "none" }} />
+        </VideoModal>
+      )}
     </StyledSwiperWrapper>
   );
 }

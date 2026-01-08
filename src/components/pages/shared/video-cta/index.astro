@@ -1,5 +1,5 @@
 ---
-import { Image } from "@/components/ui";
+import { Image, VideoModal } from "@/components/ui";
 
 interface Props {
   title: string;
@@ -8,6 +8,7 @@ interface Props {
   imageSrc: string;
   imageAlt: string;
   buttonText: string;
+  videoSrc?: string;
 }
 
 const {
@@ -17,6 +18,7 @@ const {
   imageSrc = "/house-image.png",
   imageAlt = "Hermosa casa residencial al atardecer",
   buttonText = "EXPERIENCE THE TOUR",
+  videoSrc = "/videos/videobase.mp4",
 } = Astro.props;
 
 // Generar IDs únicos para los elementos relacionados
@@ -74,27 +76,12 @@ const descriptionId = `${sectionId}-description`;
         {description}
       </p>
 
-      {
-        /*<button
-        class="flex items-center justify-center gap-2 text-stone-300 border border-stone-300 rounded-full py-3.5 px-6 w-fit hover:bg-stone-300 cursor-pointer uppercase hover:text-stone-950 transition-all duration-300 tracking-widest font-medium text-xs sm:text-sm"
-        aria-label={`${buttonText} - Iniciar tour virtual`}
-        type="button"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 384 512"
-          class="size-4"
-          fill="currentColor"
-          aria-hidden="true"
-          role="img"
-        >
-          <path
-            d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80L0 432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"
-          ></path>
-        </svg>
-        <span>{buttonText}</span>
-</button> */
-      }
+      <VideoModal
+        client:only="react"
+        videoSrc={videoSrc}
+        buttonText={buttonText}
+        buttonClassName="flex items-center justify-center gap-2 text-stone-300 border border-stone-300 rounded-full py-3.5 px-6 w-fit hover:bg-stone-300 cursor-pointer uppercase hover:text-stone-950 transition-all duration-300 tracking-widest font-medium text-xs sm:text-sm"
+      />
     </div>
   </div>
 </section>
