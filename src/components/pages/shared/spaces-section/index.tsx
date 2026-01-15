@@ -333,7 +333,7 @@ export default function SpacesSection() {
       subcontent: "HANGAR",
       button: "DESATA TU CREATIVIDAD",
       alt: "Vista del espacio El Hangar, área creativa de La Base",
-      videoSrc: "/videos/espacios/hangar.mov",
+      videoSrc: "https://www.youtube.com/watch?v=yuYORdqqlgA",
     },
     {
       id: 2,
@@ -342,7 +342,7 @@ export default function SpacesSection() {
       subcontent: "DE MANDO",
       button: "TRABAJA CON TU EQUIPO",
       alt: "Vista de la Base de Mando, espacio colaborativo para equipos",
-      videoSrc: "/videos/espacios/base_de_mando.mov",
+      videoSrc: "https://www.youtube.com/watch?v=FAEucpJtLEY",
     },
     {
       id: 3,
@@ -351,7 +351,7 @@ export default function SpacesSection() {
       subcontent: "OPERATIVA",
       button: "OPTIMIZA TU PRODUCTIVIDAD",
       alt: "Vista de la Base Operativa, espacio para optimizar la productividad",
-      videoSrc: "/videos/espacios/base_operativa.mov",
+      videoSrc: "https://www.youtube.com/watch?v=ZXsJYdnhO8w",
     },
     {
       id: 4,
@@ -360,7 +360,7 @@ export default function SpacesSection() {
       subcontent: "BUNKERS",
       button: "RESERVA TU ESPACIO PRIVADO",
       alt: "Vista de los bunkers, espacio privado para reservas",
-      videoSrc: "/videos/espacios/bunker.mov",
+      videoSrc: "https://www.youtube.com/watch?v=wukJD3zDCjs",
     },
     {
       id: 5,
@@ -369,7 +369,7 @@ export default function SpacesSection() {
       subcontent: "BRIGADA",
       button: "ÚNETE A LA COMUNIDAD",
       alt: "Vista de la Brigada, espacio para unirse a la comunidad",
-      videoSrc: "/videos/espacios/brigada.mov",
+      videoSrc: "https://www.youtube.com/watch?v=4gLi35SDLX4",
     },
     {
       id: 6,
@@ -378,7 +378,7 @@ export default function SpacesSection() {
       subcontent: "",
       button: "ENTRA Y DESCUBRE MÁS",
       alt: "Vista de las recepciones, espacio para entrar y descubrir más",
-      videoSrc: "/videos/espacios/recepciones.mov",
+      videoSrc: "https://www.youtube.com/watch?v=MQqYlNGRFWM",
     },
     {
       id: 8,
@@ -387,7 +387,7 @@ export default function SpacesSection() {
       subcontent: "",
       button: "ENCUENTRA TU ESPACIO",
       alt: "Vista de las unidades, espacio para encontrar tu espacio",
-      videoSrc: "/videos/espacios/unidades.mov",
+      videoSrc: "https://www.youtube.com/watch?v=sugDr4rshvI",
     },
     {
       id: 8,
@@ -396,7 +396,7 @@ export default function SpacesSection() {
       subcontent: "ARSENAL",
       button: "ACCEDER A RECURSOS",
       alt: "Vista del Arsenal, espacio para acceder a recursos",
-      videoSrc: "/videos/espacios/arsenal.mov",
+      videoSrc: "https://www.youtube.com/watch?v=oB8e9bpwAcM",
     },
     {
       id: 9,
@@ -405,7 +405,7 @@ export default function SpacesSection() {
       subcontent: "PHONEBOOTS",
       button: "RESERVA YA",
       alt: "Vista de los Phoneboots, espacio para reservar ya",
-      videoSrc: "/videos/espacios/phonebooth.mov",
+      videoSrc: "https://www.youtube.com/watch?v=Ar-001Y9HqI",
     },
     {
       id: 9,
@@ -414,7 +414,7 @@ export default function SpacesSection() {
       subcontent: "",
       button: "HAZ TU RESERVA",
       alt: "Vista de las reservas, espacio para hacer tu reserva",
-      videoSrc: "/videos/espacios/reserva.mov",
+      videoSrc: "https://www.youtube.com/watch?v=QVx4mjUTfzI",
     },
   ];
 

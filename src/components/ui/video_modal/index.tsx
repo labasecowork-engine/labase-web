@@ -11,6 +11,31 @@ interface VideoModalProps {
   onClose?: () => void;
 }
 
+// Función para detectar si es una URL de YouTube y extraer el ID del video
+const getYouTubeVideoId = (url: string): string | null => {
+  if (!url) return null;
+
+  // Patrones para diferentes formatos de URLs de YouTube
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+    /youtube\.com\/watch\?.*v=([^&\n?#]+)/,
+  ];
+
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match && match[1]) {
+      return match[1];
+    }
+  }
+
+  return null;
+};
+
+// Función para verificar si es una URL de YouTube
+const isYouTubeUrl = (url: string): boolean => {
+  return /(?:youtube\.com|youtu\.be)/.test(url);
+};
+
 export const VideoModal = ({
   videoSrc = "/videos/videobase.mp4",
   buttonText,
@@ -47,6 +72,13 @@ export const VideoModal = ({
     }
   }, [isControlled, externalIsOpen]);
 
+  // Determinar si es YouTube y obtener la URL embed
+  const isYouTube = videoSrc ? isYouTubeUrl(videoSrc) : false;
+  const youtubeVideoId = videoSrc ? getYouTubeVideoId(videoSrc) : null;
+  const youtubeEmbedUrl = youtubeVideoId
+    ? `https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&rel=0`
+    : null;
+
   return (
     <>
       {!isControlled && (
@@ -81,10 +113,10 @@ export const VideoModal = ({
       )}
 
       <Modal isOpen={isOpen} onClose={closeModal} className="!p-0">
-        <div className="absolute inset-0 w-full h-full bg-black">
+        <div className="absolute inset-0 w-full flex items-center justify-center ">
           <button
             onClick={closeModal}
-            className="absolute top-4 right-4 z-10 bg-black/70 hover:bg-black/90 text-white rounded-full p-2 transition-colors"
+            className="absolute top-4 right-4 z-10 backdrop-blur-3xl bg-black/70 hover:bg-black/90 text-white rounded-full p-4 transition-colors"
             aria-label="Cerrar video"
             type="button"
           >
@@ -98,18 +130,29 @@ export const VideoModal = ({
               <path d="M324.5 411.1c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6L214.6 256 347.1 123.5c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0L192 233.4 59.5 100.9c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6L169.4 256 36.9 388.5c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0L192 278.6 324.5 411.1z" />
             </svg>
           </button>
-          <video
-            className="w-full h-full object-contain"
-            controls
-            autoPlay
-            playsInline
-            aria-label="Video tour virtual de La Base"
-          >
-            <source src={videoSrc} type="video/quicktime" />
-            <source src={videoSrc} type="video/mp4" />
-            Tu navegador no soporta videos HTML5. Aquí hay un{" "}
-            <a href={videoSrc}>enlace al video</a>.
-          </video>
+          {isYouTube && youtubeEmbedUrl ? (
+            <iframe
+              className="w-full h-full"
+              src={youtubeEmbedUrl}
+              title="Video de YouTube"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              aria-label="Video de YouTube"
+            />
+          ) : (
+            <video
+              className="w-full h-full object-contain"
+              controls
+              autoPlay
+              playsInline
+              aria-label="Video tour virtual de La Base"
+            >
+              <source src={videoSrc} type="video/quicktime" />
+              <source src={videoSrc} type="video/mp4" />
+              Tu navegador no soporta videos HTML5. Aquí hay un{" "}
+              <a href={videoSrc}>enlace al video</a>.
+            </video>
+          )}
         </div>
       </Modal>
     </>
