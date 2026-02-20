@@ -1,9 +1,8 @@
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useEffect, useState } from "react";
 import apiClient from "@/services/";
-import ReCAPTCHA from "react-google-recaptcha";
 import { contact, social } from "@/config";
 
 const contactSchema = z.object({
@@ -22,18 +21,9 @@ const contactSchema = z.object({
   message: z
     .string()
     .min(10, { message: "El mensaje debe tener al menos 10 caracteres." }),
-  recaptchaToken: z
-    .string()
-    .min(1, { message: "Por favor, completa la verificación." }),
 });
 
 type ContactFormValues = z.infer<typeof contactSchema>;
-
-declare global {
-  interface Window {
-    onRecaptchaSuccess: (token: string) => void;
-  }
-}
 
 export default function ContactFormSection() {
   const [submissionStatus, setSubmissionStatus] = useState<{
@@ -44,7 +34,6 @@ export default function ContactFormSection() {
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors, isSubmitting },
     reset,
   } = useForm<ContactFormValues>({
@@ -56,7 +45,6 @@ export default function ContactFormSection() {
       phoneNumber: "",
       reason: "",
       message: "",
-      recaptchaToken: "",
     },
   });
 
@@ -88,10 +76,7 @@ export default function ContactFormSection() {
       });
 
       reset();
-      if (typeof (window as any).grecaptcha !== "undefined") {
-        (window as any).grecaptcha.reset(); // Resetea el widget de reCAPTCHA
-      }
-    } catch (error: any) {
+    } catch {
       setSubmissionStatus({
         message:
           "Hubo un error al enviar tu mensaje. Por favor, inténtalo de nuevo.",
@@ -369,24 +354,6 @@ export default function ContactFormSection() {
           {errors.message && (
             <p className="text-red-500 text-xs mt-1">
               {errors.message.message}
-            </p>
-          )}
-        </div>
-
-        <div className="mb-4" role="group" aria-label="Verificación reCAPTCHA">
-          <Controller
-            name="recaptchaToken"
-            control={control}
-            render={({ field }) => (
-              <ReCAPTCHA
-                sitekey="6LcOAh8rAAAAALrU8ZeT7xRhmSHU6BDKDB58m1fm"
-                onChange={field.onChange}
-              />
-            )}
-          />
-          {errors.recaptchaToken && (
-            <p className="text-red-500 text-xs mt-1">
-              {errors.recaptchaToken.message}
             </p>
           )}
         </div>

@@ -9,7 +9,6 @@ export const routes = {
   arsenal: "/arsenal",
   blog: "/blog",
   emprendimiento: "/emprendimiento",
-  suscribe: "/suscribirse",
   mentoring: "/mentoria",
   platform: "https://app.labase.pe",
 };
