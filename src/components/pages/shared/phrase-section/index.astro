@@ -1,3 +1,15 @@
+---
+interface Props {
+  text?: string;
+  highlight?: string;
+}
+
+const {
+  text = "Aquí no solo alquilas un escritorio, conquistas tu propósito. Nuestros espacios son la base de tus ideas más grandes, donde cada jornada impulsa tu visión y cada rincón respira emprendimiento.",
+  highlight = "¡Despega en La Base Cowork!",
+} = Astro.props;
+---
+
 <section
   class="px-4 sm:px-8 py-24"
   role="banner"
@@ -8,11 +20,9 @@
     role="presentation"
   >
     <p>
-      Aquí no solo alquilas un escritorio, conquistas tu propósito. Nuestros
-      espacios son la base de tus ideas más grandes, donde cada jornada impulsa
-      tu visión y cada rincón respira emprendimiento.
-      <br />
-      <strong>¡Despega en La Base Cowork!</strong>
+      {text}
+      {highlight && <br />}
+      {highlight && <strong>{highlight}</strong>}
     </p>
   </blockquote>
 </section>

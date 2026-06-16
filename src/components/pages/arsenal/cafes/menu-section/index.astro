@@ -1,293 +1,122 @@
 ---
 import { DecorativeLine } from "@/components/pages/shared";
 import { Image } from "@/components/ui";
+
+interface MenuItem {
+  name?: string;
+  description?: string;
+  price?: string;
+}
+interface MenuSec {
+  title?: string;
+  image?: string;
+  items?: MenuItem[];
+}
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  sections?: MenuSec[];
+}
+
+const defaultSections: MenuSec[] = [
+  {
+    title: "Clásicos",
+    image: "/images/arsenal/cafes/menu1.webp",
+    items: [
+      { name: "Café pasado", description: "El sabor tradicional del café peruano, filtrado lentamente.", price: "S/ 5.00" },
+      { name: "Americano", description: "Expreso suavizado con agua caliente para un sabor intenso.", price: "S/ 7.00" },
+      { name: "Capuchino", description: "La armonía perfecta entre expreso, leche y espuma cremosa.", price: "S/ 10.00" },
+      { name: "Latte", description: "Suave, cremoso y con el toque justo de nuestro mejor expreso.", price: "S/ 10.00" },
+    ],
+  },
+  {
+    title: "Frapuchinos",
+    image: "/images/arsenal/cafes/menu2.webp",
+    items: [
+      { name: "Tradicional", description: "El sabor clásico del café helado, mezclado a la perfección.", price: "S/ 10.00" },
+      { name: "Fresa", description: "Una mezcla dulce y refrescante, ideal para los días de calor.", price: "S/ 12.00" },
+      { name: "Chocolate", description: "Para los amantes del cacao, una experiencia cremosa e intensa.", price: "S/ 12.00" },
+      { name: "Oreo", description: "Tu galleta favorita hecha bebida. ¡Irresistiblemente deliciosa!", price: "S/ 12.00" },
+    ],
+  },
+  {
+    title: "Milkshake",
+    image: "/images/arsenal/cafes/menu1.webp",
+    items: [
+      { name: "Chocolate", description: "Un clásico cremoso y espeso, preparado con nuestro mejor helado.", price: "S/ 12.00" },
+      { name: "Vainilla", description: "Sabor suave y tradicional, un batido que nunca pasa de moda.", price: "S/ 12.00" },
+      { name: "Fresa", description: "Hecho con fresas naturales para un sabor fresco y auténtico.", price: "S/ 12.00" },
+      { name: "Lúcuma", description: "El sabor exótico y cremoso del oro de los Incas hecho batido.", price: "S/ 12.00" },
+    ],
+  },
+];
+
+const {
+  eyebrow = "Nuestro Menú de Cafés",
+  title = "La Elección de los Expertos",
+  sections,
+} = Astro.props as Props;
+const list = sections && sections.length > 0 ? sections : defaultSections;
 ---
 
 <section class="py-24 bg-gray-50 text-stone-800">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
-      <p
-        class="text-[#82674E] text-sm sm:text-base tracking-[0.3em] uppercase mb-3"
-      >
-        Nuestro Menú de Cafés
+      <p class="text-[#82674E] text-sm sm:text-base tracking-[0.3em] uppercase mb-3">
+        {eyebrow}
       </p>
-      <h2
-        class="text-4xl sm:text-5xl font-bold font-secondary uppercase text-stone-950"
-      >
-        La Elección de los Expertos
+      <h2 class="text-4xl sm:text-5xl font-bold font-secondary uppercase text-stone-950">
+        {title}
       </h2>
       <DecorativeLine />
     </div>
 
-    <!-- Sección Clásicos -->
-    <div
-      class="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-12 items-center mb-24"
-    >
-      <div class="px-12">
-        <Image
-          client:only="react"
-          src="/images/arsenal/cafes/menu1.webp"
-          alt="Taza de café clásico"
-          className="w-full h-auto object-contain rounded-lg"
-          loading="lazy"
-          decoding="async"
-        />
-      </div>
-      <div class="space-y-8">
-        <div class="flex items-center gap-4">
-          <Image
-            client:only="react"
-            src="/images/arsenal/icon-menu.svg"
-            alt="Icono de grano de café"
-            className="w-14 h-14"
-            loading="lazy"
-            decoding="async"
-          />
-          <h3 class="text-4xl font-secondary text-[#82674E]">Clásicos</h3>
-        </div>
-        <div class="space-y-4">
-          <div class="menu-item">
-            <h4
-              class="text-lg font-semibold uppercase tracking-wide text-stone-900"
-            >
-              Café pasado
-            </h4>
-            <p class="text-base text-stone-600 mt-1">
-              El sabor tradicional del café peruano, filtrado lentamente.
-            </p>
-            <div
-              class="border-t-2 border-b-2 border-dashed border-amber-600/30 mt-3 py-2 text-center"
-            >
-              <p class="text-base text-[#82674E] font-medium">S/ 5.00</p>
-            </div>
+    {
+      list.map((section, index) => (
+        <div
+          class:list={[
+            "grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-12 items-center",
+            index < list.length - 1 ? "mb-24" : "",
+          ]}
+        >
+          <div class:list={["px-12", index % 2 === 1 ? "lg:order-last" : ""]}>
+            <Image
+              client:only="react"
+              src={section.image}
+              alt={section.title}
+              className="w-full h-auto object-contain rounded-lg"
+              loading="lazy"
+              decoding="async"
+            />
           </div>
-          <div class="menu-item">
-            <h4
-              class="text-lg font-semibold uppercase tracking-wide text-stone-900"
-            >
-              Americano
-            </h4>
-            <p class="text-base text-stone-600 mt-1">
-              Expreso suavizado con agua caliente para un sabor intenso.
-            </p>
-            <div
-              class="border-t-2 border-b-2 border-dashed border-amber-600/30 mt-3 py-2 text-center"
-            >
-              <p class="text-base text-[#82674E] font-medium">S/ 7.00</p>
+          <div class="space-y-8">
+            <div class="flex items-center gap-4">
+              <Image
+                client:only="react"
+                src="/images/arsenal/icon-menu.svg"
+                alt="Icono"
+                className="w-14 h-14"
+                loading="lazy"
+                decoding="async"
+              />
+              <h3 class="text-4xl font-secondary text-[#82674E]">{section.title}</h3>
             </div>
-          </div>
-          <div class="menu-item">
-            <h4
-              class="text-lg font-semibold uppercase tracking-wide text-stone-900"
-            >
-              Capuchino
-            </h4>
-            <p class="text-base text-stone-600 mt-1">
-              La armonía perfecta entre expreso, leche y espuma cremosa.
-            </p>
-            <div
-              class="border-t-2 border-b-2 border-dashed border-amber-600/30 mt-3 py-2 text-center"
-            >
-              <p class="text-base text-[#82674E] font-medium">S/ 10.00</p>
-            </div>
-          </div>
-          <div class="menu-item">
-            <h4
-              class="text-lg font-semibold uppercase tracking-wide text-stone-900"
-            >
-              Latte
-            </h4>
-            <p class="text-base text-stone-600 mt-1">
-              Suave, cremoso y con el toque justo de nuestro mejor expreso.
-            </p>
-            <div
-              class="border-t-2 border-b-2 border-dashed border-amber-600/30 mt-3 py-2 text-center"
-            >
-              <p class="text-base text-[#82674E] font-medium">S/ 10.00</p>
+            <div class="space-y-4">
+              {(section.items ?? []).map((item) => (
+                <div class="menu-item">
+                  <h4 class="text-lg font-semibold uppercase tracking-wide text-stone-900">
+                    {item.name}
+                  </h4>
+                  <p class="text-base text-stone-600 mt-1">{item.description}</p>
+                  <div class="border-t-2 border-b-2 border-dashed border-amber-600/30 mt-3 py-2 text-center">
+                    <p class="text-base text-[#82674E] font-medium">{item.price}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <!-- Sección Frapuchinos -->
-    <div
-      class="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-12 items-center mb-24"
-    >
-      <div class="lg:order-last px-12">
-        <Image
-          client:only="react"
-          src="/images/arsenal/cafes/menu2.webp"
-          alt="Frappé refrescante"
-          className="w-full h-auto object-contain rounded-lg"
-          loading="lazy"
-          decoding="async"
-        />
-      </div>
-      <div class="space-y-8">
-        <div class="flex items-center gap-4">
-          <Image
-            client:only="react"
-            src="/images/arsenal/icon-menu.svg"
-            alt="Icono de bebida helada"
-            className="w-14 h-14"
-            loading="lazy"
-            decoding="async"
-          />
-          <h3 class="text-4xl font-secondary text-[#82674E]">Frapuchinos</h3>
-        </div>
-        <div class="space-y-4">
-          <div class="menu-item">
-            <h4
-              class="text-lg font-semibold uppercase tracking-wide text-stone-900"
-            >
-              Tradicional
-            </h4>
-            <p class="text-base text-stone-600 mt-1">
-              El sabor clásico del café helado, mezclado a la perfección.
-            </p>
-            <div
-              class="border-t-2 border-b-2 border-dashed border-amber-600/30 mt-3 py-2 text-center"
-            >
-              <p class="text-base text-[#82674E] font-medium">S/ 10.00</p>
-            </div>
-          </div>
-          <div class="menu-item">
-            <h4
-              class="text-lg font-semibold uppercase tracking-wide text-stone-900"
-            >
-              Fresa
-            </h4>
-            <p class="text-base text-stone-600 mt-1">
-              Una mezcla dulce y refrescante, ideal para los días de calor.
-            </p>
-            <div
-              class="border-t-2 border-b-2 border-dashed border-amber-600/30 mt-3 py-2 text-center"
-            >
-              <p class="text-base text-[#82674E] font-medium">S/ 12.00</p>
-            </div>
-          </div>
-          <div class="menu-item">
-            <h4
-              class="text-lg font-semibold uppercase tracking-wide text-stone-900"
-            >
-              Chocolate
-            </h4>
-            <p class="text-base text-stone-600 mt-1">
-              Para los amantes del cacao, una experiencia cremosa e intensa.
-            </p>
-            <div
-              class="border-t-2 border-b-2 border-dashed border-amber-600/30 mt-3 py-2 text-center"
-            >
-              <p class="text-base text-[#82674E] font-medium">S/ 12.00</p>
-            </div>
-          </div>
-          <div class="menu-item">
-            <h4
-              class="text-lg font-semibold uppercase tracking-wide text-stone-900"
-            >
-              Oreo
-            </h4>
-            <p class="text-base text-stone-600 mt-1">
-              Tu galleta favorita hecha bebida. ¡Irresistiblemente deliciosa!
-            </p>
-            <div
-              class="border-t-2 border-b-2 border-dashed border-amber-600/30 mt-3 py-2 text-center"
-            >
-              <p class="text-base text-[#82674E] font-medium">S/ 12.00</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Sección Milkshake -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-12 items-center">
-      <div class="px-12">
-        <Image
-          client:only="react"
-          src="/images/arsenal/cafes/menu1.webp"
-          alt="Milkshake cremoso"
-          className="w-full h-auto object-contain rounded-lg"
-          loading="lazy"
-          decoding="async"
-        />
-      </div>
-      <div class="space-y-8">
-        <div class="flex items-center gap-4">
-          <Image
-            client:only="react"
-            src="/images/arsenal/icon-menu.svg"
-            alt="Icono de milkshake"
-            className="w-14 h-14"
-            loading="lazy"
-            decoding="async"
-          />
-          <h3 class="text-4xl font-secondary text-[#82674E]">Milkshake</h3>
-        </div>
-        <div class="space-y-4">
-          <div class="menu-item">
-            <h4
-              class="text-lg font-semibold uppercase tracking-wide text-stone-900"
-            >
-              Chocolate
-            </h4>
-            <p class="text-base text-stone-600 mt-1">
-              Un clásico cremoso y espeso, preparado con nuestro mejor helado.
-            </p>
-            <div
-              class="border-t-2 border-b-2 border-dashed border-amber-600/30 mt-3 py-2 text-center"
-            >
-              <p class="text-base text-[#82674E] font-medium">S/ 12.00</p>
-            </div>
-          </div>
-          <div class="menu-item">
-            <h4
-              class="text-lg font-semibold uppercase tracking-wide text-stone-900"
-            >
-              Vainilla
-            </h4>
-            <p class="text-base text-stone-600 mt-1">
-              Sabor suave y tradicional, un batido que nunca pasa de moda.
-            </p>
-            <div
-              class="border-t-2 border-b-2 border-dashed border-amber-600/30 mt-3 py-2 text-center"
-            >
-              <p class="text-base text-[#82674E] font-medium">S/ 12.00</p>
-            </div>
-          </div>
-          <div class="menu-item">
-            <h4
-              class="text-lg font-semibold uppercase tracking-wide text-stone-900"
-            >
-              Fresa
-            </h4>
-            <p class="text-base text-stone-600 mt-1">
-              Hecho con fresas naturales para un sabor fresco y auténtico.
-            </p>
-            <div
-              class="border-t-2 border-b-2 border-dashed border-amber-600/30 mt-3 py-2 text-center"
-            >
-              <p class="text-base text-[#82674E] font-medium">S/ 12.00</p>
-            </div>
-          </div>
-          <div class="menu-item">
-            <h4
-              class="text-lg font-semibold uppercase tracking-wide text-stone-900"
-            >
-              Lúcuma
-            </h4>
-            <p class="text-base text-stone-600 mt-1">
-              El sabor exótico y cremoso del oro de los Incas hecho batido.
-            </p>
-            <div
-              class="border-t-2 border-b-2 border-dashed border-amber-600/30 mt-3 py-2 text-center"
-            >
-              <p class="text-base text-[#82674E] font-medium">S/ 12.00</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      ))
+    }
   </div>
 </section>

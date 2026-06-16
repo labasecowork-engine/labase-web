@@ -18,7 +18,15 @@ interface Testimonial {
   rating: number;
 }
 
-const testimonials: Testimonial[] = [
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  buttonLabel?: string;
+  buttonHref?: string;
+  testimonials?: Testimonial[];
+}
+
+const defaultTestimonials: Testimonial[] = [
   {
     id: "1",
     text: "Este coworking superó mis expectativas. El ambiente es increíblemente inspirador y siempre hay alguien dispuesto a ayudarte o darte feedback. ¡Perfecto para freelancers como yo!",
@@ -84,7 +92,17 @@ const getSlidesPerView = (width: number): number => {
   return 3;
 };
 
-export default function TestimonialCarousel() {
+export default function TestimonialCarousel({
+  eyebrow = "Productividad, Comunidad y Café",
+  title = "Ellos Lo Confirman",
+  buttonLabel = "CONTACTANOS",
+  buttonHref = routes.contact,
+  testimonials: testimonialsProp,
+}: Props = {}) {
+  const testimonials =
+    testimonialsProp && testimonialsProp.length > 0
+      ? testimonialsProp
+      : defaultTestimonials;
   const [slidesPerView, setSlidesPerView] = useState<number>(4.5); // Valor por defecto
   const swiperRef = useRef<SwiperType | null>(null);
 
@@ -125,10 +143,10 @@ export default function TestimonialCarousel() {
       {/* Encabezado */}
       <div className="max-w-7xl mx-auto px-8  pb-12">
         <p className="text-stone-600 text-left text-lg tracking-[0.35em] uppercase mb-4">
-          Productividad, Comunidad y Café
+          {eyebrow}
         </p>
         <h2 className="text-left text-4xl md:text-5xl font-secondary font-bold mt-2 text-stone-950 uppercase">
-          Ellos Lo Confirman
+          {title}
         </h2>
       </div>
 
@@ -193,10 +211,10 @@ export default function TestimonialCarousel() {
 
           {/* Botón extra */}
           <a
-            href={routes.contact}
+            href={buttonHref}
             className="rounded-full bg-stone-500 px-10 py-3 md:py-4 text-sm font-semibold text-white shadow-xs hover:bg-stone-400 hover:text-white tracking-wider transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-400 w-full sm:w-fit text-center uppercase"
           >
-            CONTACTANOS
+            {buttonLabel}
           </a>
         </div>
       </div>

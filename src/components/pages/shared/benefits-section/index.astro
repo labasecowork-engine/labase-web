@@ -1,7 +1,7 @@
 ---
 import { routes } from "@/config";
 
-const benefits = [
+const defaultBenefits = [
   {
     icon: "/images/icons/map.svg",
     title: "UBICACIÓN ESTRATÉGICA",
@@ -39,6 +39,19 @@ const benefits = [
       "Tu espacio está siempre disponible cuando lo necesitas. Acceso seguro 24/7 para que trabajes a tu ritmo, incluso en horarios poco convencionales.",
   },
 ];
+
+const {
+  eyebrow = "beneficios",
+  title = "Un impulso para tu éxito",
+  description = "Hemos diseñado cada rincón para que trabajes con comodidad, te inspires y logres más. Aquí no solo tienes un escritorio, sino un entorno pensado para potenciar tu productividad sin sacrificar bienestar.",
+  items = defaultBenefits,
+  footerPrefix = "No dejes que alguien más ocupe el espacio ideal para tu negocio.",
+  footerLinkLabel = "Contáctanos",
+  footerHref = routes.contact,
+  footerSuffix = "hoy y encuentra el coworking perfecto para ti.",
+} = Astro.props;
+
+const benefits = items;
 ---
 
 <section
@@ -53,22 +66,20 @@ const benefits = [
       aria-hidden="true"
       role="presentation"
     >
-      beneficios
+      {eyebrow}
     </p>
     <h2
       id="benefits-title"
-      aria-label="Un impulso para tu éxito"
+      aria-label={title}
       class="text-stone-950 text-center text-3xl sm:text-5xl font-bold font-secondary uppercase"
     >
-      Un impulso para tu éxito
+      {title}
     </h2>
     <p
       aria-label="Descripción de los beneficios del espacio de coworking"
       class="text-stone-600 mt-6 text-center text-sm sm:text-base tracking-wider"
     >
-      Hemos diseñado cada rincón para que trabajes con comodidad, te inspires y
-      logres más. Aquí no solo tienes un escritorio, sino un entorno pensado
-      para potenciar tu productividad sin sacrificar bienestar.
+      {description}
     </p>
   </div>
 
@@ -78,10 +89,10 @@ const benefits = [
     aria-label="Lista de beneficios"
   >
     {
-      benefits.map((benefit, index) => (
+      benefits.map((benefit: any, index: number) => (
         <div
-          class={`border-0 text-center p-8 border-stone-200 
-          ${index % 3 !== 2 ? "md:border-r" : ""}  
+          class={`border-0 text-center p-8 border-stone-200
+          ${index % 3 !== 2 ? "md:border-r" : ""}
           ${index < benefits.length - 3 ? "md:border-b" : ""}`}
           role="listitem"
         >
@@ -112,20 +123,22 @@ const benefits = [
     }
   </div>
 
-  <p
-    class="mx-auto text-center text-sm sm:text-base text-stone-900 max-w-md mt-10"
-    aria-label="No dejes que alguien más ocupe el espacio ideal para tu negocio"
-  >
-    No dejes que alguien más ocupe el espacio ideal para tu negocio.
-    <a
-      href={routes.contact}
-      class="underline"
-      role="button"
-      aria-label="Contactar para encontrar tu espacio de coworking"
-    >
-      Contáctanos
-    </a>
-    {" "}
-    hoy y encuentra el coworking perfecto para ti.
-  </p>
+  {
+    (footerPrefix || footerLinkLabel || footerSuffix) && (
+      <p
+        class="mx-auto text-center text-sm sm:text-base text-stone-900 max-w-md mt-10"
+        aria-label={footerPrefix}
+      >
+        {footerPrefix}
+        {footerLinkLabel && (
+          <a href={footerHref} class="underline" role="button" aria-label={footerLinkLabel}>
+            {" "}
+            {footerLinkLabel}
+          </a>
+        )}
+        {" "}
+        {footerSuffix}
+      </p>
+    )
+  }
 </section>

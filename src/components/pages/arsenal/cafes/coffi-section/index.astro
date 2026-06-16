@@ -1,5 +1,38 @@
 ---
 import { Image } from "@/components/ui";
+
+interface Item {
+  name?: string;
+  price?: string;
+  intensity?: number;
+  description?: string;
+}
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  image?: string;
+  items?: Item[];
+}
+
+const defaultItems: Item[] = [
+  { name: "Expreso", price: "S/ 6.00", intensity: 100, description: "La esencia pura del café en un shot concentrado." },
+  { name: "Americano", price: "S/ 7.00", intensity: 90, description: "Un shot de expreso diluido con agua caliente, suave pero con carácter." },
+  { name: "Latte", price: "S/ 10.00", intensity: 70, description: "Expreso con leche vaporizada y una capa ligera de espuma." },
+  { name: "Capuchino", price: "S/ 10.00", intensity: 75, description: "El equilibrio perfecto entre expreso, leche vaporizada y espuma." },
+  { name: "Café Pasado", price: "S/ 5.00", intensity: 85, description: "El método clásico para un sabor limpio y tradicional." },
+  { name: "Leche + Milo", price: "S/ 5.50", intensity: 20, description: "La bebida reconfortante que nos recuerda a casa." },
+];
+
+const {
+  eyebrow = "Nuestros Cafés",
+  title = "Perdido en Cafeína",
+  image = "/images/arsenal/cafes/coffi-section.webp",
+  items,
+} = Astro.props as Props;
+const list = items && items.length > 0 ? items : defaultItems;
+const half = Math.ceil(list.length / 2);
+const leftItems = list.slice(0, half);
+const rightItems = list.slice(half);
 ---
 
 <section class="py-32 relative overflow-hidden bg-white" id="menus">
@@ -11,91 +44,40 @@ import { Image } from "@/components/ui";
 
   <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
-      <p
-        class="text-[#82674E] text-sm sm:text-base tracking-[0.3em] uppercase mb-3"
-      >
-        Nuestros Cafés
+      <p class="text-[#82674E] text-sm sm:text-base tracking-[0.3em] uppercase mb-3">
+        {eyebrow}
       </p>
-      <h2
-        class="text-stone-950 text-4xl sm:text-5xl font-bold font-secondary uppercase"
-      >
-        Perdido en Cafeína
+      <h2 class="text-stone-950 text-4xl sm:text-5xl font-bold font-secondary uppercase">
+        {title}
       </h2>
     </div>
 
-    <div
-      class="grid grid-cols-1 md:grid-cols-[0.8fr,1.4fr,0.8fr] gap-8 items-center"
-    >
-      <!-- Columna izquierda -->
+    <div class="grid grid-cols-1 md:grid-cols-[0.8fr,1.4fr,0.8fr] gap-8 items-center">
       <div class="space-y-8">
-        <div class="menu-item">
-          <h4 class="flex justify-between font-semibold text-lg text-[#82674E]">
-            <span>Expreso</span>
-            <span>S/ 6.00</span>
-          </h4>
-          <div class="flex justify-between text-sm text-stone-800 font-medium">
-            <span>Intensidad</span>
-            <span>100%</span>
-          </div>
-          <div class="w-full h-1 bg-gray-200 rounded-full overflow-hidden my-2">
-            <div
-              class="h-full bg-[#82674E] percentage-fill"
-              data-percentage="100"
-            >
+        {
+          leftItems.map((item) => (
+            <div class="menu-item">
+              <h4 class="flex justify-between font-semibold text-lg text-[#82674E]">
+                <span>{item.name}</span>
+                <span>{item.price}</span>
+              </h4>
+              <div class="flex justify-between text-sm text-stone-800 font-medium">
+                <span>Intensidad</span>
+                <span>{item.intensity}%</span>
+              </div>
+              <div class="w-full h-1 bg-gray-200 rounded-full overflow-hidden my-2">
+                <div class="h-full bg-[#82674E] percentage-fill" data-percentage={item.intensity} />
+              </div>
+              <p class="text-sm text-stone-600">{item.description}</p>
             </div>
-          </div>
-          <p class="text-sm text-stone-600">
-            La esencia pura del café en un shot concentrado.
-          </p>
-        </div>
-        <div class="menu-item">
-          <h4 class="flex justify-between font-semibold text-lg text-[#82674E]">
-            <span>Americano</span>
-            <span>S/ 7.00</span>
-          </h4>
-          <div class="flex justify-between text-sm text-stone-800 font-medium">
-            <span>Intensidad</span>
-            <span>90%</span>
-          </div>
-          <div class="w-full h-1 bg-gray-200 rounded-full overflow-hidden my-2">
-            <div
-              class="h-full bg-[#82674E] percentage-fill"
-              data-percentage="90"
-            >
-            </div>
-          </div>
-          <p class="text-sm text-stone-600">
-            Un shot de expreso diluido con agua caliente, suave pero con
-            carácter.
-          </p>
-        </div>
-        <div class="menu-item">
-          <h4 class="flex justify-between font-semibold text-lg text-[#82674E]">
-            <span>Latte</span>
-            <span>S/ 10.00</span>
-          </h4>
-          <div class="flex justify-between text-sm text-stone-800 font-medium">
-            <span>Intensidad</span>
-            <span>70%</span>
-          </div>
-          <div class="w-full h-1 bg-gray-200 rounded-full overflow-hidden my-2">
-            <div
-              class="h-full bg-[#82674E] percentage-fill"
-              data-percentage="70"
-            >
-            </div>
-          </div>
-          <p class="text-sm text-stone-600">
-            Expreso con leche vaporizada y una capa ligera de espuma.
-          </p>
-        </div>
+          ))
+        }
       </div>
 
-      <!-- Imagen central -->
       <div class="flex justify-center">
         <Image
           client:only="react"
-          src="/images/arsenal/cafes/coffi-section.webp"
+          src={image}
           alt="Bolsa de granos de café con granos sueltos"
           className="max-w-xs md:max-w-sm"
           loading="lazy"
@@ -103,68 +85,25 @@ import { Image } from "@/components/ui";
         />
       </div>
 
-      <!-- Columna derecha -->
       <div class="space-y-8">
-        <div class="menu-item">
-          <h4 class="flex justify-between font-semibold text-lg text-[#82674E]">
-            <span>Capuchino</span>
-            <span>S/ 10.00</span>
-          </h4>
-          <div class="flex justify-between text-sm text-stone-800 font-medium">
-            <span>Intensidad</span>
-            <span>75%</span>
-          </div>
-          <div class="w-full h-1 bg-gray-200 rounded-full overflow-hidden my-2">
-            <div
-              class="h-full bg-[#82674E] percentage-fill"
-              data-percentage="75"
-            >
+        {
+          rightItems.map((item) => (
+            <div class="menu-item">
+              <h4 class="flex justify-between font-semibold text-lg text-[#82674E]">
+                <span>{item.name}</span>
+                <span>{item.price}</span>
+              </h4>
+              <div class="flex justify-between text-sm text-stone-800 font-medium">
+                <span>Intensidad</span>
+                <span>{item.intensity}%</span>
+              </div>
+              <div class="w-full h-1 bg-gray-200 rounded-full overflow-hidden my-2">
+                <div class="h-full bg-[#82674E] percentage-fill" data-percentage={item.intensity} />
+              </div>
+              <p class="text-sm text-stone-600">{item.description}</p>
             </div>
-          </div>
-          <p class="text-sm text-stone-600">
-            El equilibrio perfecto entre expreso, leche vaporizada y espuma.
-          </p>
-        </div>
-        <div class="menu-item">
-          <h4 class="flex justify-between font-semibold text-lg text-[#82674E]">
-            <span>Café Pasado</span>
-            <span>S/ 5.00</span>
-          </h4>
-          <div class="flex justify-between text-sm text-stone-800 font-medium">
-            <span>Intensidad</span>
-            <span>85%</span>
-          </div>
-          <div class="w-full h-1 bg-gray-200 rounded-full overflow-hidden my-2">
-            <div
-              class="h-full bg-[#82674E] percentage-fill"
-              data-percentage="85"
-            >
-            </div>
-          </div>
-          <p class="text-sm text-stone-600">
-            El método clásico para un sabor limpio y tradicional.
-          </p>
-        </div>
-        <div class="menu-item">
-          <h4 class="flex justify-between font-semibold text-lg text-[#82674E]">
-            <span>Leche + Milo</span>
-            <span>S/ 5.50</span>
-          </h4>
-          <div class="flex justify-between text-sm text-stone-800 font-medium">
-            <span>Intensidad</span>
-            <span>20%</span>
-          </div>
-          <div class="w-full h-1 bg-gray-200 rounded-full overflow-hidden my-2">
-            <div
-              class="h-full bg-[#82674E] percentage-fill"
-              data-percentage="20"
-            >
-            </div>
-          </div>
-          <p class="text-sm text-stone-600">
-            La bebida reconfortante que nos recuerda a casa.
-          </p>
-        </div>
+          ))
+        }
       </div>
     </div>
   </div>

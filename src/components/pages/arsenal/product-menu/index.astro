@@ -1,0 +1,87 @@
+---
+import { DecorativeLine } from "@/components/pages/shared";
+import { Image } from "@/components/ui";
+
+interface Item {
+  image?: string;
+  alt?: string;
+  price?: string;
+  title?: string;
+  description?: string;
+}
+interface Section {
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  columns?: number;
+  items?: Item[];
+}
+interface Props {
+  sections?: Section[];
+}
+
+const { sections = [] } = Astro.props as Props;
+
+const colClass = (cols?: number) =>
+  cols === 2 ? "md:grid-cols-2" : "md:grid-cols-3";
+---
+
+<section
+  class="max-w-7xl mx-auto px-8 py-12 sm:py-32"
+  aria-label="Menú de productos"
+  role="region"
+>
+  {
+    sections.map((section, sIdx) => (
+      <div>
+        <div
+          class:list={[
+            "text-center max-w-5xl mx-auto",
+            sIdx === 0 ? "mb-24" : "my-24",
+          ]}
+        >
+          {section.eyebrow && (
+            <p class="text-stone-600 text-center text-sm sm:text-lg tracking-[0.35em] uppercase mb-4">
+              {section.eyebrow}
+            </p>
+          )}
+          <h2 class="text-stone-950 text-center text-3xl sm:text-5xl font-bold font-secondary uppercase">
+            {section.title}
+          </h2>
+          {section.description && (
+            <p class="text-stone-600 mt-6 text-center text-sm sm:text-base tracking-wider">
+              {section.description}
+            </p>
+          )}
+          <DecorativeLine />
+        </div>
+
+        <div class:list={["grid grid-cols-1 w-full", colClass(section.columns)]} role="list">
+          {(section.items ?? []).map((item) => (
+            <div class="border-0 text-center p-8 border-stone-200" role="listitem">
+              <div class="relative mb-6">
+                <Image
+                  client:only="react"
+                  src={item.image}
+                  alt={item.alt ?? item.title}
+                  className="size-32 sm:size-40 mx-auto object-contain transition-transform duration-300 hover:scale-105"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <p class="text-2xl sm:text-3xl font-bold text-[#82674E] mb-4 tracking-wide">
+                {item.price}
+              </p>
+              <h3 class="text-xl sm:text-2xl font-medium font-secondary uppercase mb-4 tracking-wide text-stone-950">
+                {item.title}
+              </h3>
+              <p class="text-stone-600 text-sm sm:text-base tracking-wider">
+                {item.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))
+  }
+</section>

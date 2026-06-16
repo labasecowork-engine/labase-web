@@ -1,130 +1,86 @@
 ---
 import { Image } from "@/components/ui";
+
+interface Card {
+  image?: string;
+  title?: string;
+  description?: string;
+}
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  cards?: Card[];
+}
+
+const defaultCards: Card[] = [
+  {
+    image: "/images/emprendimiento/1.jpg",
+    title: "Transformar tu idea",
+    description:
+      "Estamos aquí para apoyarte a dar los primeros pasos y crecer de manera sólida, consiguiendo una inversión y un equipo.",
+  },
+  {
+    image: "/images/emprendimiento/2.JPG",
+    title: "Construir un MVP",
+    description:
+      "Como socios, mentores o especialistas, te ayudamos a desarrollar tu primer producto y llevarlo al mercado.",
+  },
+  {
+    image: "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg",
+    title: "Crear un equipo",
+    description:
+      "Expertos en planificación, diseño, desarrollo o marketing, te conectamos con las personas adecuadas para tu proyecto.",
+  },
+];
+
+const {
+  eyebrow = "Nuestro modelo",
+  title = "PODEMOS IMPULSAR TU EMPRENDIMIENTO",
+  description = "En La Base Cowork, hemos desarrollado un modelo integral de apoyo al emprendimiento que combina mentoría especializada, recursos estratégicos y un ecosistema colaborativo para maximizar tus posibilidades de éxito en cada etapa de tu proyecto empresarial.",
+  cards,
+} = Astro.props as Props;
+const items = cards && cards.length > 0 ? cards : defaultCards;
 ---
 
 <section class="pt-12 md:pt-24" role="region" aria-labelledby="model-title">
   <div class="max-w-7xl mx-auto w-full px-4 sm:px-8">
-    <p
-      class="text-stone-600 text-sm sm:text-lg tracking-[0.35em] uppercase mb-4 text-left"
-      aria-label="Sección de"
-    >
-      Nuestro modelo
+    <p class="text-stone-600 text-sm sm:text-lg tracking-[0.35em] uppercase mb-4 text-left">
+      {eyebrow}
     </p>
     <h2
       id="model-title"
       class="text-stone-950 text-3xl sm:text-5xl font-bold font-secondary uppercase text-left max-w-5xl"
     >
-      PODEMOS IMPULSAR TU EMPRENDIMIENTO
+      {title}
     </h2>
-    <p
-      class="text-stone-600 max-w-3xl mt-6 text-left text-sm sm:text-base tracking-wider"
-    >
-      En La Base Cowork, hemos desarrollado un modelo integral de apoyo al
-      emprendimiento que combina mentoría especializada, recursos estratégicos y
-      un ecosistema colaborativo para maximizar tus posibilidades de éxito en
-      cada etapa de tu proyecto empresarial.
+    <p class="text-stone-600 max-w-3xl mt-6 text-left text-sm sm:text-base tracking-wider">
+      {description}
     </p>
-    <div
-      class="grid md:grid-cols-3 gap-4 mt-12"
-      role="list"
-      aria-label="Características de nuestro modelo de emprendimiento"
-    >
-      <div
-        class="relative w-full flex-col h-[600px]"
-        role="listitem"
-        aria-labelledby="feature1-title"
-      >
-        <Image
-          client:only="react"
-          src="/images/emprendimiento/1.jpg"
-          alt="Equipo transformando ideas en proyectos concretos"
-          className="w-full h-full object-cover absolute inset-0 z-0"
-          loading="lazy"
-          decoding="async"
-        />
-        <div class="absolute inset-0 bg-stone-950/50 z-10" aria-hidden="true">
-        </div>
-
-        <div class="absolute bottom-0 p-4 pb-8 z-20" role="group">
-          <h3
-            id="feature1-title"
-            class="text-stone-100 text-center text-xl sm:text-2xl font-bold font-secondary uppercase"
-          >
-            Transformar tu idea
-          </h3>
-          <p
-            class="text-stone-200 text-xs sm:text-sm tracking-wider text-center mt-2"
-            aria-describedby="feature1-title"
-          >
-            Estamos aquí para apoyarte a dar los primeros pasos y crecer de
-            manera sólida, consiguiendo una inversión y un equipo.
-          </p>
-        </div>
-      </div>
-      <div
-        class="relative w-full flex-col h-[600px]"
-        role="listitem"
-        aria-labelledby="feature2-title"
-      >
-        <Image
-          client:only="react"
-          src="/images/emprendimiento/2.JPG"
-          alt="Desarrollo de producto mínimo viable (MVP)"
-          className="w-full h-full object-cover absolute inset-0 z-0"
-          loading="lazy"
-          decoding="async"
-        />
-        <div class="absolute inset-0 bg-stone-950/10 z-10" aria-hidden="true">
-        </div>
-
-        <div class="absolute bottom-0 p-4 pb-8 z-20" role="group">
-          <h3
-            id="feature2-title"
-            class="text-stone-100 text-center text-xl sm:text-2xl font-bold font-secondary uppercase"
-          >
-            Construir un MVP
-          </h3>
-          <p
-            class="text-stone-200 text-xs sm:text-sm tracking-wider text-center mt-2"
-            aria-describedby="feature2-title"
-          >
-            Como socios, mentores o especialistas, te ayudamos a desarrollar tu
-            primer producto y llevarlo al mercado.
-          </p>
-        </div>
-      </div>
-      <div
-        class="relative w-full flex-col h-[600px]"
-        role="listitem"
-        aria-labelledby="feature3-title"
-      >
-        <Image
-          client:only="react"
-          src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg"
-          alt="Equipo colaborativo trabajando en proyecto"
-          className="w-full h-full object-cover absolute inset-0 z-0"
-          loading="lazy"
-          decoding="async"
-        />
-        <div class="absolute inset-0 bg-stone-950/60 z-10" aria-hidden="true">
-        </div>
-
-        <div class="absolute bottom-0 p-4 pb-8 z-20" role="group">
-          <h3
-            id="feature3-title"
-            class="text-stone-100 text-center text-xl sm:text-2xl font-bold font-secondary uppercase"
-          >
-            Crear un equipo
-          </h3>
-          <p
-            class="text-stone-200 text-xs sm:text-sm tracking-wider text-center mt-2"
-            aria-describedby="feature3-title"
-          >
-            Expertos en planificación, diseño, desarrollo o marketing, te
-            conectamos con las personas adecuadas para tu proyecto.
-          </p>
-        </div>
-      </div>
+    <div class="grid md:grid-cols-3 gap-4 mt-12" role="list">
+      {
+        items.map((card) => (
+          <div class="relative w-full flex-col h-[600px]" role="listitem">
+            <Image
+              client:only="react"
+              src={card.image}
+              alt={card.title}
+              className="w-full h-full object-cover absolute inset-0 z-0"
+              loading="lazy"
+              decoding="async"
+            />
+            <div class="absolute inset-0 bg-stone-950/50 z-10" aria-hidden="true" />
+            <div class="absolute bottom-0 p-4 pb-8 z-20" role="group">
+              <h3 class="text-stone-100 text-center text-xl sm:text-2xl font-bold font-secondary uppercase">
+                {card.title}
+              </h3>
+              <p class="text-stone-200 text-xs sm:text-sm tracking-wider text-center mt-2">
+                {card.description}
+              </p>
+            </div>
+          </div>
+        ))
+      }
     </div>
   </div>
 </section>

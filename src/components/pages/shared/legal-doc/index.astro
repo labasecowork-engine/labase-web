@@ -1,0 +1,75 @@
+---
+/**
+ * Documento legal por secciones (políticas, términos). Renderiza el contenido
+ * editable desde el CMS (bloque `legalDoc`) replicando el maquetado original.
+ */
+interface Subitem {
+  text?: string;
+}
+interface Item {
+  label?: string;
+  text?: string;
+  subitems?: Subitem[];
+}
+interface Section {
+  heading?: string;
+  lead?: string;
+  items?: Item[];
+  footnote?: string;
+}
+interface Props {
+  intro?: string;
+  sections?: Section[];
+}
+
+const { intro, sections = [] } = Astro.props;
+---
+
+<div class="mx-auto px-12 py-24 max-w-4xl">
+  {
+    intro && (
+      <p class="text-sm sm:text-lg text-left leading-relaxed text-stone-700 mb-10">
+        {intro}
+      </p>
+    )
+  }
+  {
+    sections.map((section) => (
+      <section class="mb-10">
+        {section.heading && (
+          <h2 class="text-2xl font-bold uppercase text-stone-950 mb-4 text-left font-secondary">
+            {section.heading}
+          </h2>
+        )}
+        {section.lead && (
+          <p class="text-sm sm:text-lg text-left leading-relaxed mb-4 text-stone-700">
+            {section.lead}
+          </p>
+        )}
+        {section.items && section.items.length > 0 && (
+          <ul class="list-disc list-inside text-sm sm:text-lg text-left leading-relaxed mb-4 text-stone-700 ml-4">
+            {section.items.map((item) => (
+              <li>
+                {item.label && <b>{item.label}</b>}
+                {item.label && item.text ? " " : ""}
+                {item.text}
+                {item.subitems && item.subitems.length > 0 && (
+                  <ul class="list-circle list-inside text-sm sm:text-lg text-left leading-relaxed mb-2 text-stone-700 ml-8">
+                    {item.subitems.map((su) => (
+                      <li>{su.text}</li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+        {section.footnote && (
+          <p class="text-sm sm:text-lg text-left leading-relaxed text-stone-700">
+            {section.footnote}
+          </p>
+        )}
+      </section>
+    ))
+  }
+</div>

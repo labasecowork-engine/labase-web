@@ -25,7 +25,27 @@ const contactSchema = z.object({
 
 type ContactFormValues = z.infer<typeof contactSchema>;
 
-export default function ContactFormSection() {
+interface Reason {
+  label: string;
+  value: string;
+}
+interface Props {
+  submitLabel?: string;
+  reasons?: Reason[];
+}
+
+const defaultReasons: Reason[] = [
+  { label: "Coworking", value: "coworking" },
+  { label: "Emprendimiento", value: "emprendimiento" },
+  { label: "Otros", value: "other" },
+];
+
+export default function ContactFormSection({
+  submitLabel = "Enviar formulario",
+  reasons,
+}: Props = {}) {
+  const reasonOptions =
+    reasons && reasons.length > 0 ? reasons : defaultReasons;
   const [submissionStatus, setSubmissionStatus] = useState<{
     message: string;
     success: boolean | null;
@@ -328,9 +348,11 @@ export default function ContactFormSection() {
             aria-invalid={!!errors.reason}
           >
             <option value="">Selecciona la razon</option>
-            <option value="coworking">Coworking</option>
-            <option value="emprendimiento">Emprendimiento</option>
-            <option value="other">Otros</option>
+            {reasonOptions.map((r) => (
+              <option key={r.value} value={r.value}>
+                {r.label}
+              </option>
+            ))}
           </select>
           {errors.reason && (
             <p className="text-red-500 text-xs mt-1">{errors.reason.message}</p>
@@ -373,7 +395,7 @@ export default function ContactFormSection() {
           className="rounded-full w-fit text-stone-100 py-4 px-12 transition-colors duration-200 text-sm tracking-widest font-medium uppercase mt-8 bg-stone-500 hover:bg-stone-700 disabled:bg-stone-300 disabled:cursor-not-allowed"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Enviando..." : "Enviar formulario"}
+          {isSubmitting ? "Enviando..." : submitLabel}
         </button>
       </form>
     </div>

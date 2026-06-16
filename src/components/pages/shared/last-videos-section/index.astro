@@ -1,7 +1,7 @@
 ---
 import { Image } from "@/components/ui";
 
-const videos = [
+const defaultVideos = [
   {
     title: "Publicación en Facebook",
     embedUrl:
@@ -9,7 +9,6 @@ const videos = [
     link: "https://www.facebook.com/permalink.php?story_fbid=pfbid02spiZErPnwmdTx1seQt1hCKjvDMD1DYbrHEXLivykgiWc6Ek2fNgVEAb3hC4QHr4Pl&id=100094472230413",
     video: true,
   },
-
   {
     title: "Publicación en Facebook",
     embedUrl:
@@ -31,7 +30,6 @@ const videos = [
     link: "https://www.facebook.com/permalink.php?story_fbid=pfbid02z2ZhaeFBvPyB3xVueyVDBNK5Nx2EVkzJ4zioswmC1RLMNd9LHD9CZ3PiiZfcRzogl&id=100094472230413",
     video: true,
   },
-
   {
     title: "Como llegar ala Base Cowork",
     embedUrl: "https://www.tiktok.com/embed/v2/7430958213031283973",
@@ -45,6 +43,13 @@ const videos = [
     video: true,
   },
 ];
+
+const {
+  eyebrow = "LO ÚLTIMO EN NUESTRAS REDES",
+  title = "Mira lo que está pasando en nuestra comunidad",
+  description = "Mantente al día con las ideas, eventos y novedades del coworking. Desde consejos útiles y tendencias del trabajo flexible, hasta entrevistas con miembros y recorridos por nuestros espacios. ¡Nuestros últimos videos tienen todo lo que necesitas para inspirarte y conectar!",
+  videos = defaultVideos,
+} = Astro.props;
 ---
 
 <section
@@ -58,22 +63,19 @@ const videos = [
         class="text-stone-600 text-center text-sm sm:text-lg tracking-[0.35em] uppercase mb-4"
         aria-hidden="true"
       >
-        LO ÚLTIMO EN NUESTRAS REDES
+        {eyebrow}
       </p>
       <h2
         id="latest-videos-title"
         class="text-stone-950 text-center text-3xl sm:text-5xl font-bold font-secondary uppercase"
       >
-        Mira lo que está pasando en nuestra comunidad
+        {title}
       </h2>
       <p
         class="text-stone-600 mt-6 text-center text-sm sm:text-base tracking-wider max-w-5xl mx-auto"
         aria-label="Descripción de la sección de contenido multimedia"
       >
-        Mantente al día con las ideas, eventos y novedades del coworking. Desde
-        consejos útiles y tendencias del trabajo flexible, hasta entrevistas con
-        miembros y recorridos por nuestros espacios. ¡Nuestros últimos videos
-        tienen todo lo que necesitas para inspirarte y conectar!
+        {description}
       </p>
     </div>
 
@@ -83,7 +85,7 @@ const videos = [
       aria-label="Galería de contenido multimedia"
     >
       {
-        videos.map((video) => (
+        videos.map((video: any) => (
           <a
             href={video.link}
             target="_blank"
@@ -93,7 +95,7 @@ const videos = [
             aria-label={`${video.title} - Click para ver ${video.video ? "video" : "imagen"}`}
           >
             <div class="aspect-video relative overflow-hidden w-full h-full">
-              {video.video ? (
+              {video.video !== false ? (
                 <iframe
                   src={video.embedUrl}
                   title={video.title}
@@ -115,7 +117,7 @@ const videos = [
                 class="absolute inset-0 bg-black/40 flex items-center justify-center"
                 aria-hidden="true"
               >
-                {video.video && (
+                {video.video !== false && (
                   <div
                     class="w-12 h-12 rounded-full bg-black/30 flex items-center justify-center"
                     role="presentation"

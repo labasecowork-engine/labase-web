@@ -1,6 +1,24 @@
 ---
 import { Image } from "@/components/ui";
 import { routes } from "@/config";
+
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  buttonLabel?: string;
+  buttonHref?: string;
+  image?: string;
+}
+
+const {
+  eyebrow = "Emprendimiento",
+  title = "Tu espacio para crear y crecer",
+  description = "Transforma tu idea en un negocio exitoso en 3 fases estratégicas.",
+  buttonLabel = "COMENZAR AHORA",
+  buttonHref = routes.contact,
+  image = "https://images.pexels.com/photos/4069292/pexels-photo-4069292.jpeg",
+} = Astro.props as Props;
 ---
 
 <section
@@ -13,7 +31,7 @@ import { routes } from "@/config";
   <div class="absolute inset-0 -z-10 size-full object-cover">
     <Image
       client:only="react"
-      src="https://images.pexels.com/photos/4069292/pexels-photo-4069292.jpeg"
+      src={image}
       alt="Espacio de trabajo colaborativo con emprendedores"
       className="absolute inset-0 -z-10 size-full object-cover"
       loading="lazy"
@@ -58,18 +76,18 @@ import { routes } from "@/config";
           class="text-stone-100 lg:text-lg text-sm tracking-widest font-medium uppercase mb-4"
           aria-label="Sección de"
         >
-          Emprendimiento
+          {eyebrow}
         </p>
         <h1
           id="hero-title"
           class="text-3xl font-secondary lg:leading-20 font-semibold text-balance text-stone-100 sm:text-5xl md:text-7xl uppercase"
         >
-          Tu espacio para crear y crecer
+          {title}
         </h1>
         <p
           class="text-stone-100/70 lg:text-lg text-sm font-medium mb-4 mx-auto max-w-3xl mt-6"
         >
-          Transforma tu idea en un negocio exitoso en 3 fases estratégicas.
+          {description}
         </p>
         <!-- <div role="form" aria-label="Formulario de registro">
           <label for="email-input" class="sr-only">Correo electrónico</label>
@@ -88,13 +106,13 @@ import { routes } from "@/config";
           role="navigation"
         >
           <a
-            href={routes.contact}
+            href={buttonHref}
             class="rounded-full bg-transparent border border-stone-200 lg:px-12 sm:px-10 px-6 py-3 lg:py-4 text-xs sm:text-sm font-semibold text-stone-200 shadow-xs hover:bg-stone-200 hover:text-stone-950 tracking-wider transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-400"
             role="button"
             aria-label="Comenzar ahora"
             tabindex="0"
           >
-            COMENZAR AHORA
+            {buttonLabel}
           </a>
         </div>
       </div>

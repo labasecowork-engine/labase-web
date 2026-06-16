@@ -1,0 +1,29 @@
+---
+/**
+ * Renderiza una página completa del CMS: layout (CoreLayout) + SEO + bloques.
+ */
+import { CoreLayout } from "@/layouts";
+import BlockRenderer from "@/components/cms/block-renderer.astro";
+import type { CmsPage } from "@/services/cms";
+
+interface Props {
+  page: CmsPage;
+}
+const { page } = Astro.props;
+const seo = page.seo ?? {};
+const opt = (v: unknown): any =>
+  v === null || v === undefined || v === "" ? undefined : v;
+---
+
+<CoreLayout
+  title={opt(seo.title) ?? page.title}
+  description={opt(seo.description) ?? ""}
+  keywords={opt(seo.keywords) ?? ""}
+  canonical={opt(seo.canonical)}
+  type={opt(seo.type) ?? ""}
+  robots={opt(seo.robots) ?? ""}
+  structuredData={opt(seo.structuredData)}
+  headerTransparent={page.headerTransparent ?? true}
+>
+  <BlockRenderer blocks={page.layout ?? []} />
+</CoreLayout>

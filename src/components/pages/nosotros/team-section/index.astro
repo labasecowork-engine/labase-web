@@ -1,5 +1,5 @@
 ---
-const team = [
+const defaultTeam = [
   {
     name: "RAFAEL AGUIRRE",
     role: "ABOGADO & CEO BASE COWORK",
@@ -16,6 +16,15 @@ const team = [
     image: "/images/mentores/anderson_echevarria.webp",
   },
 ];
+
+const {
+  eyebrow = "EL EQUIPO CON EL QUE PUEDE CONFIAR",
+  title = "CONOZCA AL EQUIPO",
+  description = "Contamos con expertos en diferentes áreas listos para optimizar tu crecimiento profesional o hacer realidad tu idea de emprendimiento. Explora nuestros mentores y conecta con los mejores en su campo.",
+  members = defaultTeam,
+} = Astro.props;
+
+const team = members;
 ---
 
 <section class="py-24" aria-labelledby="team-section-title" role="region">
@@ -24,21 +33,19 @@ const team = [
       class="text-stone-600 text-center text-sm sm:text-lg tracking-[0.35em] uppercase mb-4"
       aria-hidden="true"
     >
-      EL EQUIPO CON EL QUE PUEDE CONFIAR
+      {eyebrow}
     </p>
     <h2
       id="team-section-title"
       class="text-stone-950 text-center text-3xl sm:text-5xl font-bold font-secondary uppercase"
     >
-      CONOZCA AL EQUIPO
+      {title}
     </h2>
     <p
       class="text-stone-600 mt-6 text-center text-sm sm:text-base tracking-wider"
       aria-label="Descripción del equipo"
     >
-      Contamos con expertos en diferentes áreas listos para optimizar tu
-      crecimiento profesional o hacer realidad tu idea de emprendimiento.
-      Explora nuestros mentores y conecta con los mejores en su campo.
+      {description}
     </p>
   </div>
 
@@ -48,7 +55,7 @@ const team = [
     aria-label="Lista de miembros del equipo"
   >
     {
-      team.map((member) => (
+      team.map((member: any) => (
         <div
           class="text-center"
           role="listitem"

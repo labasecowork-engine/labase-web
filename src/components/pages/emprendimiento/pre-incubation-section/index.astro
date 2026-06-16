@@ -1,8 +1,46 @@
+---
+interface Step {
+  text?: string;
+}
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  image?: string;
+  steps?: Step[];
+}
+
+const defaultSteps: Step[] = [
+  {
+    text: "Evaluación inicial de tu idea de negocio para identificar su potencial en el mercado. Analizamos la viabilidad, el problema que resuelve y la propuesta de valor única que ofreces a tus potenciales clientes.",
+  },
+  {
+    text: "Desarrollo del modelo de negocio utilizando metodologías ágiles como Lean Startup y Business Model Canvas. Te ayudamos a definir claramente tu segmento de mercado, canales de distribución y fuentes de ingresos.",
+  },
+  {
+    text: "Formación en habilidades emprendedoras esenciales como liderazgo, gestión financiera básica, marketing digital y presentación efectiva de proyectos para atraer inversión y socios estratégicos.",
+  },
+  {
+    text: "Conexión con nuestra red de mentores y expertos en diversas industrias que te brindarán orientación personalizada y feedback valioso para refinar tu idea antes de pasar a la fase de incubación.",
+  },
+];
+
+const {
+  eyebrow = "Pre-incubación",
+  title = "Transformar tu idea",
+  description = "Te acompañamos en la validación y desarrollo inicial de tu idea de negocio, ayudándote a construir una base sólida para tu emprendimiento.",
+  image = "/images/emprendimiento/3.jpeg",
+  steps,
+} = Astro.props as Props;
+const items = steps && steps.length > 0 ? steps : defaultSteps;
+const pad = (n: number) => String(n).padStart(2, "0");
+---
+
 <section
   class="py-12 md:py-24 mx-auto max-w-7xl w-full px-4 sm:px-8 grid grid-cols-1 md:grid-cols-2 gap-8"
 >
   <img
-    src="/images/emprendimiento/3.jpeg"
+    src={image}
     alt="Nuestro modelo"
     class="w-full object-cover h-[600px] sm:h-full brightness-50"
     loading="lazy"
@@ -10,72 +48,29 @@
     fetchpriority="low"
   />
   <div class="relative z-10 pt-4 pb-12 sm:py-24">
-    <p
-      class="text-stone-600 text-sm sm:text-lg tracking-[0.35em] uppercase mb-4 text-left"
-    >
-      Pre-incubación
+    <p class="text-stone-600 text-sm sm:text-lg tracking-[0.35em] uppercase mb-4 text-left">
+      {eyebrow}
     </p>
-    <h3
-      class="text-stone-900 text-left text-3xl sm:text-5xl font-bold font-secondary uppercase"
-    >
-      Transformar
-      <br /> tu idea
+    <h3 class="text-stone-900 text-left text-3xl sm:text-5xl font-bold font-secondary uppercase">
+      {title}
     </h3>
-    <p
-      class="text-stone-600 text-sm sm:text-base tracking-wider text-left mt-2"
-    >
-      Te acompañamos en la validación y desarrollo inicial de tu idea de
-      negocio, ayudándote a construir una base sólida para tu emprendimiento.
+    <p class="text-stone-600 text-sm sm:text-base tracking-wider text-left mt-2">
+      {description}
     </p>
     <div class="grid grid-cols-2 gap-4 mt-12">
-      <div class="flex flex-col gap-8">
-        <p class="text-stone-500 text-sm sm:text-base text-left mt-2">
-          <span
-            class="text-stone-900 font-bold text-2xl sm:text-4xl font-secondary"
-            >01</span
-          >
-          <br />
-          Evaluación inicial de tu idea de negocio para identificar su potencial
-          en el mercado. Analizamos la viabilidad, el problema que resuelve y la
-          propuesta de valor única que ofreces a tus potenciales clientes.
-        </p>
-      </div>
-      <div class="flex flex-col gap-4">
-        <p class="text-stone-500 text-sm sm:text-base text-left mt-2">
-          <span
-            class="text-stone-900 font-bold text-2xl sm:text-4xl font-secondary"
-            >02</span
-          >
-          <br />
-          Desarrollo del modelo de negocio utilizando metodologías ágiles como Lean
-          Startup y Business Model Canvas. Te ayudamos a definir claramente tu segmento
-          de mercado, canales de distribución y fuentes de ingresos.
-        </p>
-      </div>
-      <div class="flex flex-col gap-4">
-        <p class="text-stone-500 text-sm sm:text-base text-left mt-2">
-          <span
-            class="text-stone-900 font-bold text-2xl sm:text-4xl font-secondary"
-            >03</span
-          >
-          <br />
-          Formación en habilidades emprendedoras esenciales como liderazgo, gestión
-          financiera básica, marketing digital y presentación efectiva de proyectos
-          para atraer inversión y socios estratégicos.
-        </p>
-      </div>
-      <div class="flex flex-col gap-4">
-        <p class="text-stone-500 text-sm sm:text-base text-left mt-2">
-          <span
-            class="text-stone-900 font-bold text-2xl sm:text-4xl font-secondary"
-            >04</span
-          >
-          <br />
-          Conexión con nuestra red de mentores y expertos en diversas industrias
-          que te brindarán orientación personalizada y feedback valioso para refinar
-          tu idea antes de pasar a la fase de incubación.
-        </p>
-      </div>
+      {
+        items.map((step, i) => (
+          <div class="flex flex-col gap-4">
+            <p class="text-stone-500 text-sm sm:text-base text-left mt-2">
+              <span class="text-stone-900 font-bold text-2xl sm:text-4xl font-secondary">
+                {pad(i + 1)}
+              </span>
+              <br />
+              {step.text}
+            </p>
+          </div>
+        ))
+      }
     </div>
   </div>
 </section>

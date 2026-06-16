@@ -1,5 +1,13 @@
 ---
 import { routes } from "@/config";
+
+const {
+  eyebrow = "DESCUBRE EL ESPACIO IDEAL PARA TU NEGOCIO",
+  title = "EL ESPACIO PERFECTO PARA TUS GRANDES IDEAS",
+  buttonLabel = "UNIRME A LA BASE",
+  buttonHref = routes.contact,
+  backgroundVideoUrl = "/videos/videobase.mp4",
+} = Astro.props;
 ---
 
 <section
@@ -20,10 +28,10 @@ import { routes } from "@/config";
     role="presentation"
     aria-hidden="true"
   >
-    <source src="/videos/videobase.mp4" type="video/mp4" />
+    <source src={backgroundVideoUrl} type="video/mp4" />
     <p>
       Tu navegador no soporta videos HTML5. Aquí hay un <a
-        href="/videos/videobase.mp4">enlace al video</a
+        href={backgroundVideoUrl}>enlace al video</a
       >.
     </p>
   </video>
@@ -34,13 +42,13 @@ import { routes } from "@/config";
         <p
           class="text-stone-100 lg:text-lg text-sm tracking-widest font-medium uppercase mb-4"
         >
-          DESCUBRE EL ESPACIO IDEAL PARA TU NEGOCIO
+          {eyebrow}
         </p>
         <h1
           id="hero-heading"
           class="text-3xl font-secondary lg:leading-20 font-semibold text-balance text-stone-100 sm:text-5xl md:text-7xl uppercase"
         >
-          EL ESPACIO PERFECTO PARA TUS GRANDES IDEAS
+          {title}
         </h1>
 
         <div
@@ -49,13 +57,13 @@ import { routes } from "@/config";
           aria-label="Acciones principales"
         >
           <a
-            href={routes.contact}
+            href={buttonHref}
             class="rounded-full bg-transparent border border-stone-200 lg:px-12 sm:px-10 px-6 py-3 lg:py-4 text-xs sm:text-sm font-semibold text-stone-200 shadow-xs hover:bg-stone-200 hover:text-stone-950 tracking-wider transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-400"
             role="button"
             aria-label="Comenzar ahora"
             tabindex="0"
           >
-            UNIRME A LA BASE
+            {buttonLabel}
           </a>
         </div>
       </div>

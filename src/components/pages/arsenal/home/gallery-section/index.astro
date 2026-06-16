@@ -1,80 +1,83 @@
 ---
 import { DecorativeLine } from "@/components/pages/shared";
 import { Image } from "@/components/ui";
+
+interface GalleryImage {
+  image?: string;
+  alt?: string;
+}
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  images?: GalleryImage[];
+}
+
+const defaultImages: GalleryImage[] = [
+  { image: "/images/espacios/arsenal/1.webp", alt: "Vista amplia del espacio de trabajo en la cafetería" },
+  { image: "/images/espacios/arsenal/2.webp", alt: "Detalle de la barra de café" },
+  { image: "/images/espacios/arsenal/3.webp", alt: "Otra vista del espacio Arsenal" },
+  { image: "/images/espacios/arsenal/4.webp", alt: "Vista adicional del Arsenal" },
+  { image: "/images/espacios/arsenal/5.webp", alt: "Vista final del Arsenal" },
+];
+
+const {
+  eyebrow = "Galería",
+  title = "Explora nuestro arsenal",
+  images,
+} = Astro.props as Props;
+const items = images && images.length > 0 ? images : defaultImages;
+const topRow = items.slice(0, 3);
+const bottomRow = items.slice(3);
 ---
 
 <section class="bg-white mx-auto p-4 sm:p-12">
   <div class="w-full">
     <div class="text-center mb-16">
-      <p
-        class="text-[#82674E] text-sm sm:text-base tracking-[0.3em] uppercase mb-3"
-      >
-        Galería
+      <p class="text-[#82674E] text-sm sm:text-base tracking-[0.3em] uppercase mb-3">
+        {eyebrow}
       </p>
-      <h2
-        class="text-4xl sm:text-5xl font-bold font-secondary uppercase text-stone-950"
-      >
-        Explora nuestro arsenal
+      <h2 class="text-4xl sm:text-5xl font-bold font-secondary uppercase text-stone-950">
+        {title}
       </h2>
       <DecorativeLine />
     </div>
 
     <div class="grid gap-4">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-          <Image
-client:only="react"
-            src="/images/espacios/arsenal/1.webp"
-            alt="Vista amplia del espacio de trabajo en la cafetería"
-            className="w-full h-[24rem] object-cover"
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
-        <div>
-          <Image
-client:only="react"
-            src="/images/espacios/arsenal/2.webp"
-            alt="Detalle de la barra de café"
-            className="w-full h-[24rem] object-cover"
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
-        <div>
-          <Image
-          client:only="react"
-            src="/images/espacios/arsenal/3.webp"
-            alt="Otra vista del espacio Arsenal"
-            className="w-full h-[24rem] object-cover"
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
+        {
+          topRow.map((img) => (
+            <div>
+              <Image
+                client:only="react"
+                src={img.image}
+                alt={img.alt}
+                className="w-full h-[24rem] object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          ))
+        }
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <Image
-client:only="react"
-            src="/images/espacios/arsenal/4.webp"
-            alt="Vista adicional del Arsenal"
-            className="w-full h-[24rem] object-cover"
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
-        <div>
-          <Image
-client:only="react"
-            src="/images/espacios/arsenal/5.webp"
-            alt="Vista final del Arsenal"
-            className="w-full h-[24rem] object-cover"
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
-      </div>
+      {
+        bottomRow.length > 0 && (
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {bottomRow.map((img) => (
+              <div>
+                <Image
+                  client:only="react"
+                  src={img.image}
+                  alt={img.alt}
+                  className="w-full h-[24rem] object-cover"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            ))}
+          </div>
+        )
+      }
     </div>
   </div>
 </section>

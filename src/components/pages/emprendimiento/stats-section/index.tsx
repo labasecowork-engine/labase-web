@@ -73,7 +73,25 @@ const StatItem = ({
   );
 };
 
-export default function StatsSection() {
+interface StatData {
+  value: number;
+  label: string;
+  prefix?: string;
+  suffix?: string;
+}
+interface Props {
+  stats?: StatData[];
+}
+
+const defaultStats: StatData[] = [
+  { value: 3500, label: "Profesionales y emprendedores" },
+  { value: 55000, prefix: "S/", label: "Capital financiado" },
+  { value: 150, prefix: "+", label: "Eventos y formación" },
+  { value: 40, label: "Nuevos empleos" },
+];
+
+export default function StatsSection({ stats }: Props = {}) {
+  const items = stats && stats.length > 0 ? stats : defaultStats;
   return (
     <section
       className="w-full py-12 px-4"
@@ -86,10 +104,15 @@ export default function StatsSection() {
           role="list"
           aria-label="Lista de estadísticas"
         >
-          <StatItem endValue={3500} label="Profesionales y emprendedores" />
-          <StatItem endValue={55000} prefix="S/" label="Capital financiado" />
-          <StatItem prefix="+" endValue={150} label="Eventos y formación" />
-          <StatItem endValue={40} label="Nuevos empleos" />
+          {items.map((stat, i) => (
+            <StatItem
+              key={i}
+              endValue={stat.value}
+              label={stat.label}
+              prefix={stat.prefix}
+              suffix={stat.suffix}
+            />
+          ))}
         </div>
       </div>
     </section>

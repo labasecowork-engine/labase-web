@@ -13,3 +13,4 @@ export { default as TestimonialsSection } from "./testimonials-section/index.ast
 export { default as BenefitsSection } from "./benefits-section/index.astro";
 export { default as Footer } from "./footer/index.astro";
 export { default as DecorativeLine } from "./decorative-line/index.astro";
+export { default as LegalDoc } from "./legal-doc/index.astro";

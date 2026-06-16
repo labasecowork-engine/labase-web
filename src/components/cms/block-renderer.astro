@@ -1,0 +1,604 @@
+---
+/**
+ * Renderiza el `layout` (array de bloques) de una página del CMS, mapeando
+ * cada `blockType` a su componente de sección en labase-web.
+ */
+import { mediaUrl, type CmsBlock } from "@/services/cms";
+import {
+  HeroSection,
+  TitleSection,
+  InfoSection,
+  CtaSection,
+  BenefitsSection,
+  StatsSection,
+  TestimonialsSection,
+  VideoCta,
+  LastVideosSection,
+  SpacesSection,
+  QaSection,
+  PhraseSection,
+  LegalDoc,
+} from "@/components/pages/shared";
+import { HomeHeroSection } from "@/components/pages/home";
+import { TeamSection } from "@/components/pages/nosotros";
+import { TestimonialCarousel, GoogleReview } from "@/components/pages/testimonios";
+import {
+  IntroSection as MentorIntroSection,
+  ProcessSection,
+  MentorsSection,
+  LogoCloudSection,
+} from "@/components/pages/mentoria";
+import {
+  GallerySection,
+  MenuSection as ArsenalMenuSection,
+} from "@/components/pages/arsenal/home";
+import { MapSection } from "@/components/pages/contactanos";
+import ContactFormSection from "@/components/pages/contactanos/contact-form-section/index.tsx";
+import EmprendimientoHeroSection from "@/components/pages/emprendimiento/hero-section/index.astro";
+import OurModelSection from "@/components/pages/emprendimiento/our-model-section/index.astro";
+import EmprStatsSection from "@/components/pages/emprendimiento/stats-section/index.tsx";
+import PreIncubationSection from "@/components/pages/emprendimiento/pre-incubation-section/index.astro";
+import IncubationSection from "@/components/pages/emprendimiento/incubation-section/index.astro";
+import AccelerationSection from "@/components/pages/emprendimiento/acceleration-section/index.astro";
+import CasosExitoSection from "@/components/pages/emprendimiento/cases-exit/index.tsx";
+import { NewsletterForm } from "@/components/shared";
+import CafesHeroSection from "@/components/pages/arsenal/cafes/hero-section/index.astro";
+import CoffiSection from "@/components/pages/arsenal/cafes/coffi-section/index.astro";
+import CafesMenuSection from "@/components/pages/arsenal/cafes/menu-section/index.astro";
+import DesayunosMenuSection from "@/components/pages/arsenal/desayunos/menu-section/index.astro";
+import ExtrasSection from "@/components/pages/arsenal/desayunos/extras/index.astro";
+import ProductMenu from "@/components/pages/arsenal/product-menu/index.astro";
+// Importamos el .tsx directamente: el wrapper .astro hardcodea las propiedades.
+import SpacesPriceSection from "@/components/pages/espacios/spaces-price-section/index.tsx";
+
+interface Props {
+  blocks?: CmsBlock[];
+}
+const { blocks = [] } = Astro.props;
+
+// "" / null / undefined -> undefined (para que apliquen los defaults del componente)
+const opt = (v: unknown): any =>
+  v === null || v === undefined || v === "" ? undefined : v;
+
+const toSlides = (spaces: any[] = []) =>
+  (spaces || []).map((s) => ({
+    id: s.id,
+    image: mediaUrl(s.carouselImage),
+    content: s.carouselLine1 ?? "",
+    subcontent: s.carouselLine2 ?? "",
+    button: s.carouselCta ?? "",
+    alt: s.carouselAlt ?? s.name ?? "",
+    videoSrc: s.videoUrl ?? "",
+  }));
+
+const toProperties = (spaces: any[] = []) =>
+  (spaces || []).map((s) => ({
+    id: s.id,
+    title: s.name,
+    description: s.description ?? "",
+    images: (s.gallery ?? []).map((g: unknown) => mediaUrl(g)).filter(Boolean),
+    status: s.status ?? undefined,
+    capacity: s.capacity ?? 0,
+    environment: s.environment ?? "",
+  }));
+
+const toBenefitsItems = (items: any[] = []) =>
+  (items || []).map((it) => ({
+    icon: mediaUrl(it.icon),
+    title: it.title,
+    description: it.description,
+  }));
+
+const toTeam = (members: any[] = []) =>
+  (members || []).map((m) => ({
+    name: m.name,
+    role: m.role,
+    image: mediaUrl(m.photo),
+  }));
+
+const toTestimonials = (items: any[] = []) =>
+  (items || []).map((t) => ({
+    text: t.text,
+    author: t.author,
+    source: t.source,
+  }));
+
+const toCarouselTestimonials = (items: any[] = []) =>
+  (items || []).map((t) => ({
+    id: String(t.id ?? ""),
+    text: t.text,
+    author: t.author,
+    source: t.source,
+    rating: t.rating ?? 5,
+  }));
+
+const toVideos = (items: any[] = []) =>
+  (items || []).map((v) => ({
+    title: v.title,
+    embedUrl: v.embedUrl,
+    link: v.link,
+    video: true,
+  }));
+
+const toCards = (cards: any[] = []) =>
+  (cards || []).map((c) => ({
+    image: mediaUrl(c.image),
+    title: c.title,
+    description: c.description,
+  }));
+
+const toLogos = (logos: any[] = []) =>
+  (logos || []).map((l) => ({ image: mediaUrl(l.image), alt: l.alt ?? "" }));
+
+const valArr = (items: any[] = []) =>
+  (items || []).map((x) => x?.value).filter(Boolean);
+
+const toGalleryImages = (images: any[] = []) =>
+  (images || []).map((g) => ({ image: mediaUrl(g.image), alt: g.alt ?? "" }));
+
+const toSliderImages = (images: any[] = []) =>
+  (images || []).map((g) => mediaUrl(g.image)).filter(Boolean);
+
+const toCafesMenuSections = (sections: any[] = []) =>
+  (sections || []).map((s) => ({
+    title: s.title,
+    image: mediaUrl(s.image),
+    items: s.items ?? [],
+  }));
+
+const toDesayunos = (items: any[] = []) =>
+  (items || []).map((it) => ({
+    name: it.name,
+    description: it.description,
+    longDescription: it.longDescription,
+    price: it.price,
+    image: mediaUrl(it.image),
+  }));
+
+const toExtras = (items: any[] = []) =>
+  (items || []).map((it) => ({
+    title: it.title,
+    description: it.description,
+    price: it.price,
+    image: mediaUrl(it.image),
+    alt: it.alt ?? it.title,
+  }));
+
+const toProductSections = (sections: any[] = []) =>
+  (sections || []).map((s) => ({
+    eyebrow: s.eyebrow,
+    title: s.title,
+    description: s.description,
+    columns: s.columns,
+    items: (s.items ?? []).map((it: any) => ({
+      image: mediaUrl(it.image),
+      alt: it.alt ?? it.title,
+      price: it.price,
+      title: it.title,
+      description: it.description,
+    })),
+  }));
+
+const toModelCards = (cards: any[] = []) =>
+  (cards || []).map((c) => ({
+    image: mediaUrl(c.image) || opt(c.imageUrl),
+    title: c.title,
+    description: c.description,
+  }));
+
+const toStats = (stats: any[] = []) =>
+  (stats || []).map((s) => ({
+    value: Number(s.value ?? 0),
+    label: s.label ?? "",
+    prefix: s.prefix ?? "",
+    suffix: s.suffix ?? "",
+  }));
+
+const toCases = (items: any[] = []) =>
+  (items || []).map((c, i) => ({
+    id: i + 1,
+    imageUrl: c.imageUrl ?? "",
+    logoUrl: c.logoUrl ?? "",
+    companyName: c.companyName ?? "",
+    tagline: c.tagline ?? "",
+    description: c.description ?? "",
+  }));
+
+const toMentors = (items: any[] = []) =>
+  (items || []).map((m, i) => ({
+    id: i + 1,
+    name: m.name ?? "",
+    role: m.role ?? "",
+    image: mediaUrl(m.image),
+    experience: m.experience ?? "",
+    location: m.location ?? "",
+    description: m.description ?? "",
+    email: m.email ?? "",
+    linkedin: m.linkedin ?? "",
+    specialties: valArr(m.specialties),
+    achievements: valArr(m.achievements),
+    mentorshipAreas: valArr(m.mentorshipAreas),
+    workSummary: m.workSummary ?? "",
+    successStories: m.successStories ?? "",
+  }));
+---
+
+{
+  blocks.map((block: any) => {
+    const t = block.blockType;
+
+    if (t === "homeHero")
+      return (
+        <HomeHeroSection
+          eyebrow={opt(block.eyebrow)}
+          title={block.title}
+          buttonLabel={opt(block.buttonLabel)}
+          buttonHref={opt(block.buttonHref)}
+          backgroundVideoUrl={
+            mediaUrl(block.backgroundVideo) || opt(block.backgroundVideoUrl)
+          }
+        />
+      );
+
+    if (t === "hero")
+      return (
+        <HeroSection
+          tag={opt(block.tag)}
+          title={block.title}
+          description={opt(block.description)}
+          button={opt(block.buttonLabel)}
+          buttonLink={opt(block.buttonHref)}
+          image={mediaUrl(block.image)}
+        />
+      );
+
+    if (t === "title")
+      return (
+        <TitleSection
+          tag={opt(block.tag)}
+          title={block.title}
+          description={opt(block.description)}
+          align={opt(block.align)}
+        />
+      );
+
+    if (t === "info")
+      return (
+        <InfoSection
+          tag={opt(block.tag)}
+          title={block.title}
+          description={opt(block.description)}
+          image={mediaUrl(block.image)}
+          button1={opt(block.button1Label)}
+          button1Href={opt(block.button1Href)}
+          button2={opt(block.button2Label)}
+          button2Href={opt(block.button2Href)}
+        />
+      );
+
+    if (t === "spacesCarousel")
+      return <SpacesSection client:load slides={toSlides(block.spaces)} />;
+
+    if (t === "spacesPricing")
+      return (
+        <SpacesPriceSection client:load properties={toProperties(block.spaces)} />
+      );
+
+    if (t === "benefits")
+      return (
+        <BenefitsSection
+          eyebrow={opt(block.eyebrow)}
+          title={opt(block.title)}
+          description={opt(block.description)}
+          items={toBenefitsItems(block.items)}
+          footerPrefix={opt(block.footerPrefix)}
+          footerLinkLabel={opt(block.footerLinkLabel)}
+          footerHref={opt(block.footerHref)}
+          footerSuffix={opt(block.footerSuffix)}
+        />
+      );
+
+    if (t === "stats")
+      return (
+        <StatsSection
+          image={opt(mediaUrl(block.image))}
+          headingWord={opt(block.headingWord)}
+          headingLabel={opt(block.headingLabel)}
+          bigStatPrefix={opt(block.bigStatPrefix)}
+          bigStatNumber={opt(block.bigStatNumber)}
+          bigStatSuffix={opt(block.bigStatSuffix)}
+          tagline={opt(block.tagline)}
+          buttonLabel={opt(block.buttonLabel)}
+          buttonHref={opt(block.buttonHref)}
+          items={block.items}
+        />
+      );
+
+    if (t === "testimonials")
+      return (
+        <TestimonialsSection
+          image={opt(mediaUrl(block.image))}
+          eyebrow={opt(block.eyebrow)}
+          title={opt(block.title)}
+          opacity={opt(block.opacity)}
+          testimonials={toTestimonials(block.items)}
+        />
+      );
+
+    if (t === "testimonialCarousel")
+      return (
+        <TestimonialCarousel
+          client:only="react"
+          eyebrow={opt(block.eyebrow)}
+          title={opt(block.title)}
+          buttonLabel={opt(block.buttonLabel)}
+          buttonHref={opt(block.buttonHref)}
+          testimonials={toCarouselTestimonials(block.items)}
+        />
+      );
+
+    if (t === "googleReview")
+      return (
+        <GoogleReview
+          eyebrow={opt(block.eyebrow)}
+          title={opt(block.title)}
+          buttonText={opt(block.buttonLabel)}
+          buttonLink={opt(block.buttonHref)}
+        />
+      );
+
+    if (t === "team")
+      return (
+        <TeamSection
+          eyebrow={opt(block.eyebrow)}
+          title={opt(block.title)}
+          description={opt(block.description)}
+          members={toTeam(block.members)}
+        />
+      );
+
+    if (t === "videoCta")
+      return (
+        <VideoCta
+          subtitle={opt(block.subtitle)}
+          title={block.title}
+          description={opt(block.description)}
+          imageSrc={mediaUrl(block.image)}
+          imageAlt={opt(block.imageAlt)}
+          buttonText={opt(block.buttonText)}
+          videoSrc={opt(block.videoUrl)}
+        />
+      );
+
+    if (t === "lastVideos")
+      return (
+        <LastVideosSection
+          eyebrow={opt(block.eyebrow)}
+          title={opt(block.title)}
+          description={opt(block.description)}
+          videos={toVideos(block.items)}
+        />
+      );
+
+    if (t === "cta")
+      return (
+        <CtaSection
+          tag={opt(block.tag)}
+          title={opt(block.title)}
+          description={opt(block.description)}
+          button={opt(block.buttonLabel)}
+          buttonHref={opt(block.buttonHref)}
+          image={mediaUrl(block.image)}
+          imageAlt={opt(block.imageAlt)}
+        />
+      );
+
+    if (t === "mentorIntro")
+      return (
+        <MentorIntroSection
+          eyebrow={opt(block.eyebrow)}
+          title={opt(block.title)}
+          description={opt(block.description)}
+          cards={toCards(block.cards)}
+        />
+      );
+
+    if (t === "logoCloud")
+      return (
+        <LogoCloudSection note={opt(block.note)} logos={toLogos(block.logos)} />
+      );
+
+    if (t === "process")
+      return (
+        <ProcessSection
+          eyebrow={opt(block.eyebrow)}
+          title={opt(block.title)}
+          description={opt(block.description)}
+          buttonLabel={opt(block.buttonLabel)}
+          buttonHref={opt(block.buttonHref)}
+          steps={block.steps ?? []}
+        />
+      );
+
+    if (t === "mentors")
+      return (
+        <MentorsSection
+          client:load
+          eyebrow={opt(block.eyebrow)}
+          title={opt(block.title)}
+          description={opt(block.description)}
+          mentors={toMentors(block.items)}
+        />
+      );
+
+    if (t === "emprendimientoHero")
+      return (
+        <EmprendimientoHeroSection
+          eyebrow={opt(block.eyebrow)}
+          title={block.title}
+          description={opt(block.description)}
+          buttonLabel={opt(block.buttonLabel)}
+          buttonHref={opt(block.buttonHref)}
+          image={mediaUrl(block.image) || opt(block.imageUrl)}
+        />
+      );
+
+    if (t === "ourModel")
+      return (
+        <OurModelSection
+          eyebrow={opt(block.eyebrow)}
+          title={opt(block.title)}
+          description={opt(block.description)}
+          cards={toModelCards(block.cards)}
+        />
+      );
+
+    if (t === "impactStats")
+      return <EmprStatsSection client:only="react" stats={toStats(block.stats)} />;
+
+    if (t === "preIncubation")
+      return (
+        <PreIncubationSection
+          eyebrow={opt(block.eyebrow)}
+          title={opt(block.title)}
+          description={opt(block.description)}
+          image={opt(mediaUrl(block.image))}
+          steps={block.steps ?? []}
+        />
+      );
+
+    if (t === "incubation")
+      return (
+        <IncubationSection
+          eyebrow={opt(block.eyebrow)}
+          title={opt(block.title)}
+          description={opt(block.description)}
+          steps={block.steps ?? []}
+        />
+      );
+
+    if (t === "acceleration")
+      return (
+        <AccelerationSection
+          eyebrow={opt(block.eyebrow)}
+          title={opt(block.title)}
+          description={opt(block.description)}
+          image={opt(mediaUrl(block.image))}
+          steps={block.steps ?? []}
+        />
+      );
+
+    if (t === "casesExit")
+      return (
+        <CasosExitoSection
+          client:load
+          title={opt(block.title)}
+          subtitle={opt(block.subtitle)}
+          cases={toCases(block.items)}
+        />
+      );
+
+    if (t === "arsenalMenu")
+      return <ArsenalMenuSection columns={block.columns ?? []} />;
+
+    if (t === "gallery")
+      return (
+        <GallerySection
+          eyebrow={opt(block.eyebrow)}
+          title={opt(block.title)}
+          images={toGalleryImages(block.images)}
+        />
+      );
+
+    if (t === "contactForm")
+      return (
+        <ContactFormSection
+          client:only="react"
+          submitLabel={opt(block.submitLabel)}
+          reasons={block.reasons ?? []}
+        />
+      );
+
+    if (t === "map")
+      return <MapSection embedUrl={opt(block.embedUrl)} title={opt(block.title)} />;
+
+    if (t === "newsletter")
+      return (
+        <NewsletterForm
+          client:load
+          image={opt(mediaUrl(block.image))}
+          title={opt(block.title)}
+          subtitle={opt(block.subtitle)}
+          nameLabel={opt(block.nameLabel)}
+          emailLabel={opt(block.emailLabel)}
+          submitLabel={opt(block.submitLabel)}
+        />
+      );
+
+    if (t === "cafesHero")
+      return (
+        <CafesHeroSection
+          eyebrow={opt(block.eyebrow)}
+          title={opt(block.title)}
+          background={opt(mediaUrl(block.background))}
+          images={toSliderImages(block.sliderImages)}
+        />
+      );
+
+    if (t === "coffiIntensity")
+      return (
+        <CoffiSection
+          eyebrow={opt(block.eyebrow)}
+          title={opt(block.title)}
+          image={opt(mediaUrl(block.centerImage))}
+          items={block.items ?? []}
+        />
+      );
+
+    if (t === "cafesMenu")
+      return (
+        <CafesMenuSection
+          eyebrow={opt(block.eyebrow)}
+          title={opt(block.title)}
+          sections={toCafesMenuSections(block.sections)}
+        />
+      );
+
+    if (t === "desayunosMenu")
+      return <DesayunosMenuSection items={toDesayunos(block.items)} />;
+
+    if (t === "extrasMenu")
+      return (
+        <ExtrasSection
+          eyebrow={opt(block.eyebrow)}
+          title={opt(block.title)}
+          items={toExtras(block.items)}
+        />
+      );
+
+    if (t === "productMenu")
+      return <ProductMenu sections={toProductSections(block.sections)} />;
+
+    if (t === "qa")
+      return (
+        <QaSection
+          description={opt(block.description) ?? ""}
+          image={opt(mediaUrl(block.image))}
+          faqs={block.faqs ?? []}
+        />
+      );
+
+    if (t === "phrase")
+      return (
+        <PhraseSection text={opt(block.text)} highlight={opt(block.highlight)} />
+      );
+
+    if (t === "legalDoc")
+      return (
+        <LegalDoc intro={opt(block.intro)} sections={block.sections ?? []} />
+      );
+
+    // richText u otros bloques aún no mapeados
+    return null;
+  })
+}

@@ -16,7 +16,23 @@ const newsletterSchema = z.object({
 
 type NewsletterFormValues = z.infer<typeof newsletterSchema>;
 
-export const NewsletterForm = () => {
+interface NewsletterFormProps {
+  image?: string;
+  title?: string;
+  subtitle?: string;
+  nameLabel?: string;
+  emailLabel?: string;
+  submitLabel?: string;
+}
+
+export const NewsletterForm = ({
+  image = "/images/espacios/base_operativa/4.webp",
+  title = "SÉ PARTE DE LA BASE\nCOWORK",
+  subtitle = "Regístrate para recibir noticias y actualizaciones sobre nuestros servicios.",
+  nameLabel = "Nombre completo",
+  emailLabel = "Correo electrónico",
+  submitLabel = "Suscribirme",
+}: NewsletterFormProps = {}) => {
   const [submissionStatus, setSubmissionStatus] = useState<{
     message: string;
     success: boolean;
@@ -98,7 +114,7 @@ export const NewsletterForm = () => {
     >
       <div>
         <img
-          src="/images/espacios/base_operativa/4.webp"
+          src={image}
           alt="La Base Cowork"
           className="w-full h-full object-cover"
         />
@@ -106,21 +122,21 @@ export const NewsletterForm = () => {
       <div className="bg-white px-8 py-24 lg:px-24 lg:py-60 md:h-screen flex flex-col items-center justify-center">
         <div className="w-full max-w-lg mx-auto">
           <h2 className="text-3xl lg:text-4xl font-bold uppercase text-stone-900 mb-4 font-secondary">
-            SÉ PARTE DE LA BASE
-            <br />
-            COWORK
+            {title.split("\n").map((line, i) => (
+              <span key={i}>
+                {i > 0 && <br />}
+                {line}
+              </span>
+            ))}
           </h2>
-          <p className="text-stone-500 text-left mb-8 text-sm">
-            Regístrate para recibir noticias y actualizaciones sobre nuestros
-            servicios.
-          </p>
+          <p className="text-stone-500 text-left mb-8 text-sm">{subtitle}</p>
 
           <div className="mb-4">
             <label
               htmlFor="name"
               className="block font-medium text-stone-700 text-left mb-2 text-sm"
             >
-              Nombre completo
+              {nameLabel}
             </label>
             <input
               id="name"
@@ -143,7 +159,7 @@ export const NewsletterForm = () => {
               htmlFor="email"
               className="block font-medium text-stone-700 text-left mb-2 text-sm"
             >
-              Correo electrónico
+              {emailLabel}
             </label>
             <input
               id="email"
@@ -185,7 +201,7 @@ export const NewsletterForm = () => {
             className="mt-4 w-full uppercase tracking-widest text-sm bg-stone-600 hover:bg-stone-700 text-white font-medium py-4 px-6 rounded-full transition-colors duration-200"
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Suscribiéndote..." : "Suscribirme"}
+            {isSubmitting ? "Suscribiéndote..." : submitLabel}
           </button>
         </div>
       </div>

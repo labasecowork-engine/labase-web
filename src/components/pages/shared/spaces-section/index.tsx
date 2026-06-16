@@ -313,7 +313,21 @@ const StyledSwiperWrapper = styled.div`
   }
 `;
 
-export default function SpacesSection() {
+interface SpaceSlide {
+  id: number | string;
+  image: string;
+  content: string;
+  subcontent: string;
+  button: string;
+  alt: string;
+  videoSrc: string;
+}
+
+export default function SpacesSection({
+  slides: slidesProp,
+}: {
+  slides?: SpaceSlide[];
+}) {
   const [isFlashing, setIsFlashing] = useState<boolean>(false);
   const [index, setIndex] = useState<number>(0);
   const [realIndex, setRealIndex] = useState<number>(0);
@@ -325,7 +339,7 @@ export default function SpacesSection() {
   const sectionId = `spaces-section-${Math.random().toString(36).substr(2, 9)}`;
   const sliderId = `spaces-slider-${Math.random().toString(36).substr(2, 9)}`;
 
-  const slides = [
+  const defaultSlides: SpaceSlide[] = [
     {
       id: 1,
       image: "/images/espacios/el_hangar/3.webp",
@@ -417,6 +431,9 @@ export default function SpacesSection() {
       videoSrc: "https://www.youtube.com/watch?v=QVx4mjUTfzI",
     },
   ];
+
+  const slides =
+    slidesProp && slidesProp.length > 0 ? slidesProp : defaultSlides;
 
   useEffect(() => {
     setIndex(realIndex);

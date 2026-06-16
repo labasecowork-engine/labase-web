@@ -1,0 +1,22 @@
+---
+/**
+ * Catch-all para páginas servidas por el CMS (las que no tienen un .astro propio).
+ * Las rutas con archivo (index, nosotros, espacios, blog/*, arsenal/*, etc.)
+ * tienen prioridad sobre esta ruta.
+ */
+import CmsPage from "@/components/cms/cms-page.astro";
+import { getPage } from "@/services/cms";
+
+const { slug } = Astro.params;
+const slugStr = Array.isArray(slug) ? slug.join("/") : (slug ?? "");
+
+// El blog usa otro backend; nunca lo servimos desde el CMS.
+if (!slugStr || slugStr === "blog" || slugStr.startsWith("blog/")) {
+  return Astro.redirect("/404");
+}
+
+const page = await getPage(slugStr);
+if (!page) return Astro.redirect("/404");
+---
+
+<CmsPage page={page} />

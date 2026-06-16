@@ -6,6 +6,7 @@ const {
   title = "Haz crecer tu proyecto",
   description = "Tu próximo gran proyecto comienza aquí. Únete a una comunidad de profesionales que buscan lo mismo que tú: crecer, colaborar y destacar. No esperes más, el espacio ideal está a solo un clic de distancia.",
   button = "UNIRME AHORA",
+  buttonHref = routes.contact,
   image = "https://images.pexels.com/photos/3194518/pexels-photo-3194518.jpeg",
   imageAlt = "Espacio de trabajo colaborativo con personas trabajando juntas",
 } = Astro.props;
@@ -56,7 +57,7 @@ const {
         {description}
       </p>
       <a
-        href={routes.contact}
+        href={buttonHref}
         class="rounded-full bg-transparent border border-stone-200 lg:px-12 sm:px-10 px-6 py-3 lg:py-4 text-xs sm:text-sm font-semibold text-stone-200 shadow-xs hover:bg-stone-200 hover:text-stone-950 tracking-wider transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-400"
         role="button"
         aria-label="Comenzar ahora"

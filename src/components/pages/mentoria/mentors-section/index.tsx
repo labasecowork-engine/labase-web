@@ -27,7 +27,14 @@ interface Mentor {
   successStories: string;
 }
 
-const mentors: Mentor[] = [
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  mentors?: Mentor[];
+}
+
+const defaultMentors: Mentor[] = [
   {
     id: 1,
     name: "RAFAEL AGUIRRE",
@@ -118,7 +125,14 @@ const mentors: Mentor[] = [
   },
 ];
 
-export default function MentorsSection() {
+export default function MentorsSection({
+  eyebrow = "NUESTROS MENTORES",
+  title = "EXPERTOS QUE TE GUIARÁN",
+  description = "Contamos con mentores especializados en diferentes áreas, listos para compartir su experiencia y conocimiento contigo. Cada mentor ha sido seleccionado por su trayectoria profesional y capacidad para impulsar el crecimiento de otros.",
+  mentors: mentorsProp,
+}: Props = {}) {
+  const mentors =
+    mentorsProp && mentorsProp.length > 0 ? mentorsProp : defaultMentors;
   const [selectedMentor, setSelectedMentor] = useState<Mentor | null>(null);
 
   const openModal = (mentor: Mentor) => {
@@ -134,16 +148,13 @@ export default function MentorsSection() {
       <section className="py-24">
         <div className="max-w-5xl mx-auto px-8 mb-24">
           <p className="text-stone-600 text-center text-lg tracking-[0.35em] uppercase mb-4">
-            NUESTROS MENTORES
+            {eyebrow}
           </p>
           <h2 className="text-stone-950 text-center text-5xl font-bold font-secondary uppercase">
-            EXPERTOS QUE TE GUIARÁN
+            {title}
           </h2>
           <p className="text-stone-600 mt-6 text-center text-base tracking-wider">
-            Contamos con mentores especializados en diferentes áreas, listos
-            para compartir su experiencia y conocimiento contigo. Cada mentor ha
-            sido seleccionado por su trayectoria profesional y capacidad para
-            impulsar el crecimiento de otros.
+            {description}
           </p>
         </div>
 

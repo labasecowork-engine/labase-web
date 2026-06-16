@@ -1,41 +1,9 @@
 ---
-import { CoreLayout } from "@/layouts";
-import { HomeHeroSection } from "@/components/pages/home";
-import {
-  StatsSection,
-  CtaSection,
-  TitleSection,
-  TestimonialsSection,
-  BenefitsSection,
-  SpacesSection,
-} from "@/components/pages/shared";
-import { indexMeta } from "@/config/meta";
+import CmsPage from "@/components/cms/cms-page.astro";
+import { getPage } from "@/services/cms";
+
+const page = await getPage("home");
+if (!page) return Astro.redirect("/404");
 ---
 
-<CoreLayout
-  title={indexMeta.title}
-  description={indexMeta.description}
-  keywords={indexMeta.keywords}
-  canonical={indexMeta.canonical}
-  image={indexMeta.image}
-  type={indexMeta.type}
-  robots={indexMeta.robots}
-  structuredData={indexMeta.structuredData}
->
-  <HomeHeroSection />
-  <TitleSection
-    tag="Sobre nosotros"
-    title="Tu espacio ideal de trabajo"
-    description="Te ofrecemos espacios modernos, funcionales y diseñados para potenciar todas tus actividades. Además, somos más que un coworking: somos una incubadora de empresas. Te brindamos la infraestructura, el conocimiento y el acompañamiento personalizado que necesitas para transformar tus ideas en negocios exitosos."
-  />
-  <SpacesSection client:load />
-  <BenefitsSection />
-  <StatsSection />
-  <TitleSection
-    tag="Contáctanos"
-    description="Mantente actualizado con las últimas novedades locales y todo lo relacionado con el mundo del coworking. Desde consejos de expertos y lo más destacado de la comunidad, hasta eventos exclusivos y espacios innovadores para tu próximo proyecto."
-    title="Conéctate con nosotros"
-  />
-  <TestimonialsSection image="/images/espacios/reserva/5.webp" />
-  <CtaSection image="/images/espacios/phone_booth/3.webp" />
-</CoreLayout>
+<CmsPage page={page} />

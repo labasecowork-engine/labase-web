@@ -3,22 +3,34 @@ import NavigationButtons from "@/components/pages/shared/button-arrow/button";
 import { Image } from "@/components/ui";
 
 interface Props {
-  currentSlide?: number;
-  totalSlides?: number;
+  eyebrow?: string;
+  title?: string;
+  background?: string;
+  images?: string[];
 }
 
-const coffeeImages = [
-  "/images/arsenal/cafes/1.webp",
-  "/images/arsenal/cafes/2.webp",
-  "/images/arsenal/cafes/3.webp",
-  "/images/arsenal/cafes/4.webp",
-];
+const {
+  eyebrow = "Nuestra Selección",
+  title = "Disfruta el mejor café",
+  background = "/images/arsenal/cafes/hero.webp",
+  images,
+} = Astro.props as Props;
+
+const coffeeImages =
+  images && images.length > 0
+    ? images
+    : [
+        "/images/arsenal/cafes/1.webp",
+        "/images/arsenal/cafes/2.webp",
+        "/images/arsenal/cafes/3.webp",
+        "/images/arsenal/cafes/4.webp",
+      ];
 ---
 
 <section class="relative h-screen w-full overflow-hidden">
   <Image
     client:only="react"
-    src="/images/arsenal/cafes/hero.webp"
+    src={background}
     className="absolute top-0 left-0 w-full h-full object-cover"
     loading="lazy"
     decoding="async"
@@ -29,13 +41,13 @@ const coffeeImages = [
   >
     <div class="mb-8">
       <p class="text-stone-100 text-sm font-light tracking-[0.3em] uppercase">
-        Nuestra Selección
+        {eyebrow}
       </p>
     </div>
     <h1
       class="text-white text-4xl md:text-6xl lg:text-7xl font-secondary mb-16 max-w-4xl leading-tight"
     >
-      Disfruta el mejor café
+      {title}
     </h1>
 
     <!-- slider de imagenes -->
@@ -59,7 +71,7 @@ const coffeeImages = [
                     <div class="slider-image-wrapper w-full h-full flex items-center justify-center">
                       <Image
                         client:only="react"
-                        src={`/images/arsenal/cafes/${index + 1}.webp`}
+                        src={image}
                         alt={`Coffee ${index + 1}`}
                         className="slider-image w-auto h-auto max-w-full max-h-full object-contain"
                         loading={index === 0 ? "eager" : "lazy"}
@@ -124,7 +136,9 @@ const coffeeImages = [
   document.addEventListener("DOMContentLoaded", () => {
     class CoffeeSlider {
       private currentSlide: number = 0;
-      private totalSlides: number = 4;
+      private totalSlides: number = document.querySelectorAll(
+        "[data-slide-image]",
+      ).length || 4;
       private autoplayInterval: number | null = null;
       private slideInterval: number = 5000;
 

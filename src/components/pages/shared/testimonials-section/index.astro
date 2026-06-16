@@ -1,5 +1,5 @@
 ---
-const testimonials = [
+const defaultTestimonials = [
   {
     text: "Desde que comencé a trabajar en este coworking, mi productividad ha aumentado increíblemente. No solo es un espacio bien diseñado, con iluminación perfecta y mobiliario ergonómico, sino que el ambiente colaborativo realmente marca la diferencia. Siempre hay alguien dispuesto a compartir ideas o darte una perspectiva fresca sobre un problema.",
     author: "Alejandro Ramírez",
@@ -18,7 +18,14 @@ const testimonials = [
 ];
 
 import { Image } from "@/components/ui";
-const { image, opacity, video } = Astro.props;
+const {
+  image,
+  opacity,
+  video,
+  eyebrow = "ESCUCHA A NUESTROS",
+  title = "CLIENTES FELICES",
+  testimonials = defaultTestimonials,
+} = Astro.props;
 ---
 
 <section aria-label="Testimonios de clientes" role="region">
@@ -76,13 +83,13 @@ const { image, opacity, video } = Astro.props;
           class="text-stone-100 text-center text-sm sm:text-lg tracking-[0.35em] uppercase mb-4"
           aria-hidden="true"
         >
-          ESCUCHA A NUESTROS
+          {eyebrow}
         </p>
         <h2
           class="text-stone-50 text-center text-3xl sm:text-5xl font-bold font-secondary uppercase"
           id="testimonios-titulo"
         >
-          CLIENTES FELICES
+          {title}
         </h2>
       </div>
 
@@ -95,7 +102,7 @@ const { image, opacity, video } = Astro.props;
       >
         <div class="testimonial-track" role="presentation">
           {
-            testimonials.map((testimonial, index) => (
+            testimonials.map((testimonial: any, index: number) => (
               <div
                 class="testimonial-slide"
                 data-index={index}
@@ -145,7 +152,7 @@ const { image, opacity, video } = Astro.props;
           aria-label="Controles de navegación del carrusel"
         >
           {
-            testimonials.map((_, index) => (
+            testimonials.map((_: any, index: number) => (
               <button
                 class="indicator-container h-[2px] w-16 bg-white/20 overflow-hidden cursor-pointer"
                 data-index={index}

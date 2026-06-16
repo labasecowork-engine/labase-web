@@ -1,48 +1,9 @@
 ---
-import { CoreLayout } from "@/layouts";
-import { TeamSection } from "@/components/pages/nosotros";
-import {
-  InfoSection,
-  CtaSection,
-  StatsSection,
-  HeroSection,
-  BenefitsSection,
-  LastVideosSection,
-} from "@/components/pages/shared";
-import { nosotrosMeta } from "@/config/meta";
-import { routes } from "@/config";
+import CmsPage from "@/components/cms/cms-page.astro";
+import { getPage } from "@/services/cms";
+
+const page = await getPage("nosotros");
+if (!page) return Astro.redirect("/404");
 ---
 
-<CoreLayout
-  title={nosotrosMeta.title}
-  description={nosotrosMeta.description}
-  keywords={nosotrosMeta.keywords}
-  canonical={nosotrosMeta.canonical}
-  type={nosotrosMeta.type}
-  robots={nosotrosMeta.robots}
-  structuredData={nosotrosMeta.structuredData}
->
-  <HeroSection
-    title="un ecosistema de posibilidades"
-    tag="Aquí nace el futuro"
-    image="/images/espacios/sala_de_recepcion/4.webp"
-  />
-  <InfoSection
-    tag="No es solo un lugar para trabajar"
-    title="Creamos este cowork por esto"
-    description="Porque sentimos en carne propia lo que es trabajar sin conexión, rodeados de paredes frías y silencios incómodos. Creamos este cowork para romper con eso. Queríamos un espacio donde cada conversación pueda ser el inicio de una colaboración, donde te rodees de personas que también están apostando por algo grande. Aquí no vienes solo a cumplir horas, vienes a construir, a inspirarte, a pertenecer. Porque cuando te rodeas de la energía correcta, todo cambia: el enfoque, las ideas, y hasta los lunes."
-    button2="ESPACIOS"
-    button2Href={routes.spaces}
-    button1Href={routes.contact}
-    button1="ÚNETE A NOSOTROS"
-    image="/images/espacios/unidades/2.webp"
-  />
-  <BenefitsSection />
-  <StatsSection image="public/images/espacios/bunkers/7.webp" />
-  <TeamSection />
-  <LastVideosSection />
-  <CtaSection
-    image="/images/espacios/sala_de_recepcion/1.webp"
-    description="¿Listo para unirte a la comunidad? Descubre cómo La Base puede ser el trampolín para tu éxito. Únete a nosotros y transforma tu forma de trabajar."
-  />
-</CoreLayout>
+<CmsPage page={page} />
