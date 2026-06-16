@@ -63,6 +63,42 @@ export async function getPage(slug: string): Promise<CmsPage | null> {
   }
 }
 
+export interface CmsSiteSettings {
+  companyName?: string;
+  email?: string;
+  email2?: string;
+  phone?: string;
+  phone2?: string;
+  whatsapp?: string;
+  address1?: string;
+  address2?: string;
+  schedule?: string;
+  website?: string;
+  googleReviews?: string;
+  social?: {
+    facebookUrl?: string;
+    facebookUser?: string;
+    instagramUrl?: string;
+    instagramUser?: string;
+    tiktokUrl?: string;
+    tiktokUser?: string;
+    linkedinUrl?: string;
+    linkedinUser?: string;
+  };
+}
+
+/** Configuración global del sitio (contacto + redes) desde el CMS. `null` si falla. */
+export async function getSiteSettings(): Promise<CmsSiteSettings | null> {
+  try {
+    const res = await fetch(`${CMS_URL}/api/globals/site-settings?depth=0`);
+    if (!res.ok) return null;
+    return (await res.json()) as CmsSiteSettings;
+  } catch (e) {
+    console.error("[cms] getSiteSettings error:", e);
+    return null;
+  }
+}
+
 /** Lista los slugs de todas las páginas (para rutas estáticas si se requiere). */
 export async function getPageSlugs(): Promise<string[]> {
   try {

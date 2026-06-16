@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useEffect, useState } from "react";
 import apiClient from "@/services/";
-import { contact, social } from "@/config";
+import { contact as contactCfg, social as socialCfg } from "@/config";
 
 const contactSchema = z.object({
   firstName: z.string().min(2, { message: "El nombre es obligatorio." }),
@@ -29,9 +29,25 @@ interface Reason {
   label: string;
   value: string;
 }
+interface SocialLink {
+  url?: string;
+  username?: string;
+}
 interface Props {
   submitLabel?: string;
   reasons?: Reason[];
+  contactInfo?: {
+    phone?: string;
+    email?: string;
+    address1?: string;
+    address2?: string;
+  };
+  socialInfo?: {
+    facebook?: SocialLink;
+    instagram?: SocialLink;
+    linkedin?: SocialLink;
+    tiktok?: SocialLink;
+  };
 }
 
 const defaultReasons: Reason[] = [
@@ -43,9 +59,37 @@ const defaultReasons: Reason[] = [
 export default function ContactFormSection({
   submitLabel = "Enviar formulario",
   reasons,
+  contactInfo,
+  socialInfo,
 }: Props = {}) {
   const reasonOptions =
     reasons && reasons.length > 0 ? reasons : defaultReasons;
+
+  // Datos del CMS con fallback a la config estática.
+  const contact = {
+    phone: contactInfo?.phone || contactCfg.phone,
+    email: contactInfo?.email || contactCfg.email,
+    address1: contactInfo?.address1 || contactCfg.address1,
+    address2: contactInfo?.address2 || contactCfg.address2,
+  };
+  const social = {
+    facebook: {
+      url: socialInfo?.facebook?.url || socialCfg.facebook.url,
+      username: socialInfo?.facebook?.username || socialCfg.facebook.username,
+    },
+    instagram: {
+      url: socialInfo?.instagram?.url || socialCfg.instagram.url,
+      username: socialInfo?.instagram?.username || socialCfg.instagram.username,
+    },
+    linkedin: {
+      url: socialInfo?.linkedin?.url || socialCfg.linkedin.url,
+      username: socialInfo?.linkedin?.username || socialCfg.linkedin.username,
+    },
+    tiktok: {
+      url: socialInfo?.tiktok?.url || socialCfg.tiktok.url,
+      username: socialInfo?.tiktok?.username || socialCfg.tiktok.username,
+    },
+  };
   const [submissionStatus, setSubmissionStatus] = useState<{
     message: string;
     success: boolean | null;

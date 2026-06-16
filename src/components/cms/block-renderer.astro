@@ -3,7 +3,7 @@
  * Renderiza el `layout` (array de bloques) de una página del CMS, mapeando
  * cada `blockType` a su componente de sección en labase-web.
  */
-import { mediaUrl, type CmsBlock } from "@/services/cms";
+import { mediaUrl, getSiteSettings, type CmsBlock } from "@/services/cms";
 import {
   HeroSection,
   TitleSection,
@@ -55,6 +55,28 @@ interface Props {
   blocks?: CmsBlock[];
 }
 const { blocks = [] } = Astro.props;
+
+// Datos globales (contacto/redes) solo si hay un formulario de contacto.
+const hasContactForm = blocks.some(
+  (b: any) => b.blockType === "contactForm",
+);
+const settings = hasContactForm ? await getSiteSettings() : null;
+const contactInfo = settings
+  ? {
+      phone: settings.phone,
+      email: settings.email,
+      address1: settings.address1,
+      address2: settings.address2,
+    }
+  : undefined;
+const socialInfo = settings?.social
+  ? {
+      facebook: { url: settings.social.facebookUrl, username: settings.social.facebookUser },
+      instagram: { url: settings.social.instagramUrl, username: settings.social.instagramUser },
+      linkedin: { url: settings.social.linkedinUrl, username: settings.social.linkedinUser },
+      tiktok: { url: settings.social.tiktokUrl, username: settings.social.tiktokUser },
+    }
+  : undefined;
 
 // "" / null / undefined -> undefined (para que apliquen los defaults del componente)
 const opt = (v: unknown): any =>
@@ -516,6 +538,8 @@ const toMentors = (items: any[] = []) =>
           client:only="react"
           submitLabel={opt(block.submitLabel)}
           reasons={block.reasons ?? []}
+          contactInfo={contactInfo}
+          socialInfo={socialInfo}
         />
       );
 

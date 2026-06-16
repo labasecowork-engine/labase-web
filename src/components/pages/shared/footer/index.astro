@@ -1,5 +1,35 @@
 ---
-import { contact, routes, social } from "@/config";
+import { contact as contactCfg, routes, social as socialCfg } from "@/config";
+import { getSiteSettings } from "@/services/cms";
+
+// Datos del CMS (global) con fallback a la config estática.
+const s = await getSiteSettings();
+const contact = {
+  phone: s?.phone || contactCfg.phone,
+  phone2: s?.phone2 || (contactCfg as { phone2?: string }).phone2 || "",
+  address1: s?.address1 || contactCfg.address1,
+  address2: s?.address2 || contactCfg.address2,
+  email: s?.email || contactCfg.email,
+  email2: s?.email2 || contactCfg.email2,
+};
+const social = {
+  facebook: {
+    url: s?.social?.facebookUrl || socialCfg.facebook.url,
+    username: s?.social?.facebookUser || socialCfg.facebook.username,
+  },
+  instagram: {
+    url: s?.social?.instagramUrl || socialCfg.instagram.url,
+    username: s?.social?.instagramUser || socialCfg.instagram.username,
+  },
+  linkedin: {
+    url: s?.social?.linkedinUrl || socialCfg.linkedin.url,
+    username: s?.social?.linkedinUser || socialCfg.linkedin.username,
+  },
+  tiktok: {
+    url: s?.social?.tiktokUrl || socialCfg.tiktok.url,
+    username: s?.social?.tiktokUser || socialCfg.tiktok.username,
+  },
+};
 ---
 
 <footer
